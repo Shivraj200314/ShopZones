@@ -1,0 +1,236 @@
+<div class="cart-page">
+
+  <!-- HEADER -->
+  <div class="cart-header">
+
+    <div>
+      <span class="eyebrow">
+        SHOPZONE
+      </span>
+
+      <h1>
+        Shopping Cart
+      </h1>
+
+      <p>
+        Review your selected products.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="continue-btn"
+      (click)="continueShopping()"
+    >
+      ← Continue Shopping
+    </button>
+
+  </div>
+
+
+  <!-- EMPTY CART -->
+
+  <div
+    class="empty-cart"
+    *ngIf="cartItems.length === 0"
+  >
+
+    <div class="empty-icon">
+      🛒
+    </div>
+
+    <h2>
+      Your Cart is Empty
+    </h2>
+
+    <p>
+      You haven't added any products yet.
+    </p>
+
+    <button
+      type="button"
+      class="shop-button"
+      (click)="continueShopping()"
+    >
+      Start Shopping
+    </button>
+
+  </div>
+
+
+  <!-- CART CONTENT -->
+
+  <div
+    class="cart-container"
+    *ngIf="cartItems.length > 0"
+  >
+
+    <!-- CART ITEMS -->
+
+    <div class="cart-items">
+
+      <div
+        class="cart-item"
+        *ngFor="let item of cartItems"
+      >
+
+        <!-- IMAGE -->
+
+        <div class="cart-image">
+
+          <img
+            [src]="item.image"
+            [alt]="item.name"
+          />
+
+        </div>
+
+
+        <!-- PRODUCT INFO -->
+
+        <div class="cart-info">
+
+          <span class="cart-brand">
+            {{ item.brand }}
+          </span>
+
+          <h3>
+            {{ item.name }}
+          </h3>
+
+          <div class="cart-price">
+            ₹{{ item.price | number }}
+          </div>
+
+
+          <!-- QUANTITY -->
+
+          <div class="quantity-row">
+
+            <span>
+              Quantity
+            </span>
+
+            <div class="quantity-control">
+
+              <button
+                type="button"
+                (click)="decreaseQuantity(item)"
+              >
+                −
+              </button>
+
+              <span>
+                {{ item.quantity }}
+              </span>
+
+              <button
+                type="button"
+                (click)="increaseQuantity(item)"
+              >
+                +
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ITEM TOTAL -->
+
+        <div class="cart-item-right">
+
+          <strong>
+            ₹{{ getItemTotal(item) | number }}
+          </strong>
+
+          <button
+            type="button"
+            class="remove-button"
+            (click)="removeItem(item)"
+          >
+            Remove
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- CART SUMMARY -->
+
+    <aside class="cart-summary">
+
+      <h2>
+        Order Summary
+      </h2>
+
+      <div class="summary-line">
+
+        <span>
+          Items
+        </span>
+
+        <span>
+          {{ cartItems.length }}
+        </span>
+
+      </div>
+
+
+      <div class="summary-line">
+
+        <span>
+          Subtotal
+        </span>
+
+        <strong>
+          ₹{{ getSubtotal() | number }}
+        </strong>
+
+      </div>
+
+
+      <div class="summary-line">
+
+        <span>
+          Delivery
+        </span>
+
+        <strong>
+          FREE
+        </strong>
+
+      </div>
+
+
+      <div class="summary-divider"></div>
+
+
+      <div class="summary-total">
+
+        <span>
+          Total
+        </span>
+
+        <strong>
+          ₹{{ getTotal() | number }}
+        </strong>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="checkout-button"
+        (click)="checkout()"
+      >
+        Proceed to Checkout →
+      </button>
+    </aside>
+  </div>
+</div>

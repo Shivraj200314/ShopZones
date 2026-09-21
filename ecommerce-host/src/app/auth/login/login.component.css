@@ -1,0 +1,852 @@
+/* =========================================
+   PAGE
+========================================= */
+
+.auth-page {
+  min-height: 100vh;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 35px;
+
+  box-sizing: border-box;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f7f8ff 0%,
+      #f3f1ff 50%,
+      #f8f9fc 100%
+    );
+}
+
+
+/* =========================================
+   WRAPPER
+========================================= */
+
+.auth-wrapper {
+  width: 100%;
+
+  max-width: 1050px;
+
+  min-height: 650px;
+
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border:
+    1px solid #e8e8f0;
+
+  border-radius: 26px;
+
+  box-shadow:
+    0 25px 60px
+    rgba(36, 32, 80, 0.13);
+}
+
+
+/* =========================================
+   BRAND PANEL
+========================================= */
+
+.brand-panel {
+  position: relative;
+
+  overflow: hidden;
+
+  padding: 60px 55px;
+
+  display: flex;
+
+  align-items: center;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      145deg,
+      #6557e8 0%,
+      #5745df 45%,
+      #4938c8 100%
+    );
+}
+
+
+.brand-panel::before {
+  content: '';
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(255,255,255,0.13),
+      transparent 38%
+    );
+}
+
+
+.brand-decoration {
+  position: absolute;
+
+  border:
+    1px solid
+    rgba(255,255,255,0.12);
+
+  border-radius: 50%;
+}
+
+
+.decoration-one {
+  width: 300px;
+  height: 300px;
+
+  right: -130px;
+  top: -100px;
+}
+
+
+.decoration-two {
+  width: 230px;
+  height: 230px;
+
+  left: -100px;
+  bottom: -80px;
+}
+
+
+.brand-content {
+  width: 100%;
+
+  position: relative;
+
+  z-index: 2;
+}
+
+
+/* =========================================
+   BRAND LOGO
+========================================= */
+
+.brand-logo {
+  margin-bottom: 85px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+}
+
+
+.brand-logo-icon {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background:
+    rgba(255,255,255,0.16);
+
+  border:
+    1px solid
+    rgba(255,255,255,0.20);
+
+  border-radius: 14px;
+
+  font-size: 22px;
+}
+
+
+.brand-name {
+  font-size: 23px;
+
+  font-weight: 800;
+}
+
+
+/* =========================================
+   BRAND COPY
+========================================= */
+
+.brand-eyebrow {
+  display: block;
+
+  margin-bottom: 13px;
+
+  color:
+    #dcd8ff;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 2.4px;
+}
+
+
+.brand-copy h2 {
+  margin:
+    0 0 18px;
+
+  font-size: 38px;
+
+  line-height: 1.18;
+
+  letter-spacing: -1px;
+}
+
+
+.brand-copy p {
+  max-width: 390px;
+
+  margin: 0;
+
+  color:
+    rgba(255,255,255,0.78);
+
+  font-size: 14px;
+
+  line-height: 1.7;
+}
+
+
+/* =========================================
+   FEATURES
+========================================= */
+
+.brand-features {
+  margin-top: 55px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 15px;
+}
+
+
+.feature-item {
+  padding: 13px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  border:
+    1px solid
+    rgba(255,255,255,0.11);
+
+  border-radius: 13px;
+}
+
+
+.feature-icon {
+  width: 38px;
+  height: 38px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background:
+    rgba(255,255,255,0.13);
+
+  border-radius: 10px;
+}
+
+
+.feature-item strong {
+  display: block;
+
+  margin-bottom: 2px;
+
+  font-size: 12px;
+}
+
+
+.feature-item span {
+  color:
+    rgba(255,255,255,0.69);
+
+  font-size: 10px;
+}
+
+
+/* =========================================
+   LOGIN PANEL
+========================================= */
+
+.login-panel {
+  padding: 60px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background: #ffffff;
+}
+
+
+.login-card {
+  width: 100%;
+
+  max-width: 390px;
+}
+
+
+/* =========================================
+   MOBILE LOGO
+========================================= */
+
+.mobile-logo {
+  display: none;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.login-header {
+  margin-bottom: 32px;
+}
+
+
+.login-eyebrow {
+  display: block;
+
+  margin-bottom: 9px;
+
+  color: #6557e8;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.8px;
+}
+
+
+.login-header h1 {
+  margin:
+    0 0 9px;
+
+  color: #111827;
+
+  font-size: 32px;
+
+  font-weight: 800;
+
+  letter-spacing: -0.6px;
+}
+
+
+.login-header p {
+  margin: 0;
+
+  color: #7a8192;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================
+   LOGIN ERROR
+========================================= */
+
+.login-error {
+  margin-bottom: 20px;
+
+  padding: 12px 14px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  background: #fff2f2;
+
+  border:
+    1px solid #ffd4d4;
+
+  border-radius: 10px;
+
+  color: #dc2626;
+
+  font-size: 12px;
+}
+
+
+.error-icon {
+  font-size: 16px;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #303747;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+
+.required {
+  color: #ef4444;
+}
+
+
+/* =========================================
+   INPUT
+========================================= */
+
+.input-wrapper {
+  height: 50px;
+
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border:
+    1px solid #dfe1e8;
+
+  border-radius: 11px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.input-wrapper:focus-within {
+  border-color: #6557e8;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(101,87,232,0.10);
+}
+
+
+.input-icon {
+  position: absolute;
+
+  left: 15px;
+
+  font-size: 15px;
+
+  opacity: 0.65;
+}
+
+
+.input-wrapper input {
+  width: 100%;
+
+  height: 100%;
+
+  padding:
+    0 42px;
+
+  border: none;
+
+  outline: none;
+
+  background: transparent;
+
+  color: #111827;
+
+  font-size: 13px;
+
+  box-sizing: border-box;
+}
+
+
+.input-wrapper input::placeholder {
+  color: #a0a5b2;
+}
+
+
+.input-wrapper input:disabled {
+  cursor: not-allowed;
+
+  background: #f8f8fa;
+}
+
+
+.input-error {
+  border-color:
+    #ef4444 !important;
+}
+
+
+.input-success {
+  border-color:
+    #22c55e;
+}
+
+
+.valid-icon {
+  position: absolute;
+
+  right: 14px;
+
+  width: 21px;
+  height: 21px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background: #eaf9ef;
+
+  color: #16a34a;
+
+  border-radius: 50%;
+
+  font-size: 11px;
+
+  font-weight: 800;
+}
+
+
+/* =========================================
+   VALIDATION
+========================================= */
+
+.field-error {
+  display: block;
+
+  margin-top: 6px;
+
+  color: #e5484d;
+
+  font-size: 10px;
+}
+
+
+/* =========================================
+   LOGIN BUTTON
+========================================= */
+
+.primary-button {
+  width: 100%;
+
+  height: 50px;
+
+  margin-top: 8px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  border: none;
+
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #6c5ce7,
+      #5242dc
+    );
+
+  color: #ffffff;
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 9px 22px
+    rgba(91,75,230,0.25);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.primary-button:hover:not(:disabled) {
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 13px 28px
+    rgba(91,75,230,0.32);
+}
+
+
+.primary-button:disabled {
+  opacity: 0.7;
+
+  cursor: not-allowed;
+}
+
+
+.button-arrow {
+  font-size: 16px;
+}
+
+
+/* =========================================
+   SPINNER
+========================================= */
+
+.spinner {
+  width: 17px;
+  height: 17px;
+
+  border:
+    2px solid
+    rgba(255,255,255,0.35);
+
+  border-top-color:
+    #ffffff;
+
+  border-radius: 50%;
+
+  animation:
+    spin 0.8s linear infinite;
+}
+
+
+@keyframes spin {
+
+  to {
+    transform: rotate(360deg);
+  }
+
+}
+
+
+/* =========================================
+   DIVIDER
+========================================= */
+
+.login-divider {
+  margin: 25px 0 18px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  color: #a0a5b2;
+
+  font-size: 10px;
+}
+
+
+.login-divider::before,
+.login-divider::after {
+  content: '';
+
+  flex: 1;
+
+  height: 1px;
+
+  background: #eceef2;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.auth-footer {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 5px;
+
+  color: #7a8192;
+
+  font-size: 12px;
+}
+
+
+.auth-footer button {
+  padding: 4px;
+
+  border: none;
+
+  background: transparent;
+
+  color: #6557e8;
+
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+
+.auth-footer button:hover:not(:disabled) {
+  text-decoration: underline;
+}
+
+
+.auth-footer button:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================
+   SECURITY
+========================================= */
+
+.security-message {
+  margin-top: 26px;
+
+  padding-top: 17px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 6px;
+
+  border-top:
+    1px solid #f0f1f4;
+
+  color: #999ead;
+
+  font-size: 9px;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (
+  max-width: 850px
+) {
+
+  .auth-wrapper {
+    max-width: 500px;
+
+    grid-template-columns: 1fr;
+  }
+
+
+  .brand-panel {
+    display: none;
+  }
+
+
+  .login-panel {
+    padding:
+      50px 40px;
+  }
+
+
+  .mobile-logo {
+    margin-bottom: 35px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    color: #6557e8;
+
+    font-size: 18px;
+  }
+
+}
+
+
+@media (
+  max-width: 520px
+) {
+
+  .auth-page {
+    padding: 15px;
+  }
+
+
+  .auth-wrapper {
+    min-height: auto;
+
+    border-radius: 18px;
+  }
+
+
+  .login-panel {
+    padding:
+      35px 22px;
+  }
+
+
+  .login-header h1 {
+    font-size: 28px;
+  }
+
+}

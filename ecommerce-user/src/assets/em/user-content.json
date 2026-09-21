@@ -1,0 +1,46 @@
+{
+  "screenCoverage": "multiple",
+  "moduleIdentifier": "user",
+  "content": [
+    {
+      "screenIdentifier": "login",
+      "screenContent": [
+        {
+          "logo-title": "ShopZone",
+          "title": "Welcome Back",
+          "description": "Login to continue shopping.",
+          "email-label": "Email Address",
+          "email-placeholder": "Enter your email",
+          "password-label": "Password",
+          "password-placeholder": "Enter your password",
+          "login-button": "Login",
+          "logging-button": "Logging in...",
+          "error-message": "Invalid email or password.",
+          "key": "login",
+          "device": "both"
+        }
+      ]
+    },
+    {
+      "screenIdentifier": "profile",
+      "screenContent": [
+        {
+          "eyebrow": "PERSONAL INFORMATION",
+          "title": "My Profile",
+          "subtitle": "View and update your profile information.",
+          "name-label": "Full Name",
+          "name-placeholder": "Enter your full name",
+          "email-label": "Email Address",
+          "email-placeholder": "Enter your email",
+          "phone-label": "Phone Number",
+          "phone-placeholder": "Enter your phone number",
+          "edit-label": "Edit Profile",
+          "save-label": "Save Changes",
+          "cancel-label": "Cancel",
+          "key": "profile",
+          "device": "both"
+        }
+      ]
+    }
+  ]
+}

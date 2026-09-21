@@ -1,0 +1,34 @@
+<div
+  class="loader-overlay"
+  *ngIf="loading$ | async"
+>
+
+  <div class="loader-content">
+
+    <div class="spinner"></div>
+
+
+    <h3>
+
+      {{
+        revampFallback()
+          ['products-loader']
+          ['title']
+      }}
+
+    </h3>
+
+
+    <p>
+
+      {{
+        revampFallback()
+          ['products-loader']
+          ['subtitle']
+      }}
+
+    </p>
+
+  </div>
+
+</div>

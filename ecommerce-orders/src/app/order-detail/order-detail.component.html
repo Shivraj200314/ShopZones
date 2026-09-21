@@ -1,0 +1,537 @@
+<div
+  class="order-detail-page"
+  *ngIf="order"
+>
+
+  <div class="order-detail-container">
+
+
+    <!-- =====================================
+         BACK
+    ====================================== -->
+
+    <button
+      type="button"
+      class="back-button"
+      (click)="goBack()"
+    >
+
+      {{
+        revampFallback()
+          ['order-detail']
+          ['back-label']
+      }}
+
+    </button>
+
+
+
+    <!-- =====================================
+         HEADER
+    ====================================== -->
+
+    <div class="detail-header">
+
+      <div>
+
+        <span class="eyebrow">
+
+          {{
+            revampFallback()
+              ['order-detail']
+              ['eyebrow']
+          }}
+
+        </span>
+
+
+       <h1>
+
+  {{
+    revampFallback()
+      ['order-detail']
+      ['title']
+  }}
+
+</h1>
+
+
+<p class="order-number">
+
+  {{
+    revampFallback()
+      ['order-detail']
+      ['order-id-label']
+  }}
+
+  #
+
+  {{ getOrderId() }}
+
+</p>
+
+
+        <p>
+
+          {{
+            revampFallback()
+              ['order-detail']
+              ['placed-on-label']
+          }}
+
+          {{
+
+            formatDate(
+              $any(order).createdAt
+            )
+
+          }}
+
+        </p>
+
+      </div>
+
+
+      <!-- STATUS -->
+
+      <span
+        class="status"
+      >
+
+        {{ getOrderStatus() }}
+
+      </span>
+
+    </div>
+
+
+
+    <!-- =====================================
+         ORDER SUMMARY
+    ====================================== -->
+
+    <div class="summary-grid">
+
+
+      <!-- ITEMS -->
+
+      <div class="summary-card">
+
+        <span>
+
+          {{
+            revampFallback()
+              ['order-detail']
+              ['items-label']
+          }}
+
+        </span>
+
+
+        <strong>
+
+          {{ getTotalItems() }}
+
+        </strong>
+
+      </div>
+
+      <div class="summary-card">
+
+        <span>
+
+          {{
+            revampFallback()
+              ['order-detail']
+              ['payment-label']
+          }}
+
+        </span>
+
+        <strong>
+
+          {{ getPaymentMethod() }}
+
+        </strong>
+
+      </div>
+
+
+
+      <!-- TOTAL -->
+
+      <div class="summary-card">
+
+        <span>
+
+          {{
+            revampFallback()
+              ['order-detail']
+              ['total-amount-label']
+          }}
+
+        </span>
+
+
+        <strong>
+
+          ₹{{
+            $any(order).total
+              | number:'1.2-2'
+          }}
+
+        </strong>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =====================================
+         PRODUCTS
+    ====================================== -->
+
+    <div class="detail-card">
+
+      <h2>
+
+        {{
+          revampFallback()
+            ['order-detail']
+            ['products-title']
+        }}
+
+      </h2>
+
+
+      <div
+        class="product-row"
+        *ngFor="
+          let item of getOrderItems()
+        "
+      >
+
+
+        <!-- IMAGE -->
+
+        <img
+          *ngIf="item.image"
+          [src]="item.image"
+          [alt]="
+            item.name ||
+            item.title
+          "
+        />
+
+
+        <!-- PRODUCT INFO -->
+
+        <div class="product-details">
+
+          <strong>
+
+            {{
+              item.name ||
+              item.title
+            }}
+
+          </strong>
+
+
+          <span>
+
+            {{
+              revampFallback()
+                ['order-detail']
+                ['price-label']
+            }}:
+
+            ₹{{
+              item.price
+                | number:'1.2-2'
+            }}
+
+          </span>
+
+
+          <span>
+
+            {{
+              revampFallback()
+                ['order-detail']
+                ['quantity-label']
+            }}:
+
+            {{ item.quantity }}
+
+          </span>
+
+        </div>
+
+
+        <!-- SUBTOTAL -->
+
+        <div class="product-total-section">
+
+          <span>
+
+            {{
+              revampFallback()
+                ['order-detail']
+                ['subtotal-label']
+            }}
+
+          </span>
+
+
+          <strong
+            class="product-total"
+          >
+
+            ₹{{
+              getItemTotal(
+                item
+              )
+                | number:'1.2-2'
+            }}
+
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =====================================
+         DELIVERY ADDRESS
+    ====================================== -->
+
+    <div
+      class="detail-card"
+      *ngIf="
+        $any(order).customer
+      "
+    >
+
+      <h2>
+
+        {{
+          revampFallback()
+            ['order-detail']
+            ['delivery-address-title']
+        }}
+
+      </h2>
+
+
+      <!-- CUSTOMER NAME -->
+
+      <strong>
+
+        {{
+
+          $any(order)
+            .customer
+            .fullName
+
+          ||
+
+          (
+
+            $any(order)
+              .customer
+              .firstName
+
+            +
+
+            ' '
+
+            +
+
+            $any(order)
+              .customer
+              .lastName
+
+          )
+
+        }}
+
+      </strong>
+
+
+      <!-- ADDRESS -->
+
+      <p>
+
+        {{
+          $any(order)
+            .customer
+            .address
+        }},
+
+        {{
+          $any(order)
+            .customer
+            .city
+        }}
+
+        -
+
+        {{
+          $any(order)
+            .customer
+            .pinCode
+        }}
+
+      </p>
+
+
+      <!-- PHONE -->
+
+      <p>
+
+        <strong>
+
+          {{
+            revampFallback()
+              ['order-detail']
+              ['phone-label']
+          }}:
+
+        </strong>
+
+        {{
+          $any(order)
+            .customer
+            .phone
+        }}
+
+      </p>
+
+
+      <!-- EMAIL -->
+
+      <p
+        *ngIf="
+          $any(order)
+            .customer
+            .email
+        "
+      >
+
+        <strong>
+
+          {{
+            revampFallback()
+              ['order-detail']
+              ['email-label']
+          }}:
+
+        </strong>
+
+        {{
+          $any(order)
+            .customer
+            .email
+        }}
+
+      </p>
+
+    </div>
+
+
+
+    <!-- =====================================
+         FINAL TOTAL
+    ====================================== -->
+
+    <div class="final-total">
+
+      <span>
+
+        {{
+          revampFallback()
+            ['order-detail']
+            ['order-total-label']
+        }}
+
+      </span>
+
+
+      <strong>
+
+        ₹{{
+          $any(order).total
+            | number:'1.2-2'
+        }}
+
+      </strong>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- =========================================
+     ORDER NOT FOUND
+========================================== -->
+
+<div
+  class="order-not-found"
+  *ngIf="!order"
+>
+
+  <div>
+
+    {{
+      revampFallback()
+        ['order-detail']
+        ['not-found-icon']
+    }}
+
+  </div>
+
+
+  <h2>
+
+    {{
+      revampFallback()
+        ['order-detail']
+        ['not-found-title']
+    }}
+
+  </h2>
+
+
+  <p>
+
+    {{
+      revampFallback()
+        ['order-detail']
+        ['not-found-description']
+    }}
+
+  </p>
+
+
+  <button
+    type="button"
+    (click)="goBack()"
+  >
+
+    {{
+      revampFallback()
+        ['order-detail']
+        ['not-found-button']
+    }}
+
+  </button>
+
+</div>

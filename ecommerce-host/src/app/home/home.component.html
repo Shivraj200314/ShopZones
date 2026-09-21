@@ -1,0 +1,707 @@
+<div class="home-page">
+
+
+  <section class="hero">
+
+    <div class="hero-container">
+
+      <div class="hero-content">
+
+        <span class="hero-label">
+
+          {{
+            revampFallback()
+              ['home']
+              ['hero-label']
+          }}
+
+        </span>
+
+
+        <h1>
+
+          {{
+            revampFallback()
+              ['home']
+              ['hero-title']
+          }}
+
+          <span>
+
+            {{
+              revampFallback()
+                ['home']
+                ['hero-highlight']
+            }}
+
+          </span>
+
+        </h1>
+
+
+        <p>
+
+          {{
+            revampFallback()
+              ['home']
+              ['hero-description']
+          }}
+
+        </p>
+
+        <div class="hero-buttons">
+
+          <button
+            type="button"
+            class="primary-button"
+            (click)="goToProducts()"
+          >
+
+            {{
+              revampFallback()
+                ['home']
+                ['shop-now-label']
+            }}
+
+
+            <span>
+
+              {{
+                revampFallback()
+                  ['home']
+                  ['shop-now-arrow']
+              }}
+
+            </span>
+
+          </button>
+          <button
+            type="button"
+            class="secondary-button"
+            (click)="goToProducts()"
+          >
+
+            {{
+              revampFallback()
+                ['home']
+                ['explore-categories-label']
+            }}
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="hero-visual">
+
+        <div class="hero-circle">
+
+          <span class="hero-emoji">
+
+            {{
+              revampFallback()
+                ['home']
+                ['hero-icon']
+            }}
+
+          </span>
+
+        </div>
+
+        <div
+          class="floating-card card-one"
+          (click)="goToCategory('beauty')"
+        >
+
+          {{
+            revampFallback()
+              ['home']
+              ['beauty-icon']
+          }}
+
+
+          <span>
+
+            {{
+              revampFallback()
+                ['home']
+                ['beauty-label']
+            }}
+
+          </span>
+
+        </div>
+
+        <div
+          class="floating-card card-two"
+          (click)="goToCategory('fragrances')"
+        >
+
+          {{
+            revampFallback()
+              ['home']
+              ['fragrances-icon']
+          }}
+
+
+          <span>
+
+            {{
+              revampFallback()
+                ['home']
+                ['fragrances-label']
+            }}
+
+          </span>
+
+        </div>
+
+        <div
+          class="floating-card card-three"
+          (click)="goToCategory('groceries')"
+        >
+
+          {{
+            revampFallback()
+              ['home']
+              ['groceries-icon']
+          }}
+
+
+          <span>
+
+            {{
+              revampFallback()
+                ['home']
+                ['groceries-label']
+            }}
+
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <section class="features">
+
+
+    <!-- FREE DELIVERY -->
+
+    <div class="feature">
+
+      <div class="feature-icon">
+
+        {{
+          revampFallback()
+            ['home']
+            ['delivery-icon']
+        }}
+
+      </div>
+
+
+      <div>
+
+        <h3>
+
+          {{
+            revampFallback()
+              ['home']
+              ['delivery-title']
+          }}
+
+        </h3>
+
+
+        <p>
+
+          {{
+            revampFallback()
+              ['home']
+              ['delivery-description']
+          }}
+
+        </p>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- SECURE PAYMENT -->
+
+    <div class="feature">
+
+      <div class="feature-icon">
+
+        {{
+          revampFallback()
+            ['home']
+            ['secure-icon']
+        }}
+
+      </div>
+
+
+      <div>
+
+        <h3>
+
+          {{
+            revampFallback()
+              ['home']
+              ['secure-title']
+          }}
+
+        </h3>
+
+
+        <p>
+
+          {{
+            revampFallback()
+              ['home']
+              ['secure-description']
+          }}
+
+        </p>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- EASY RETURNS -->
+
+    <div class="feature">
+
+      <div class="feature-icon">
+
+        {{
+          revampFallback()
+            ['home']
+            ['return-icon']
+        }}
+
+      </div>
+
+
+      <div>
+
+        <h3>
+
+          {{
+            revampFallback()
+              ['home']
+              ['return-title']
+          }}
+
+        </h3>
+
+
+        <p>
+
+          {{
+            revampFallback()
+              ['home']
+              ['return-description']
+          }}
+
+        </p>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- SUPPORT -->
+
+    <div class="feature">
+
+      <div class="feature-icon">
+
+        {{
+          revampFallback()
+            ['home']
+            ['support-icon']
+        }}
+
+      </div>
+
+
+      <div>
+
+        <h3>
+
+          {{
+            revampFallback()
+              ['home']
+              ['support-title']
+          }}
+
+        </h3>
+
+
+        <p>
+
+          {{
+            revampFallback()
+              ['home']
+              ['support-description']
+          }}
+
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =========================================
+       CATEGORY SECTION
+  ========================================== -->
+
+  <section
+    id="categories"
+    class="home-section"
+  >
+
+    <div class="section-heading">
+
+      <div>
+
+        <span>
+
+          {{
+            revampFallback()
+              ['home']
+              ['collection-label']
+          }}
+
+        </span>
+
+
+        <h2>
+
+          {{
+            revampFallback()
+              ['home']
+              ['category-title']
+          }}
+
+        </h2>
+
+
+        <p>
+
+          {{
+            revampFallback()
+              ['home']
+              ['category-subtitle']
+          }}
+
+        </p>
+
+      </div>
+
+
+
+      <!-- VIEW ALL -->
+
+      <button
+        type="button"
+        class="view-all-button"
+        (click)="goToProducts()"
+      >
+
+        {{
+          revampFallback()
+            ['home']
+            ['view-all-label']
+        }}
+
+      </button>
+
+    </div>
+
+
+
+    <!-- =====================================
+         CATEGORY GRID
+    ====================================== -->
+
+    <div class="home-category-grid">
+
+
+      <!-- ALL PRODUCTS -->
+
+      <button
+        type="button"
+        class="home-category all-products-category"
+        (click)="goToProducts()"
+      >
+
+        <div class="category-large-icon">
+
+          {{
+            revampFallback()
+              ['home']
+              ['all-products-icon']
+          }}
+
+        </div>
+
+
+        <h3>
+
+          {{
+            revampFallback()
+              ['home']
+              ['all-products-title']
+          }}
+
+        </h3>
+
+
+        <p>
+
+          {{
+            revampFallback()
+              ['home']
+              ['all-products-description']
+          }}
+
+        </p>
+
+      </button>
+
+
+
+      <!-- BEAUTY -->
+
+      <button
+        type="button"
+        class="home-category"
+        (click)="goToCategory('beauty')"
+      >
+
+        <div class="category-large-icon">
+
+          {{
+            revampFallback()
+              ['home']
+              ['beauty-category-icon']
+          }}
+
+        </div>
+
+
+        <h3>
+
+          {{
+            revampFallback()
+              ['home']
+              ['beauty-category-title']
+          }}
+
+        </h3>
+
+
+        <p>
+
+          {{
+            revampFallback()
+              ['home']
+              ['beauty-category-description']
+          }}
+
+        </p>
+
+      </button>
+
+
+
+      <!-- FRAGRANCES -->
+
+      <button
+        type="button"
+        class="home-category"
+        (click)="goToCategory('fragrances')"
+      >
+
+        <div class="category-large-icon">
+
+          {{
+            revampFallback()
+              ['home']
+              ['fragrances-category-icon']
+          }}
+
+        </div>
+
+
+        <h3>
+
+          {{
+            revampFallback()
+              ['home']
+              ['fragrances-category-title']
+          }}
+
+        </h3>
+
+
+        <p>
+
+          {{
+            revampFallback()
+              ['home']
+              ['fragrances-category-description']
+          }}
+
+        </p>
+
+      </button>
+
+
+
+      <!-- GROCERIES -->
+
+      <button
+        type="button"
+        class="home-category"
+        (click)="goToCategory('groceries')"
+      >
+
+        <div class="category-large-icon">
+
+          {{
+            revampFallback()
+              ['home']
+              ['groceries-category-icon']
+          }}
+
+        </div>
+
+
+        <h3>
+
+          {{
+            revampFallback()
+              ['home']
+              ['groceries-category-title']
+          }}
+
+        </h3>
+
+
+        <p>
+
+          {{
+            revampFallback()
+              ['home']
+              ['groceries-category-description']
+          }}
+
+        </p>
+
+      </button>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =========================================
+       DEAL SECTION
+  ========================================== -->
+
+  <section
+    id="deals"
+    class="deals-section"
+  >
+
+    <div class="deal-content">
+
+      <span>
+
+        {{
+          revampFallback()
+            ['home']
+            ['deal-label']
+        }}
+
+      </span>
+
+
+      <h2>
+
+        {{
+          revampFallback()
+            ['home']
+            ['deal-title']
+        }}
+
+        {{
+          revampFallback()
+            ['home']
+            ['deal-highlight']
+        }}
+
+      </h2>
+
+
+      <p>
+
+        {{
+          revampFallback()
+            ['home']
+            ['deal-description']
+        }}
+
+      </p>
+
+
+      <button
+        type="button"
+        class="primary-button"
+        (click)="goToProducts()"
+      >
+
+        {{
+          revampFallback()
+            ['home']
+            ['deal-button']
+        }}
+
+      </button>
+
+    </div>
+
+
+
+    <div class="deal-icon">
+
+      {{
+        revampFallback()
+          ['home']
+          ['deal-icon']
+      }}
+
+    </div>
+
+  </section>
+
+</div>

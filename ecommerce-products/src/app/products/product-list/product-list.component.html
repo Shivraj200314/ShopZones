@@ -1,0 +1,1258 @@
+<div class="products-page">
+
+
+  <!-- =========================================
+       GLOBAL PRODUCT API SPINNER
+  ========================================== -->
+
+  <app-spinner>
+  </app-spinner>
+
+  <div
+    class="cart-toast"
+    *ngIf="cartMessage"
+  >
+
+    ✅ {{ cartMessage }}
+
+  </div>
+
+  <section class="products-header">
+
+    <div class="header-content">
+
+      <span class="eyebrow">
+
+        {{
+          revampFallback()
+            ['product-list']
+            ?.['eyebrow']
+        }}
+
+      </span>
+
+
+      <h1>
+
+        {{
+          revampFallback()
+            ['product-list']
+            ?.['title']
+        }}
+
+      </h1>
+      <p>
+
+        {{
+          revampFallback()
+            ['product-list']
+            ?.['subtitle']
+        }}
+
+      </p>
+
+    </div>
+
+
+    <!-- =====================================
+         SEARCH
+    ====================================== -->
+
+    <div class="search-box">
+
+      <input
+        type="text"
+
+        [(ngModel)]="searchText"
+
+        (input)="searchProducts()"
+
+        [placeholder]="
+          revampFallback()
+            ['product-list']
+            ?.['search-placeholder']
+        "
+      />
+
+
+      <span class="search-icon">
+
+        🔍
+
+      </span>
+
+
+      <button
+        type="button"
+        class="clear-search"
+        *ngIf="searchText"
+        (click)="clearSearch()"
+      >
+
+        ✕
+
+      </button>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =========================================
+       API ERROR
+  ========================================== -->
+
+  <div
+    class="no-products"
+    *ngIf="errorMessage"
+  >
+
+    <div class="empty-icon">
+
+      ⚠️
+
+    </div>
+
+
+    <h2>
+
+      {{
+        revampFallback()
+          ['product-list']
+          ?.['error-title']
+      }}
+
+    </h2>
+
+
+    <p>
+
+      {{ errorMessage }}
+
+    </p>
+
+
+    <button
+      type="button"
+      class="details-button"
+      (click)="loadProducts()"
+    >
+
+      {{
+        revampFallback()
+          ['product-list']
+          ?.['try-again']
+      }}
+
+    </button>
+
+  </div>
+
+
+
+  <!-- =========================================
+       CONTENT
+  ========================================== -->
+
+  <ng-container
+    *ngIf="!errorMessage"
+  >
+
+
+    <!-- =====================================
+         CATEGORY SECTION
+    ====================================== -->
+
+    <section class="category-section">
+
+
+      <!-- CATEGORY HEADER -->
+
+      <div class="section-heading">
+
+        <div>
+
+          <span class="section-label">
+
+            {{
+              revampFallback()
+                ['product-list']
+                ?.['collection-label']
+            }}
+
+          </span>
+
+
+          <h2>
+
+            {{
+              revampFallback()
+                ['product-list']
+                ?.['category-title']
+            }}
+
+          </h2>
+
+
+          <p>
+
+            {{
+              revampFallback()
+                ['product-list']
+                ?.['category-subtitle']
+            }}
+
+          </p>
+
+        </div>
+
+
+        <span class="product-count">
+
+          {{ allProducts.length }}
+
+          {{
+            revampFallback()
+              ['product-list']
+              ?.['products-label']
+          }}
+
+        </span>
+
+      </div>
+
+
+
+      <!-- =====================================
+           CATEGORY LIST
+      ====================================== -->
+
+      <div class="category-list">
+
+
+        <!-- =================================
+             ALL PRODUCTS
+        ================================== -->
+
+        <button
+          type="button"
+          class="category-card"
+
+          [class.active]="
+            selectedCategory === 'All'
+          "
+
+          (click)="
+            selectCategory('All')
+          "
+        >
+
+          <div class="category-icon">
+
+            🛍️
+
+          </div>
+
+
+          <strong>
+
+            {{
+              revampFallback()
+                ['product-list']
+                ?.['all-products']
+            }}
+
+          </strong>
+
+
+          <small>
+
+            {{
+              getCategoryCount(
+                'All'
+              )
+            }}
+
+            {{
+              revampFallback()
+                ['product-list']
+                ?.['products-small-label']
+            }}
+
+          </small>
+
+        </button>
+
+
+
+        <!-- =================================
+             BEAUTY / FRAGRANCE / GROCERIES
+        ================================== -->
+
+        <button
+          type="button"
+          class="category-card"
+
+          *ngFor="
+            let category of categories
+          "
+
+          [class.active]="
+            selectedCategory ===
+            category
+          "
+
+          (click)="
+            selectCategory(
+              category
+            )
+          "
+        >
+
+          <div class="category-icon">
+
+            {{
+              getCategoryIcon(
+                category
+              )
+            }}
+
+          </div>
+
+
+          <strong>
+
+            {{
+              getCategoryName(
+                category
+              )
+            }}
+
+          </strong>
+
+
+          <small>
+
+            {{
+              getCategoryCount(
+                category
+              )
+            }}
+
+            {{
+              revampFallback()
+                ['product-list']
+                ?.['products-small-label']
+            }}
+
+          </small>
+
+        </button>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         PRODUCTS SECTION
+    ========================================== -->
+
+    <section class="products-section">
+
+
+      <!-- =====================================
+           PRODUCT SECTION HEADER
+      ====================================== -->
+
+      <div class="section-heading">
+
+        <div>
+
+          <span class="section-label">
+
+            {{
+              revampFallback()
+                ['product-list']
+                ?.['shop-now-label']
+            }}
+
+          </span>
+
+
+          <h2>
+
+            {{
+
+              selectedCategory ===
+              'All'
+
+                ?
+
+              revampFallback()
+                ['product-list']
+                ?.['all-products']
+
+                :
+
+              getCategoryName(
+                selectedCategory
+              )
+
+            }}
+
+          </h2>
+
+
+          <p>
+
+            {{
+              revampFallback()
+                ['product-list']
+                ?.['collection-subtitle']
+            }}
+
+          </p>
+
+        </div>
+
+
+
+        <!-- =================================
+             COUNT + ADD PRODUCT
+        ================================== -->
+
+        <div class="product-heading-actions">
+
+
+          <!-- COUNT -->
+
+          <span class="product-count">
+
+            {{ products.length }}
+
+            {{
+              revampFallback()
+                ['product-list']
+                ?.['items-label']
+            }}
+
+          </span>
+
+
+          <!-- ADD PRODUCT -->
+
+          <button
+            type="button"
+            class="add-product-button"
+            (click)="openAddProductForm()"
+          >
+
+            +
+
+            {{
+              revampFallback()
+                ['product-list']
+                ?.['add-product']
+            }}
+
+          </button>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =========================================
+           ADD PRODUCT MODAL
+      ========================================== -->
+
+      <div
+        class="add-product-overlay"
+        *ngIf="showAddProductForm"
+      >
+
+        <div class="add-product-modal">
+
+
+          <!-- =====================================
+               MODAL HEADER
+          ====================================== -->
+
+          <div class="add-product-header">
+
+            <div>
+
+              <span class="section-label">
+
+                {{
+                  revampFallback()
+                    ['product-list']
+                    ?.['add-product-label']
+                }}
+
+              </span>
+
+
+              <h2>
+
+                {{
+                  revampFallback()
+                    ['product-list']
+                    ?.['add-product-title']
+                }}
+
+              </h2>
+
+
+              <p>
+
+                {{
+                  revampFallback()
+                    ['product-list']
+                    ?.['add-product-subtitle']
+                }}
+
+              </p>
+
+            </div>
+
+
+            <!-- CLOSE -->
+
+            <button
+              type="button"
+              class="close-button"
+              (click)="closeAddProductForm()"
+            >
+
+              ✕
+
+            </button>
+
+          </div>
+
+
+
+          <!-- =====================================
+               ADD PRODUCT FORM
+          ====================================== -->
+
+          <form
+            [formGroup]="addProductForm"
+            (ngSubmit)="addProduct()"
+          >
+
+
+            <!-- =================================
+                 NAME + BRAND
+            ================================== -->
+
+            <div class="add-product-row">
+
+
+              <!-- PRODUCT NAME -->
+
+              <div class="add-product-group">
+
+                <label>
+
+                  {{
+                    revampFallback()
+                      ['product-list']
+                      ?.['product-name-label']
+                  }}
+
+                </label>
+
+
+                <input
+                  type="text"
+                  formControlName="name"
+
+                  [placeholder]="
+                    revampFallback()
+                      ['product-list']
+                      ?.['product-name-placeholder']
+                  "
+                />
+
+
+                <small
+                  class="form-error"
+
+                  *ngIf="
+                    addProductControls['name'].touched &&
+                    addProductControls['name'].invalid
+                  "
+                >
+
+                  {{
+                    revampFallback()
+                      ['product-list']
+                      ?.['product-name-error']
+                  }}
+
+                </small>
+
+              </div>
+
+
+
+              <!-- BRAND -->
+
+              <div class="add-product-group">
+
+                <label>
+
+                  {{
+                    revampFallback()
+                      ['product-list']
+                      ?.['brand-label']
+                  }}
+
+                </label>
+
+
+                <input
+                  type="text"
+                  formControlName="brand"
+
+                  [placeholder]="
+                    revampFallback()
+                      ['product-list']
+                      ?.['brand-placeholder']
+                  "
+                />
+
+
+                <small
+                  class="form-error"
+
+                  *ngIf="
+                    addProductControls['brand'].touched &&
+                    addProductControls['brand'].invalid
+                  "
+                >
+
+                  Brand is required.
+
+                </small>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- =================================
+                 CATEGORY
+            ================================== -->
+
+            <div class="add-product-group">
+
+              <label>
+
+                {{
+                  revampFallback()
+                    ['product-list']
+                    ?.['category-label']
+                }}
+
+              </label>
+
+
+              <select
+                formControlName="category"
+              >
+
+                <option
+                  value=""
+                  disabled
+                >
+
+                  {{
+                    revampFallback()
+                      ['product-list']
+                      ?.['category-placeholder']
+                  }}
+
+                </option>
+
+
+                <option value="beauty">
+
+                  Beauty
+
+                </option>
+
+
+                <option value="fragrances">
+
+                  Fragrances
+
+                </option>
+
+
+                <option value="groceries">
+
+                  Groceries
+
+                </option>
+
+              </select>
+
+
+              <small
+                class="form-error"
+
+                *ngIf="
+                  addProductControls['category'].touched &&
+                  addProductControls['category'].invalid
+                "
+              >
+
+                Please select a category.
+
+              </small>
+
+            </div>
+
+
+
+            <!-- =================================
+                 PRICE + OLD PRICE + STOCK
+            ================================== -->
+
+            <div
+              class="add-product-row three-columns"
+            >
+
+
+              <!-- PRICE -->
+
+              <div class="add-product-group">
+
+                <label>
+
+                  {{
+                    revampFallback()
+                      ['product-list']
+                      ?.['price-label']
+                  }}
+
+                </label>
+
+
+                <input
+                  type="number"
+                  formControlName="price"
+                  min="1"
+
+                  [placeholder]="
+                    revampFallback()
+                      ['product-list']
+                      ?.['price-placeholder']
+                  "
+                />
+
+
+                <small
+                  class="form-error"
+
+                  *ngIf="
+                    addProductControls['price'].touched &&
+                    addProductControls['price'].invalid
+                  "
+                >
+
+                  Enter a valid price.
+
+                </small>
+
+              </div>
+
+
+
+              <!-- OLD PRICE -->
+
+              <div class="add-product-group">
+
+                <label>
+
+                  {{
+                    revampFallback()
+                      ['product-list']
+                      ?.['old-price-label']
+                  }}
+
+                </label>
+
+
+                <input
+                  type="number"
+                  formControlName="oldPrice"
+                  min="1"
+
+                  [placeholder]="
+                    revampFallback()
+                      ['product-list']
+                      ?.['old-price-placeholder']
+                  "
+                />
+
+              </div>
+
+
+
+              <!-- STOCK -->
+
+              <div class="add-product-group">
+
+                <label>
+
+                  {{
+                    revampFallback()
+                      ['product-list']
+                      ?.['stock-label']
+                  }}
+
+                </label>
+
+
+                <input
+                  type="number"
+                  formControlName="stock"
+                  min="1"
+
+                  [placeholder]="
+                    revampFallback()
+                      ['product-list']
+                      ?.['stock-placeholder']
+                  "
+                />
+
+
+                <small
+                  class="form-error"
+
+                  *ngIf="
+                    addProductControls['stock'].touched &&
+                    addProductControls['stock'].invalid
+                  "
+                >
+
+                  Enter valid stock.
+
+                </small>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- =================================
+                 IMAGE
+            ================================== -->
+
+            <div class="add-product-group">
+
+              <label>
+
+                {{
+                  revampFallback()
+                    ['product-list']
+                    ?.['image-label']
+                }}
+
+              </label>
+
+
+              <input
+                type="text"
+                formControlName="image"
+
+                [placeholder]="
+                  revampFallback()
+                    ['product-list']
+                    ?.['image-placeholder']
+                "
+              />
+
+
+              <small
+                class="form-error"
+
+                *ngIf="
+                  addProductControls['image'].touched &&
+                  addProductControls['image'].invalid
+                "
+              >
+
+                Product image is required.
+
+              </small>
+
+            </div>
+
+
+
+            <!-- =================================
+                 IMAGE PREVIEW
+            ================================== -->
+
+            <div
+              class="image-preview"
+              *ngIf="
+                addProductForm.get('image')?.value
+              "
+            >
+
+              <img
+                [src]="
+                  addProductForm.get('image')?.value
+                "
+                alt="Product Preview"
+              />
+
+            </div>
+
+
+
+            <!-- =================================
+                 DESCRIPTION
+            ================================== -->
+
+            <div class="add-product-group">
+
+              <label>
+
+                {{
+                  revampFallback()
+                    ['product-list']
+                    ?.['description-label']
+                }}
+
+              </label>
+
+
+              <textarea
+                rows="4"
+                formControlName="description"
+
+                [placeholder]="
+                  revampFallback()
+                    ['product-list']
+                    ?.['description-placeholder']
+                "
+              ></textarea>
+
+
+              <small
+                class="form-error"
+
+                *ngIf="
+                  addProductControls['description'].touched &&
+                  addProductControls['description'].invalid
+                "
+              >
+
+                Product description is required.
+
+              </small>
+
+            </div>
+
+
+
+            <!-- =================================
+                 BUTTONS
+            ================================== -->
+
+            <div class="add-product-actions">
+
+
+              <!-- CANCEL -->
+
+              <button
+                type="button"
+                class="cancel-product-button"
+                (click)="closeAddProductForm()"
+              >
+
+                {{
+                  revampFallback()
+                    ['product-list']
+                    ?.['cancel']
+                }}
+
+              </button>
+
+
+              <!-- SAVE -->
+
+              <button
+                type="submit"
+                class="save-product-button"
+              >
+
+                +
+
+                {{
+                  revampFallback()
+                    ['product-list']
+                    ?.['save-product']
+                }}
+
+              </button>
+
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+
+   <div
+  class="product-grid"
+  *ngIf="
+    products.length > 0">
+
+  <article
+    class="product-card"
+
+    *ngFor="
+      let product of products
+    "
+
+    (click)="
+      viewDetails(
+        product.id
+      )
+    "
+
+    (keydown.enter)="
+      viewDetails(
+        product.id
+      )
+    "
+
+    tabindex="0"
+    role="button" >
+
+
+<div class="product-image">
+
+  <span
+    class="sale-badge"
+    *ngIf="
+      product.oldPrice &&
+      product.oldPrice >
+      product.price
+    "
+  >
+
+    {{
+      revampFallback()
+        ['product-list']
+        ?.['sale-label']
+    }}
+
+  </span>
+
+
+  <img
+    [src]="product.image"
+    [alt]="product.title"
+    loading="lazy"
+  />
+
+</div> 
+
+<div class="product-info">
+
+  <span class="product-brand">
+
+    {{ product.brand }}
+
+  </span>
+
+  <h3>
+
+    {{ product.title }}
+
+  </h3>
+
+  <div class="rating">
+
+    <span class="stars">
+
+      ★★★★★
+
+    </span>
+
+
+    <strong>
+
+      {{
+        product.rating
+          | number:'1.1-1'
+      }}
+
+    </strong>
+
+
+    <span class="review-count">
+
+      (
+      {{ product.reviews }}
+      )
+
+    </span>
+
+  </div>
+
+  <div class="price-row">
+
+    <strong class="current-price">
+
+      ₹{{
+        product.price
+          | number:'1.2-2'
+      }}
+
+    </strong>
+
+
+    <del
+      class="old-price"
+
+      *ngIf="
+        product.oldPrice &&
+        product.oldPrice >
+        product.price
+      "
+    >
+
+      ₹{{
+        product.oldPrice
+          | number:'1.2-2'
+      }}
+
+    </del>
+
+  </div>
+
+  <div class="product-actions">
+
+
+    <button
+      type="button"
+      class="add-cart-button"
+
+      (click)="
+        addToCart(
+          product,
+          $event
+        )
+      "
+    >
+
+      🛒
+
+      {{
+        revampFallback()
+          ['product-list']
+          ?.['add-to-cart']
+      }}
+
+    </button>
+
+
+    <button
+      type="button"
+      class="details-button"
+
+      (click)="
+        $event.stopPropagation();
+        viewDetails(
+          product.id
+        )
+      "
+    >
+
+      {{
+        revampFallback()
+          ['product-list']
+          ?.['view-details']
+      }}
+
+      →
+
+    </button>
+
+  </div>
+
+</div>
+
+  </article>
+
+</div>
+
+     <div
+  class="no-products"
+  *ngIf="
+    allProducts.length > 0 &&
+    products.length === 0
+  "
+>
+
+  <div class="empty-icon">
+    🔍
+  </div>
+
+
+  <h2>
+    {{
+      revampFallback()
+        ['product-list']
+        ?.['no-products-title']
+    }}
+  </h2>
+
+
+  <p>
+    {{
+      revampFallback()
+        ['product-list']
+        ?.['no-products-subtitle']
+    }}
+  </p>
+
+
+  <button
+    type="button"
+    class="details-button"
+    (click)="viewAllProducts()"
+  >
+
+    {{
+      revampFallback()
+        ['product-list']
+        ?.['view-all-products']
+    }}
+
+  </button>
+
+</div>
+
+    </section>
+
+  </ng-container>
+
+</div>

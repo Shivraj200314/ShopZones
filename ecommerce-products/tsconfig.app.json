@@ -1,0 +1,40 @@
+{
+  "extends": "./tsconfig.json",
+
+  "compilerOptions": {
+
+    "outDir": "./out-tsc/app",
+
+    "types": []
+
+  },
+
+  "files": [
+
+    "src/main.ts"
+
+  ],
+
+  "include": [
+
+    // IMPORTANT:
+    // Keep all application TypeScript files included.
+    // This is required for Module Federation exposed modules.
+    "src/**/*.ts",
+
+    "src/**/*.d.ts"
+
+  ],
+
+  "exclude": [
+
+    // Do NOT delete test files.
+    // Only exclude them from Angular application compilation.
+
+    "src/**/*.spec.ts",
+
+    "src/**/*.test.ts"
+
+  ]
+
+}

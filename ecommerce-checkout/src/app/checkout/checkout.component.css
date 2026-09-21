@@ -1,0 +1,1497 @@
+/* ==============================
+   CHECKOUT PAGE
+============================== */
+
+.checkout-page {
+  min-height: 100vh;
+  background: #f6f7fb;
+  padding: 40px 6%;
+  color: #171717;
+  box-sizing: border-box;
+}
+
+
+/* ==============================
+   HEADER
+============================== */
+
+.checkout-header {
+  max-width: 1250px;
+  margin: 0 auto 35px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 8px;
+
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+
+  color: #6c63ff;
+}
+
+.checkout-header h1 {
+  margin: 0;
+
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.checkout-header p {
+  margin: 8px 0 0;
+
+  color: #777;
+  font-size: 15px;
+}
+
+
+/* ==============================
+   BACK BUTTON
+============================== */
+
+.back-button {
+  border: 1px solid #e1e1e1;
+  background: white;
+
+  padding: 12px 20px;
+
+  border-radius: 10px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.back-button:hover {
+  background: #171717;
+  color: white;
+  border-color: #171717;
+  transform: translateY(-1px);
+}
+
+
+/* ==============================
+   MAIN CONTAINER
+============================== */
+
+.checkout-container {
+  max-width: 1250px;
+  margin: auto;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 390px;
+
+  gap: 30px;
+
+  align-items: start;
+}
+
+
+/* ==============================
+   LEFT SIDE
+============================== */
+
+.checkout-form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+
+/* ==============================
+   FORM CARD
+============================== */
+
+.form-card {
+  background: white;
+
+  padding: 30px;
+
+  border-radius: 18px;
+
+  border: 1px solid #e8e8e8;
+
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.04);
+}
+
+.section-label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1.8px;
+
+  color: #6c63ff;
+}
+
+.form-card h2 {
+  margin: 0;
+
+  font-size: 23px;
+  font-weight: 800;
+}
+
+.form-description {
+  margin: 7px 0 25px;
+
+  color: #888;
+  font-size: 14px;
+}
+
+
+/* ==============================
+   FORM
+============================== */
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 13px 14px;
+
+  border: 1px solid #ddd;
+
+  border-radius: 10px;
+
+  background: #fafafa;
+
+  font-size: 14px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.form-group input {
+  height: 48px;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  background: white;
+
+  border-color: #6c63ff;
+
+  box-shadow:
+    0 0 0 3px rgba(108, 99, 255, 0.1);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #aaa;
+}
+
+
+/* =========================================
+   PAYMENT SECTION
+========================================= */
+
+.payment-section {
+  width: 100%;
+  box-sizing: border-box;
+
+  margin-top: 24px;
+  padding: 28px;
+
+  background: #ffffff;
+
+  border: 1px solid #e7e9f1;
+  border-radius: 18px;
+
+  box-shadow:
+    0 6px 24px
+    rgba(15, 23, 42, 0.04);
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.payment-header {
+  margin-bottom: 24px;
+}
+
+
+.payment-eyebrow {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #635bff;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 2px;
+}
+
+
+.payment-header h2 {
+  margin:
+    0
+    0
+    6px;
+
+  color: #111827;
+
+  font-size: 25px;
+  font-weight: 700;
+}
+
+
+.payment-header p {
+  margin: 0;
+
+  color: #8a91a1;
+
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+
+/* =========================================
+   PAYMENT OPTIONS
+========================================= */
+
+.payment-options {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 16px;
+}
+
+
+/* =========================================
+   PAYMENT CARD
+========================================= */
+
+.payment-card {
+  position: relative;
+
+  display: flex;
+  align-items: flex-start;
+
+  gap: 14px;
+
+  min-height: 105px;
+
+  padding: 18px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border: 1.5px solid #e2e5ed;
+  border-radius: 14px;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+
+.payment-card:hover {
+  border-color: #a9a3ff;
+
+  box-shadow:
+    0 5px 18px
+    rgba(99, 91, 255, 0.08);
+
+  transform:
+    translateY(-1px);
+}
+
+
+.payment-card-active {
+  border-color: #635bff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #faf9ff,
+      #f5f4ff
+    );
+
+  box-shadow:
+    0 0 0 3px
+    rgba(99, 91, 255, 0.08);
+}
+
+
+/* =========================================
+   RADIO
+========================================= */
+
+.payment-card
+input[type="radio"] {
+  width: 18px;
+  height: 18px;
+
+  margin-top: 12px;
+
+  flex-shrink: 0;
+
+  accent-color: #635bff;
+
+  cursor: pointer;
+}
+
+
+/* =========================================
+   PAYMENT ICON
+========================================= */
+
+.payment-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 46px;
+  height: 46px;
+
+  flex-shrink: 0;
+
+  background: #f4f5f8;
+
+  border-radius: 12px;
+
+  font-size: 21px;
+}
+
+
+.upi-icon {
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #635bff,
+      #857cff
+    );
+
+  font-size: 24px;
+  font-weight: 800;
+}
+
+
+/* =========================================
+   PAYMENT CONTENT
+========================================= */
+
+.payment-card-content {
+  flex: 1;
+
+  min-width: 0;
+}
+
+
+.payment-card-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  margin-bottom: 6px;
+}
+
+
+.payment-card-title strong {
+  color: #171a24;
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+
+.payment-card-content p {
+  margin: 0;
+
+  color: #858c9c;
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+
+/* =========================================
+   SELECTED BADGE
+========================================= */
+
+.selected-badge {
+  padding:
+    4px
+    9px;
+
+  color: #635bff;
+
+  background: #ebe9ff;
+
+  border-radius: 20px;
+
+  font-size: 10px;
+  font-weight: 700;
+}
+
+
+/* =========================================
+   UPI BOX
+========================================= */
+
+.upi-payment-box {
+  margin-top: 18px;
+  padding: 22px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fafaff,
+      #f7f6ff
+    );
+
+  border: 1px solid #dedbff;
+  border-radius: 14px;
+}
+
+
+/* =========================================
+   UPI HEADER
+========================================= */
+
+.upi-header {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  margin-bottom: 20px;
+}
+
+
+.upi-header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #635bff,
+      #8178ff
+    );
+
+  border-radius: 11px;
+
+  font-size: 21px;
+  font-weight: 800;
+}
+
+
+.upi-header h3 {
+  margin:
+    0
+    0
+    3px;
+
+  color: #171a24;
+
+  font-size: 16px;
+  font-weight: 700;
+}
+
+
+.upi-header p {
+  margin: 0;
+
+  color: #8b91a1;
+
+  font-size: 12px;
+}
+
+
+/* =========================================
+   UPI FORM
+========================================= */
+
+.upi-form-group {
+  width: 100%;
+}
+
+
+.upi-form-group > label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #303443;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+
+/* =========================================
+   UPI INPUT
+========================================= */
+
+.upi-input-wrapper {
+  position: relative;
+
+  width: 100%;
+}
+
+
+.upi-input-wrapper input {
+  width: 100%;
+  height: 50px;
+
+  padding:
+    0
+    48px;
+
+  box-sizing: border-box;
+
+  color: #222634;
+
+  background: #ffffff;
+
+  border: 1.5px solid #d9dce6;
+  border-radius: 10px;
+
+  outline: none;
+
+  font-size: 14px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* =========================================================
+   FORM VALIDATION COLORS
+========================================================= */
+
+
+/* =========================================
+   DEFAULT INPUT
+========================================= */
+
+.form-group input,
+.form-group textarea {
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 10px;
+
+  padding: 12px 14px;
+
+  font-size: 14px;
+
+  color: #111827;
+
+  background: #ffffff;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+
+}
+
+
+/* =========================================
+   INPUT FOCUS
+========================================= */
+
+.form-group input:focus,
+.form-group textarea:focus {
+
+  border-color: #6366f1;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(99, 102, 241, 0.12);
+
+  background:
+    #ffffff;
+
+}
+
+
+/* =========================================================
+   INVALID FIELD
+   Angular automatically adds:
+   ng-invalid + ng-touched
+========================================================= */
+
+.form-group input.ng-invalid.ng-touched,
+.form-group textarea.ng-invalid.ng-touched {
+
+  border-color:
+    #dc2626;
+
+  background:
+    #fef2f2;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(220, 38, 38, 0.08);
+
+}
+
+
+/* INVALID FIELD FOCUS */
+
+.form-group input.ng-invalid.ng-touched:focus,
+.form-group textarea.ng-invalid.ng-touched:focus {
+
+  border-color:
+    #dc2626;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(220, 38, 38, 0.14);
+
+}
+
+
+/* =========================================================
+   VALID FIELD
+========================================================= */
+
+.form-group input.ng-valid.ng-touched,
+.form-group textarea.ng-valid.ng-touched {
+
+  border-color:
+    #16a34a;
+
+  background:
+    #f0fdf4;
+
+}
+
+
+/* VALID FIELD FOCUS */
+
+.form-group input.ng-valid.ng-touched:focus,
+.form-group textarea.ng-valid.ng-touched:focus {
+
+  border-color:
+    #16a34a;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(22, 163, 74, 0.12);
+
+}
+
+
+/* =========================================================
+   ERROR MESSAGE
+========================================================= */
+
+.error {
+
+  margin-top: 6px;
+
+  color:
+    #dc2626;
+
+  font-size:
+    13px;
+
+  font-weight:
+    500;
+
+  line-height:
+    1.4;
+
+}
+
+
+/* ERROR SMALL */
+
+.error small {
+
+  display: block;
+
+  color:
+    #dc2626;
+
+  font-size:
+    13px;
+
+  font-weight:
+    500;
+
+}
+
+
+/* =========================================================
+   LABEL
+========================================================= */
+
+.form-group label {
+
+  display: block;
+
+  margin-bottom: 7px;
+
+  color:
+    #374151;
+
+  font-size:
+    14px;
+
+  font-weight:
+    600;
+
+}
+
+
+/* =========================================================
+   INVALID LABEL
+========================================================= */
+
+.form-group:has(
+  input.ng-invalid.ng-touched
+) label,
+
+.form-group:has(
+  textarea.ng-invalid.ng-touched
+) label {
+
+  color:
+    #dc2626;
+
+}
+
+
+/* =========================================================
+   VALID LABEL
+========================================================= */
+
+.form-group:has(
+  input.ng-valid.ng-touched
+) label,
+
+.form-group:has(
+  textarea.ng-valid.ng-touched
+) label {
+
+  color:
+    #15803d;
+
+}
+
+
+/* =========================================================
+   PLACEHOLDER
+========================================================= */
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+
+  color:
+    #9ca3af;
+
+}
+
+
+/* =========================================================
+   REQUIRED STAR
+========================================================= */
+
+.required-star {
+
+  color:
+    #dc2626;
+
+  margin-left:
+    3px;
+
+  font-weight:
+    700;
+
+}
+
+.upi-input-wrapper input::placeholder {
+  color: #abb0bb;
+}
+
+
+.upi-input-wrapper input:focus {
+  border-color: #635bff;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(99, 91, 255, 0.09);
+}
+
+
+/* =========================================
+   INPUT ICON
+========================================= */
+
+.upi-input-icon {
+  position: absolute;
+
+  top: 50%;
+  left: 17px;
+
+  transform:
+    translateY(-50%);
+
+  color: #635bff;
+
+  font-size: 18px;
+  font-weight: 800;
+
+  pointer-events: none;
+}
+
+
+/* =========================================
+   VERIFIED ICON
+========================================= */
+
+.verified-icon {
+  position: absolute;
+
+  top: 50%;
+  right: 16px;
+
+  transform:
+    translateY(-50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 23px;
+  height: 23px;
+
+  color: #ffffff;
+
+  background: #22c55e;
+
+  border-radius: 50%;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+/* =========================================
+   UPI EXAMPLES
+========================================= */
+
+.upi-example {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 7px;
+
+  margin-top: 10px;
+
+  color: #949baa;
+
+  font-size: 11px;
+}
+
+
+.upi-example-item {
+  padding:
+    4px
+    8px;
+
+  color: #635bff;
+
+  background: #eeecff;
+
+  border-radius: 6px;
+
+  font-weight: 600;
+}
+
+
+/* =========================================
+   SECURITY MESSAGE
+========================================= */
+
+.payment-security {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 18px;
+  padding: 13px 14px;
+
+  background: #ffffff;
+
+  border: 1px solid #e7e8ef;
+  border-radius: 10px;
+}
+
+
+.security-icon {
+  font-size: 20px;
+}
+
+
+.payment-security strong {
+  display: block;
+
+  margin-bottom: 2px;
+
+  color: #303443;
+
+  font-size: 12px;
+}
+
+
+.payment-security p {
+  margin: 0;
+
+  color: #949baa;
+
+  font-size: 11px;
+}
+
+
+/* =========================================
+   PAYMENT ERROR
+========================================= */
+
+.payment-error {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-top: 14px;
+  padding: 12px 14px;
+
+  color: #dc2626;
+
+  background: #fff5f5;
+
+  border: 1px solid #fecaca;
+  border-radius: 9px;
+
+  font-size: 13px;
+  font-weight: 500;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (
+  max-width: 768px
+) {
+
+  .payment-section {
+    padding: 20px;
+  }
+
+
+  .payment-options {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .payment-card {
+    min-height: auto;
+  }
+
+
+  .upi-payment-box {
+    padding: 16px;
+  }
+
+
+  .upi-example {
+    align-items: flex-start;
+  }
+
+}
+
+.payment-option {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 17px;
+
+  margin-top: 12px;
+
+  border: 1px solid #e5e5e5;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.payment-option:hover {
+  border-color: #6c63ff;
+  background: #faf9ff;
+}
+
+.payment-option input {
+  width: 18px;
+  height: 18px;
+
+  accent-color: #6c63ff;
+
+  cursor: pointer;
+}
+
+.payment-option strong {
+  display: block;
+
+  font-size: 14px;
+
+  margin-bottom: 4px;
+}
+
+.payment-option small {
+  display: block;
+
+  color: #888;
+
+  font-size: 12px;
+}
+
+
+/* ==============================
+   ORDER SUMMARY
+============================== */
+
+.order-summary {
+  background: white;
+
+  padding: 28px;
+
+  border-radius: 18px;
+
+  border: 1px solid #e5e5e5;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.06);
+
+  position: sticky;
+  top: 25px;
+}
+
+.order-summary h2 {
+  margin: 0 0 25px;
+
+  font-size: 23px;
+  font-weight: 800;
+}
+
+
+/* ==============================
+   CHECKOUT ITEMS
+============================== */
+
+.checkout-items {
+  display: flex;
+  flex-direction: column;
+
+  gap: 16px;
+
+  max-height: 360px;
+
+  overflow-y: auto;
+
+  padding-right: 4px;
+}
+
+.checkout-items::-webkit-scrollbar {
+  width: 5px;
+}
+
+.checkout-items::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 10px;
+}
+
+.checkout-item {
+  display: grid;
+
+  grid-template-columns: 58px minmax(0, 1fr) auto;
+
+  align-items: center;
+
+  gap: 13px;
+}
+
+.checkout-image {
+  width: 58px;
+  height: 58px;
+
+  background: #f6f6f6;
+
+  border-radius: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+}
+
+.checkout-image img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+  padding: 5px;
+
+  box-sizing: border-box;
+}
+
+.checkout-item-info {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.checkout-item-info strong {
+  font-size: 13px;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+.checkout-item-info span {
+  color: #888;
+
+  font-size: 12px;
+}
+
+.item-total {
+  font-size: 13px;
+
+  white-space: nowrap;
+}
+
+
+/* ==============================
+   SUMMARY
+============================== */
+
+.summary-divider {
+  height: 1px;
+
+  background: #ededed;
+
+  margin: 22px 0;
+}
+
+.summary-line {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 15px;
+
+  font-size: 14px;
+
+  color: #666;
+}
+
+.summary-line strong {
+  color: #222;
+}
+
+.summary-line .free {
+  color: #16a34a;
+  font-weight: 800;
+}
+
+.summary-total {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.summary-total strong {
+  font-size: 25px;
+  font-weight: 900;
+}
+
+
+/* ==============================
+   PLACE ORDER
+============================== */
+
+.place-order-button {
+  width: 100%;
+
+  margin-top: 25px;
+
+  padding: 15px 20px;
+
+  border: none;
+
+  border-radius: 11px;
+
+  background: #171717;
+
+  color: white;
+
+  font-size: 15px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.place-order-button:hover {
+  background: #6c63ff;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px rgba(108, 99, 255, 0.25);
+}
+
+.place-order-button:active {
+  transform: translateY(0);
+}
+
+
+/* ==============================
+   EMPTY CHECKOUT
+============================== */
+
+.empty-checkout {
+  max-width: 600px;
+
+  margin: 80px auto;
+
+  background: white;
+
+  padding: 55px 35px;
+
+  border-radius: 20px;
+
+  border: 1px solid #e7e7e7;
+
+  text-align: center;
+
+  box-shadow:
+    0 10px 35px rgba(0, 0, 0, 0.05);
+}
+
+.empty-icon {
+  width: 75px;
+  height: 75px;
+
+  margin: 0 auto 20px;
+
+  border-radius: 50%;
+
+  background: #f3f1ff;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 32px;
+}
+
+.empty-checkout h2 {
+  margin: 0 0 10px;
+
+  font-size: 25px;
+}
+
+.empty-checkout p {
+  margin: 0 0 25px;
+
+  color: #888;
+}
+
+.shop-button {
+  border: none;
+
+  padding: 13px 24px;
+
+  border-radius: 10px;
+
+  background: #171717;
+
+  color: white;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.shop-button:hover {
+  background: #6c63ff;
+  transform: translateY(-2px);
+}
+
+
+/* ==============================
+   RESPONSIVE
+============================== */
+
+@media (max-width: 1000px) {
+
+  .checkout-container {
+    grid-template-columns: 1fr;
+  }
+
+  .order-summary {
+    position: static;
+  }
+}
+
+
+@media (max-width: 650px) {
+
+  .checkout-page {
+    padding: 25px 16px;
+  }
+
+  .checkout-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .checkout-header h1 {
+    font-size: 30px;
+  }
+
+  .back-button {
+    width: 100%;
+  }
+
+  .form-card {
+    padding: 22px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+
+    gap: 0;
+  }
+
+  .order-summary {
+    padding: 22px;
+  }
+
+  .checkout-item {
+    grid-template-columns: 50px minmax(0, 1fr) auto;
+  }
+
+  .checkout-image {
+    width: 50px;
+    height: 50px;
+  }
+}

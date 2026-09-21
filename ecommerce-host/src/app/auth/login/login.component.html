@@ -1,0 +1,598 @@
+<div class="auth-page">
+
+  <div class="auth-wrapper">
+
+    <!-- =========================================
+         LEFT BRAND SECTION
+    ========================================== -->
+
+    <section class="brand-panel">
+
+      <div class="brand-decoration decoration-one">
+      </div>
+
+      <div class="brand-decoration decoration-two">
+      </div>
+
+
+      <div class="brand-content">
+
+        <div class="brand-logo">
+
+          <span class="brand-logo-icon">
+
+            {{
+              revampFallback()
+                ?.['login']
+                ?.['logo-icon']
+            }}
+
+          </span>
+
+
+          <span class="brand-name">
+
+            {{
+              revampFallback()
+                ?.['login']
+                ?.['brand-name']
+            }}
+
+          </span>
+
+        </div>
+
+
+        <div class="brand-copy">
+
+          <span class="brand-eyebrow">
+            WELCOME BACK
+          </span>
+
+
+          <h2>
+            Everything you love.
+            <br />
+            One place to shop.
+          </h2>
+
+
+          <p>
+            Discover products, manage your orders
+            and enjoy a simple shopping experience.
+          </p>
+
+        </div>
+
+
+        <div class="brand-features">
+
+          <div class="feature-item">
+
+            <div class="feature-icon">
+              🛍️
+            </div>
+
+            <div>
+
+              <strong>
+                Quality Products
+              </strong>
+
+              <span>
+                Explore our latest collection
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="feature-item">
+
+            <div class="feature-icon">
+              🔒
+            </div>
+
+            <div>
+
+              <strong>
+                Secure Shopping
+              </strong>
+
+              <span>
+                Safe and protected experience
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="feature-item">
+
+            <div class="feature-icon">
+              🚚
+            </div>
+
+            <div>
+
+              <strong>
+                Fast Delivery
+              </strong>
+
+              <span>
+                Quick delivery to your doorstep
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         RIGHT LOGIN SECTION
+    ========================================== -->
+
+    <section class="login-panel">
+
+      <div class="login-card">
+
+
+        <!-- MOBILE LOGO -->
+
+        <div class="mobile-logo">
+
+          <span>
+
+            {{
+              revampFallback()
+                ?.['login']
+                ?.['logo-icon']
+            }}
+
+          </span>
+
+          <strong>
+
+            {{
+              revampFallback()
+                ?.['login']
+                ?.['brand-name']
+            }}
+
+          </strong>
+
+        </div>
+
+
+
+        <!-- =====================================
+             HEADER
+        ====================================== -->
+
+        <div class="login-header">
+
+          <span class="login-eyebrow">
+            ACCOUNT LOGIN
+          </span>
+
+
+          <h1>
+
+            {{
+              revampFallback()
+                ?.['login']
+                ?.['title']
+            }}
+
+          </h1>
+
+
+          <p>
+
+            {{
+              revampFallback()
+                ?.['login']
+                ?.['subtitle']
+            }}
+
+          </p>
+
+        </div>
+
+
+
+        <!-- =====================================
+             LOGIN ERROR
+        ====================================== -->
+
+        <div
+          class="login-error"
+          *ngIf="errorMessage"
+        >
+
+          <span class="error-icon">
+            ⚠️
+          </span>
+
+          <span>
+            {{ errorMessage }}
+          </span>
+
+        </div>
+
+
+
+        <!-- =====================================
+             FORM
+        ====================================== -->
+
+        <form
+          #loginForm="ngForm"
+          (ngSubmit)="login(loginForm)"
+          novalidate
+        >
+
+
+          <!-- =================================
+               EMAIL
+          ================================== -->
+
+          <div class="form-group">
+
+            <label
+              for="email"
+            >
+
+              {{
+                revampFallback()
+                  ?.['login']
+                  ?.['email-label']
+              }}
+
+              <span class="required">
+                *
+              </span>
+
+            </label>
+
+
+            <div
+              class="input-wrapper"
+              [class.input-error]="
+                emailModel.invalid &&
+                (
+                  emailModel.touched ||
+                  isSubmitted
+                )
+              "
+              [class.input-success]="
+                emailModel.valid &&
+                emailModel.touched
+              "
+            >
+
+              <span class="input-icon">
+                ✉️
+              </span>
+
+
+              <input
+                id="email"
+                name="email"
+                type="email"
+
+                [(ngModel)]="email"
+
+                #emailModel="ngModel"
+
+                required
+
+                [pattern]="emailPattern"
+
+                [placeholder]="
+                  revampFallback()
+                    ?.['login']
+                    ?.['email-placeholder']
+                "
+
+                [disabled]="isLoading"
+
+                autocomplete="email"
+              />
+
+
+              <span
+                class="valid-icon"
+                *ngIf="
+                  emailModel.valid &&
+                  emailModel.touched
+                "
+              >
+                ✓
+              </span>
+
+            </div>
+
+
+            <small
+              class="field-error"
+              *ngIf="
+                emailModel.hasError('required') &&
+                (
+                  emailModel.touched ||
+                  isSubmitted
+                )
+              "
+            >
+              Email address is required.
+            </small>
+
+
+            <small
+              class="field-error"
+              *ngIf="
+                emailModel.hasError('pattern') &&
+                (
+                  emailModel.touched ||
+                  isSubmitted
+                )
+              "
+            >
+              Please enter a valid email address.
+            </small>
+
+          </div>
+
+
+
+          <!-- =================================
+               PASSWORD
+          ================================== -->
+
+          <div class="form-group">
+
+            <label
+              for="password"
+            >
+
+              {{
+                revampFallback()
+                  ?.['login']
+                  ?.['password-label']
+              }}
+
+              <span class="required">
+                *
+              </span>
+
+            </label>
+
+
+            <div
+              class="input-wrapper"
+              [class.input-error]="
+                passwordModel.invalid &&
+                (
+                  passwordModel.touched ||
+                  isSubmitted
+                )
+              "
+              [class.input-success]="
+                passwordModel.valid &&
+                passwordModel.touched
+              "
+            >
+
+              <span class="input-icon">
+                🔒
+              </span>
+
+
+              <input
+                id="password"
+                name="password"
+                type="password"
+
+                [(ngModel)]="password"
+
+                #passwordModel="ngModel"
+
+                required
+
+                minlength="6"
+
+                [placeholder]="
+                  revampFallback()
+                    ?.['login']
+                    ?.['password-placeholder']
+                "
+
+                [disabled]="isLoading"
+
+                autocomplete="current-password"
+              />
+
+
+              <span
+                class="valid-icon"
+                *ngIf="
+                  passwordModel.valid &&
+                  passwordModel.touched
+                "
+              >
+                ✓
+              </span>
+
+            </div>
+
+
+            <small
+              class="field-error"
+              *ngIf="
+                passwordModel.hasError('required') &&
+                (
+                  passwordModel.touched ||
+                  isSubmitted
+                )
+              "
+            >
+              Password is required.
+            </small>
+
+
+            <small
+              class="field-error"
+              *ngIf="
+                passwordModel.hasError('minlength') &&
+                (
+                  passwordModel.touched ||
+                  isSubmitted
+                )
+              "
+            >
+              Password must contain at least 6 characters.
+            </small>
+
+          </div>
+
+
+
+          <!-- =================================
+               LOGIN BUTTON
+          ================================== -->
+
+          <button
+            type="submit"
+            class="primary-button"
+            [disabled]="isLoading"
+          >
+
+            <ng-container
+              *ngIf="!isLoading"
+            >
+
+              <span>
+
+                {{
+                  revampFallback()
+                    ?.['login']
+                    ?.['login-button']
+                }}
+
+              </span>
+
+              <span class="button-arrow">
+                →
+              </span>
+
+            </ng-container>
+
+
+            <ng-container
+              *ngIf="isLoading"
+            >
+
+              <span class="spinner">
+              </span>
+
+              <span>
+
+                {{
+                  revampFallback()
+                    ?.['login']
+                    ?.['loading-button']
+                }}
+
+              </span>
+
+            </ng-container>
+
+          </button>
+
+        </form>
+
+
+
+        <!-- =====================================
+             DIVIDER
+        ====================================== -->
+
+        <div class="login-divider">
+
+          <span>
+            New to ShopZones?
+          </span>
+
+        </div>
+
+
+
+        <!-- =====================================
+             SIGNUP
+        ====================================== -->
+
+        <div class="auth-footer">
+
+          <span>
+
+            {{
+              revampFallback()
+                ?.['login']
+                ?.['signup-text']
+            }}
+
+          </span>
+
+
+          <button
+            type="button"
+            (click)="goToSignup()"
+            [disabled]="isLoading"
+          >
+
+            {{
+              revampFallback()
+                ?.['login']
+                ?.['signup-button']
+            }}
+
+            →
+
+          </button>
+
+        </div>
+
+
+
+        <!-- =====================================
+             SECURITY
+        ====================================== -->
+
+        <div class="security-message">
+
+          <span>
+            🛡️
+          </span>
+
+          <span>
+            Your account information is protected.
+          </span>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</div>

@@ -1,0 +1,638 @@
+<div class="cart-page">
+
+  <!-- =========================================
+       HEADER
+  ========================================== -->
+
+  <section class="cart-header">
+
+    <div class="header-content">
+
+      <span class="cart-label">
+
+        {{
+          revampFallback()
+            ?.['cart']
+            ?.['eyebrow']
+        }}
+
+      </span>
+
+      <h1>
+
+        {{
+          revampFallback()
+            ?.['cart']
+            ?.['title']
+        }}
+
+      </h1>
+
+      <p>
+
+        {{
+          revampFallback()
+            ?.['cart']
+            ?.['subtitle']
+        }}
+
+      </p>
+
+    </div>
+
+
+    <!-- CART COUNT -->
+
+    <div
+      class="header-cart-count"
+      *ngIf="cartItems.length > 0"
+    >
+
+      <div class="header-cart-icon">
+        🛒
+      </div>
+
+      <div>
+
+        <strong>
+          {{ cartItems.length }}
+        </strong>
+
+        <span>
+          {{
+            cartItems.length === 1
+              ? 'Item'
+              : 'Items'
+          }}
+        </span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =========================================
+       EMPTY CART
+  ========================================== -->
+
+  <section
+    class="empty-cart"
+    *ngIf="cartItems.length === 0"
+  >
+
+    <div class="empty-icon-wrapper">
+
+      <div class="empty-icon">
+
+        {{
+          revampFallback()
+            ?.['cart']
+            ?.['empty-icon']
+        }}
+
+      </div>
+
+    </div>
+
+
+    <h2>
+
+      {{
+        revampFallback()
+          ?.['cart']
+          ?.['empty-title']
+      }}
+
+    </h2>
+
+
+    <p>
+
+      {{
+        revampFallback()
+          ?.['cart']
+          ?.['empty-description']
+      }}
+
+    </p>
+
+
+    <button
+      type="button"
+      class="view-products-button"
+      (click)="continueShopping()"
+    >
+
+      <span>
+        🛍️
+      </span>
+
+      {{
+        revampFallback()
+          ?.['cart']
+          ?.['view-products-label']
+      }}
+
+      <span>
+        →
+      </span>
+
+    </button>
+
+  </section>
+
+
+
+  <!-- =========================================
+       CART CONTENT
+  ========================================== -->
+
+  <section
+    class="cart-container"
+    *ngIf="cartItems.length > 0"
+  >
+
+
+    <!-- =====================================
+         LEFT SIDE
+    ====================================== -->
+
+    <div class="cart-content">
+
+
+      <!-- TOP BAR -->
+
+      <div class="cart-list-header">
+
+        <div>
+
+          <span class="section-label">
+            YOUR ITEMS
+          </span>
+
+          <h2>
+            Shopping Bag
+          </h2>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="continue-shopping-button"
+          (click)="continueShopping()"
+        >
+
+          ← Continue Shopping
+
+        </button>
+
+      </div>
+
+
+
+      <!-- =====================================
+           CART ITEMS
+      ====================================== -->
+
+      <div class="cart-items">
+
+        <article
+          class="cart-item"
+          *ngFor="let item of cartItems"
+        >
+
+
+          <!-- PRODUCT IMAGE -->
+
+          <div class="cart-image">
+
+            <img
+              [src]="item.image"
+              [alt]="item.name"
+            />
+
+          </div>
+
+
+
+          <!-- PRODUCT INFORMATION -->
+
+          <div class="cart-info">
+
+            <span class="brand">
+
+              {{
+                item.brand ||
+                'Generic'
+              }}
+
+            </span>
+
+
+            <h3>
+
+              {{ item.name }}
+
+            </h3>
+
+
+            <div class="price-area">
+
+              <strong class="current-price">
+
+                ₹{{
+                  item.price
+                    | number:'1.2-2'
+                }}
+
+              </strong>
+
+
+              <del
+                class="old-price"
+                *ngIf="
+                  item.oldPrice &&
+                  item.oldPrice >
+                  item.price
+                "
+              >
+
+                ₹{{
+                  item.oldPrice
+                    | number:'1.2-2'
+                }}
+
+              </del>
+
+
+              <span
+                class="sale-chip"
+                *ngIf="
+                  item.oldPrice &&
+                  item.oldPrice >
+                  item.price
+                "
+              >
+
+                SALE
+
+              </span>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- =================================
+               QUANTITY
+          ================================== -->
+
+          <div class="quantity-section">
+
+            <span class="quantity-label">
+              Quantity
+            </span>
+
+
+            <div class="quantity-control">
+
+              <button
+                type="button"
+                (click)="decrease(item.id)"
+                [disabled]="item.quantity <= 1"
+              >
+                −
+              </button>
+
+
+              <span>
+                {{ item.quantity }}
+              </span>
+
+
+              <button
+                type="button"
+                (click)="increase(item.id)"
+              >
+                +
+              </button>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- =================================
+               ITEM TOTAL
+          ================================== -->
+
+          <div class="item-price-section">
+
+            <span>
+              Subtotal
+            </span>
+
+            <strong>
+
+              ₹{{
+                item.price *
+                item.quantity
+                  | number:'1.2-2'
+              }}
+
+            </strong>
+
+          </div>
+
+
+
+          <!-- =================================
+               REMOVE
+          ================================== -->
+
+          <button
+            type="button"
+            class="remove-button"
+            (click)="remove(item.id)"
+          >
+
+            <span>
+              🗑️
+            </span>
+
+            {{
+              revampFallback()
+                ?.['cart']
+                ?.['remove-label']
+            }}
+
+          </button>
+
+        </article>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =====================================
+         RIGHT SIDE - SUMMARY
+    ====================================== -->
+
+    <aside class="cart-summary">
+
+      <div class="summary-icon">
+        🧾
+      </div>
+
+
+      <h2>
+
+        {{
+          revampFallback()
+            ?.['cart']
+            ?.['order-summary-title']
+        }}
+
+      </h2>
+
+
+      <p class="summary-description">
+        Review your order before checkout.
+      </p>
+
+
+
+      <div class="summary-divider">
+      </div>
+
+
+
+      <!-- ITEMS -->
+
+      <div class="summary-row">
+
+        <span>
+
+          {{
+            revampFallback()
+              ?.['cart']
+              ?.['items-label']
+          }}
+
+        </span>
+
+        <strong>
+
+          {{ cartItems.length }}
+
+        </strong>
+
+      </div>
+
+
+
+      <!-- DELIVERY -->
+
+      <div class="summary-row">
+
+        <span>
+          Delivery
+        </span>
+
+        <strong class="free-text">
+          FREE
+        </strong>
+
+      </div>
+
+
+
+      <!-- SUB TOTAL -->
+
+      <div class="summary-row">
+
+        <span>
+          Subtotal
+        </span>
+
+        <strong>
+
+          ₹{{
+            total
+              | number:'1.2-2'
+          }}
+
+        </strong>
+
+      </div>
+
+
+
+      <div class="summary-divider">
+      </div>
+
+
+
+      <!-- TOTAL -->
+
+      <div class="summary-row total-row">
+
+        <span>
+
+          {{
+            revampFallback()
+              ?.['cart']
+              ?.['total-label']
+          }}
+
+        </span>
+
+        <strong>
+
+          ₹{{
+            total
+              | number:'1.2-2'
+          }}
+
+        </strong>
+
+      </div>
+
+
+
+      <!-- CHECKOUT -->
+
+      <button
+        type="button"
+        class="checkout-button"
+        (click)="proceedToCheckout()"
+      >
+
+        <span>
+          🔒
+        </span>
+
+        {{
+          revampFallback()
+            ?.['cart']
+            ?.['checkout-label']
+            || 'Proceed to Checkout'
+        }}
+
+        <span>
+          →
+        </span>
+
+      </button>
+
+
+
+      <!-- SECURITY -->
+
+      <div class="secure-checkout">
+
+        <span>
+          🛡️
+        </span>
+
+        <div>
+
+          <strong>
+            Secure Checkout
+          </strong>
+
+          <small>
+            Your payment information is protected.
+          </small>
+
+        </div>
+
+      </div>
+
+    </aside>
+
+  </section>
+
+
+  <!-- =========================================
+       BENEFITS
+  ========================================== -->
+
+  <section
+    class="cart-benefits"
+    *ngIf="cartItems.length > 0"
+  >
+
+    <div class="benefit">
+
+      <span>
+        🚚
+      </span>
+
+      <div>
+
+        <strong>
+          Free Delivery
+        </strong>
+
+        <small>
+          On eligible orders
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <div class="benefit">
+
+      <span>
+        🔒
+      </span>
+
+      <div>
+
+        <strong>
+          Secure Payment
+        </strong>
+
+        <small>
+          100% protected checkout
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <div class="benefit">
+
+      <span>
+        ↩️
+      </span>
+
+      <div>
+
+        <strong>
+          Easy Returns
+        </strong>
+
+        <small>
+          Hassle-free returns
+        </small>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</div>

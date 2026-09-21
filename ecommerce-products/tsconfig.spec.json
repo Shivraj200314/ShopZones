@@ -1,0 +1,50 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+
+{
+  "extends": "./tsconfig.json",
+
+  "compilerOptions": {
+
+    "outDir": "./out-tsc/spec",
+
+    "types": [
+      "jest",
+      "node"
+    ],
+
+    // ==========================================
+    // ADDED FOR JEST
+    // ==========================================
+
+    // Jest works properly with CommonJS
+    // in this Angular 16 setup.
+    "module": "CommonJS",
+
+    // Recommended for jest-preset-angular
+    // with Angular 16.
+    "target": "ES2016",
+
+    // Fixes the ts-jest warning:
+    // "consider setting esModuleInterop to true"
+    "esModuleInterop": true
+  },
+
+
+  // ==========================================
+  // JEST SETUP FILE
+  // ==========================================
+
+  "files": [
+    "setup-jest.ts"
+  ],
+
+
+  // ==========================================
+  // TEST FILES
+  // ==========================================
+
+  "include": [
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts"
+  ]
+}

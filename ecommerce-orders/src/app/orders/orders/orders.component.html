@@ -1,0 +1,847 @@
+<div class="orders-page">
+
+
+  <!-- =========================================
+       HEADER
+  ========================================== -->
+
+  <section class="orders-header">
+
+    <div>
+
+      <span class="eyebrow">
+        {{
+          revampFallback()
+            ?.['order-list']
+            ?.['eyebrow']
+        }}
+      </span>
+
+      <h1>
+        {{
+          revampFallback()
+            ?.['order-list']
+            ?.['title']
+        }}
+      </h1>
+
+      <p>
+        {{
+          revampFallback()
+            ?.['order-list']
+            ?.['subtitle']
+        }}
+      </p>
+
+    </div>
+
+    <div class="header-order-count">
+
+      <strong>
+        {{ totalOrders }}
+      </strong>
+
+      <span>
+        Total Orders
+      </span>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =========================================
+       DASHBOARD SUMMARY
+  ========================================== -->
+
+  <section
+    class="order-stats"
+    *ngIf="totalOrders > 0"
+  >
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        📦
+      </div>
+
+      <div>
+
+        <span>
+          Total Orders
+        </span>
+
+        <strong>
+          {{ totalOrders }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon placed-icon">
+        ✓
+      </div>
+
+      <div>
+
+        <span>
+          Placed
+        </span>
+
+        <strong>
+          {{ placedOrders }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon delivered-icon">
+        🚚
+      </div>
+
+      <div>
+
+        <span>
+          Delivered
+        </span>
+
+        <strong>
+          {{ deliveredOrders }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon money-icon">
+        ₹
+      </div>
+
+      <div>
+
+        <span>
+          Total Spent
+        </span>
+
+        <strong>
+          ₹{{
+            totalSpent
+              | number:'1.2-2'
+          }}
+        </strong>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =========================================
+       FILTER TOOLBAR
+  ========================================== -->
+
+  <section
+    class="orders-toolbar"
+    *ngIf="totalOrders > 0"
+  >
+
+
+    <!-- SEARCH -->
+
+    <div class="search-box">
+
+      <span class="search-icon">
+
+        {{
+          revampFallback()
+            ?.['order-list']
+            ?.['search-icon']
+        }}
+
+      </span>
+
+
+      <input
+        type="text"
+        [formControl]="searchControl"
+        [placeholder]="
+          revampFallback()
+            ?.['order-list']
+            ?.['search-placeholder']
+        "
+        autocomplete="off"
+      />
+
+
+      <button
+        *ngIf="searchControl.value"
+        type="button"
+        class="clear-search"
+        (click)="clearSearch()"
+      >
+
+        ✕
+
+      </button>
+
+    </div>
+
+
+
+    <!-- STATUS -->
+
+    <select
+      class="filter-select"
+      [formControl]="statusControl"
+    >
+
+      <option value="All">
+        All Status
+      </option>
+
+      <option value="Placed">
+        Placed
+      </option>
+
+      <option value="Pending">
+        Pending
+      </option>
+
+      <option value="Delivered">
+        Delivered
+      </option>
+
+      <option value="Cancelled">
+        Cancelled
+      </option>
+
+    </select>
+
+
+
+    <!-- SORT -->
+
+    <select
+      class="filter-select"
+      [formControl]="sortControl"
+    >
+
+      <option value="latest">
+        Latest First
+      </option>
+
+      <option value="oldest">
+        Oldest First
+      </option>
+
+      <option value="high">
+        Price: High to Low
+      </option>
+
+      <option value="low">
+        Price: Low to High
+      </option>
+
+    </select>
+
+
+
+    <!-- CLEAR FILTER -->
+
+    <button
+      type="button"
+      class="clear-filter-button"
+      *ngIf="hasActiveFilters"
+      (click)="clearFilters()"
+    >
+
+      Clear Filters
+
+    </button>
+
+  </section>
+
+
+
+  <!-- =========================================
+       RESULT INFORMATION
+  ========================================== -->
+
+  <div
+    class="result-info"
+    *ngIf="
+      totalOrders > 0 &&
+      hasActiveFilters
+    "
+  >
+
+    Showing
+
+    <strong>
+      {{ orders.length }}
+    </strong>
+
+    of
+
+    <strong>
+      {{ totalOrders }}
+    </strong>
+
+    orders
+
+  </div>
+
+
+
+  <!-- =========================================
+       NO ORDERS
+  ========================================== -->
+
+  <section
+    class="empty-orders"
+    *ngIf="
+      totalOrders === 0
+    "
+  >
+
+    <div class="empty-icon">
+
+      {{
+        revampFallback()
+          ?.['order-list']
+          ?.['empty-icon']
+      }}
+
+    </div>
+
+
+    <h2>
+
+      {{
+        revampFallback()
+          ?.['order-list']
+          ?.['empty-title']
+      }}
+
+    </h2>
+
+
+    <p>
+
+      {{
+        revampFallback()
+          ?.['order-list']
+          ?.['empty-description']
+      }}
+
+    </p>
+
+  </section>
+
+
+
+  <!-- =========================================
+       NO FILTER RESULTS
+  ========================================== -->
+
+  <section
+    class="empty-orders"
+    *ngIf="
+      totalOrders > 0 &&
+      orders.length === 0
+    "
+  >
+
+    <div class="empty-icon">
+
+      {{
+        revampFallback()
+          ?.['order-list']
+          ?.['no-results-icon']
+      }}
+
+    </div>
+
+
+    <h2>
+
+      {{
+        revampFallback()
+          ?.['order-list']
+          ?.['no-results-title']
+      }}
+
+    </h2>
+
+
+    <p>
+
+      No orders match your current
+      search or filters.
+
+    </p>
+
+
+    <button
+      type="button"
+      class="clear-results-button"
+      (click)="clearFilters()"
+    >
+
+      Clear Filters
+
+    </button>
+
+  </section>
+
+
+
+  <!-- =========================================
+       ORDERS
+  ========================================== -->
+
+  <section
+    class="orders-list"
+    *ngIf="
+      orders.length > 0
+    "
+  >
+
+
+    <article
+      class="order-card"
+      *ngFor="
+        let order of orders;"
+    >
+
+      <div class="order-header">
+
+        <div class="order-heading">
+
+          <div class="order-package-icon">
+            📦
+          </div>
+
+          <div>
+
+            <span class="order-label">
+
+              {{
+                revampFallback()
+                  ?.['order-list']
+                  ?.['order-id-label']
+              }}
+
+            </span>
+
+            <strong>
+
+              #{{ getOrderId(order) }}
+
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <span
+          class="status"
+          [ngClass]="
+            getStatusClass(order)
+          "
+        >
+
+          <span class="status-dot">
+          </span>
+
+          {{ getOrderStatus(order) }}
+
+        </span>
+
+      </div>
+
+
+
+      <!-- =====================================
+           ORDER INFORMATION
+      ====================================== -->
+
+      <div class="order-info">
+
+
+        <div class="info-card">
+
+          <span class="info-icon">
+            📅
+          </span>
+
+          <div>
+
+            <span>
+              Order Date
+            </span>
+
+            <strong>
+
+              {{
+                formatDate(
+                  getCreatedDate(order)
+                )
+              }}
+
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div class="info-card">
+
+          <span class="info-icon">
+            🛍️
+          </span>
+
+          <div>
+
+            <span>
+              Items
+            </span>
+
+            <strong>
+
+              {{ getTotalItems(order) }}
+
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div class="info-card">
+
+          <span class="info-icon">
+            💳
+          </span>
+
+          <div>
+
+            <span>
+              Payment
+            </span>
+
+            <strong>
+
+              {{ getPaymentMethod(order) }}
+
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div class="info-card">
+
+          <span class="info-icon">
+            ₹
+          </span>
+
+          <div>
+
+            <span>
+              Total
+            </span>
+
+            <strong class="purple">
+
+              ₹{{
+                getOrderTotal(order)
+                  | number:'1.2-2'
+              }}
+
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =====================================
+           PRODUCTS
+      ====================================== -->
+
+      <div class="order-items">
+
+        <div class="products-heading">
+
+          <span>
+            🛒
+          </span>
+
+          Products
+
+        </div>
+
+
+        <div
+          class="order-item"
+          *ngFor="
+            let item of getOrderItems(order)
+          "
+        >
+
+
+          <div class="product-image">
+
+            <img
+              *ngIf="item.image"
+              [src]="item.image"
+              [alt]="item.name"
+            />
+
+
+            <div
+              *ngIf="!item.image"
+              class="image-placeholder"
+            >
+
+              📦
+
+            </div>
+
+          </div>
+
+
+          <div class="product-info">
+
+            <h3>
+              {{ item.name }}
+            </h3>
+
+
+            <span class="product-price">
+
+              ₹{{
+                item.price
+                  | number:'1.2-2'
+              }}
+
+            </span>
+
+
+            <span class="quantity">
+
+              Quantity:
+              {{ item.quantity }}
+
+            </span>
+
+          </div>
+
+
+          <strong class="item-total">
+
+            ₹{{
+              getItemTotal(item)
+                | number:'1.2-2'
+            }}
+
+          </strong>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =====================================
+           DELIVERY
+      ====================================== -->
+
+      <div
+        class="customer-info"
+        *ngIf="order.customer"
+      >
+
+        <div class="delivery-title">
+
+          <span class="delivery-icon">
+            📍
+          </span>
+
+          <div>
+
+            <small>
+              DELIVERY
+            </small>
+
+            <h3>
+              Delivery Address
+            </h3>
+
+          </div>
+
+        </div>
+
+
+        <div class="delivery-details">
+
+          <strong>
+
+            {{ getCustomerName(order) }}
+
+          </strong>
+
+
+          <p>
+
+            {{ order.customer.address }},
+
+            {{ order.customer.city }}
+
+            -
+
+            {{ order.customer.pinCode }}
+
+          </p>
+
+
+          <div class="contact-row">
+
+            <span>
+
+              📞
+              {{ order.customer.phone }}
+
+            </span>
+
+
+            <span
+              *ngIf="
+                order.customer.email
+              "
+            >
+
+              ✉️
+              {{ order.customer.email }}
+
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =====================================
+           FOOTER
+      ====================================== -->
+
+      <div class="order-footer">
+
+
+        <div class="order-total">
+
+          <span>
+            Total Amount
+          </span>
+
+          <strong>
+
+            ₹{{
+              getOrderTotal(order)
+                | number:'1.2-2'
+            }}
+
+          </strong>
+
+        </div>
+
+
+
+        <div class="order-actions">
+
+
+          <!-- REORDER -->
+
+          <button
+            type="button"
+            class="reorder-button"
+            (click)="reorder(order)"
+          >
+
+            🛒 Reorder
+
+          </button>
+
+
+
+          <!-- CANCEL -->
+
+          <button
+            type="button"
+            class="cancel-order-button"
+            *ngIf="
+              canCancel(order)
+            "
+            (click)="cancelOrder(order)"
+          >
+
+            Cancel Order
+
+          </button>
+
+
+
+          <!-- DETAILS -->
+
+          <button
+            type="button"
+            class="view-details-button"
+            (click)="
+              viewOrderDetails(order)
+            "
+          >
+
+            {{
+              revampFallback()
+                ?.['order-list']
+                ?.['view-details-label']
+            }}
+
+            →
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </article>
+
+  </section>
+
+</div>

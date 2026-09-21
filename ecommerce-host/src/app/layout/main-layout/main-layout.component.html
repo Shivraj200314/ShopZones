@@ -1,0 +1,301 @@
+<div class="app-shell">
+
+  <!-- =========================================
+       NAVBAR
+  ========================================== -->
+
+  <header class="main-header">
+
+    <nav class="navbar">
+
+      <!-- =====================================
+           BRAND
+      ====================================== -->
+
+      <button
+        type="button"
+        class="brand"
+        routerLink="/home"
+      >
+
+        <span class="brand-icon">
+
+          {{
+            revampFallback()
+              ?.['main-layout']
+              ?.['logo-icon']
+          }}
+
+        </span>
+
+        <span class="brand-name">
+
+          {{
+            revampFallback()
+              ?.['main-layout']
+              ?.['brand']
+          }}
+
+        </span>
+
+      </button>
+
+
+      <!-- =====================================
+           NAVIGATION
+      ====================================== -->
+
+      <div class="nav-links">
+
+
+        <!-- HOME -->
+
+        <a
+          routerLink="/home"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{
+            exact: true
+          }"
+        >
+
+          <span class="nav-icon">
+            🏠
+          </span>
+
+          <span>
+
+            {{
+              revampFallback()
+                ?.['main-layout']
+                ?.['home-label']
+            }}
+
+          </span>
+
+        </a>
+
+
+
+        <!-- PRODUCT -->
+
+        <a
+          routerLink="/products"
+          routerLinkActive="active"
+        >
+
+          <span class="nav-icon">
+            🛍️
+          </span>
+
+          <span>
+
+            {{
+              revampFallback()
+                ?.['main-layout']
+                ?.['products-label']
+          }}
+
+          </span>
+
+        </a>
+
+
+
+        <!-- CART -->
+
+        <a
+          routerLink="/cart"
+          routerLinkActive="active"
+        >
+
+          <span class="nav-icon">
+
+            {{
+              revampFallback()
+                ?.['main-layout']
+                ?.['cart-icon']
+            }}
+
+          </span>
+
+          <span>
+
+            {{
+              revampFallback()
+                ?.['main-layout']
+                ?.['cart-label']
+            }}
+
+          </span>
+
+        </a>
+
+
+
+        <!-- ORDERS -->
+
+        <a
+          routerLink="/orders"
+          routerLinkActive="active"
+        >
+
+          <span class="nav-icon">
+            📦
+          </span>
+
+          <span>
+
+            {{
+              revampFallback()
+                ?.['main-layout']
+                ?.['orders-label']
+            }}
+
+          </span>
+
+        </a>
+
+      </div>
+
+
+
+      <!-- =====================================
+           USER AREA
+      ====================================== -->
+
+      <!-- =====================================
+     USER AREA
+====================================== -->
+
+<div class="user-section">
+
+
+  <!-- ===================================
+       LOGGED IN
+  ==================================== -->
+
+  <ng-container
+    *ngIf="
+      isLoggedIn;
+      else loggedOutTemplate
+    "
+  >
+
+    <!-- PROFILE -->
+
+    <button
+      type="button"
+      class="user-profile"
+      (click)="goToProfile()"
+    >
+
+      <span class="user-avatar">
+
+        {{ userInitial }}
+
+      </span>
+
+
+      <span class="user-details">
+
+        <strong>
+
+          {{ userName }}
+
+        </strong>
+
+
+        <small>
+
+          {{
+            currentUser?.email ||
+            'My Account'
+          }}
+
+        </small>
+
+      </span>
+
+
+      <span class="profile-arrow">
+        ›
+      </span>
+
+    </button>
+
+
+    <!-- LOGOUT -->
+
+    <button
+      type="button"
+      class="logout-button"
+      (click)="logout()"
+    >
+
+      <span class="logout-icon">
+        ↪
+      </span>
+
+
+      <span>
+
+        {{
+          revampFallback()
+            ?.['main-layout']
+            ?.['logout-label']
+            || 'Logout'
+        }}
+
+      </span>
+
+    </button>
+
+  </ng-container>
+
+
+
+  <!-- ===================================
+       NOT LOGGED IN
+  ==================================== -->
+
+  <ng-template
+    #loggedOutTemplate
+  >
+
+    <button
+      type="button"
+      class="login-button"
+      (click)="goToLogin()"
+    >
+
+      <span class="login-icon">
+        👤
+      </span>
+
+      <span>
+        Login
+      </span>
+
+    </button>
+
+  </ng-template>
+
+</div>
+
+    </nav>
+
+  </header>
+
+
+  <!-- =========================================
+       PAGE CONTENT
+  ========================================== -->
+
+  <main class="main-content">
+
+    <router-outlet>
+    </router-outlet>
+
+  </main>
+
+</div>

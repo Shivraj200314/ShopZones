@@ -1,0 +1,1143 @@
+<div class="checkout-page">
+
+  <div class="checkout-header">
+
+    <div>
+
+      <span class="eyebrow">
+
+        {{
+          revampFallback()
+            ['checkout']
+            ?.['eyebrow']
+        }}
+
+      </span>
+      <h1>
+
+        {{
+          revampFallback()
+            ['checkout']
+            ?.['title']
+        }}
+
+      </h1>
+      <p>
+
+        {{
+          revampFallback()
+            ['checkout']
+            ?.['subtitle']
+        }}
+
+      </p>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="back-button"
+      (click)="backToCart()"
+    >
+
+      ←
+
+      {{
+        revampFallback()
+          ['checkout']
+          ?.['back-cart']
+      }}
+
+    </button>
+
+  </div>
+
+  <div
+    class="empty-checkout"
+    *ngIf="
+      cartItems.length === 0
+    "
+  >
+
+    <div class="empty-icon">
+
+      🛒
+
+    </div>
+
+
+    <h2>
+
+      Your Cart is Empty
+
+    </h2>
+
+
+    <p>
+
+      Add a product before proceeding
+      to checkout.
+
+    </p>
+
+
+    <button
+      type="button"
+      class="shop-button"
+      (click)="backToCart()"
+    >
+
+      {{
+        revampFallback()
+          ['checkout']
+          ?.['back-cart']
+      }}
+
+    </button>
+
+  </div>
+
+  <div
+    class="checkout-container"
+    *ngIf="
+      cartItems.length > 0
+    "
+  >
+
+    <form
+      class="checkout-form"
+      [formGroup]="checkoutForm"
+      (ngSubmit)="placeOrder()"
+    >
+
+      <div class="form-card">
+
+        <span class="section-label">
+
+          DELIVERY
+
+        </span>
+
+
+        <h2>
+
+          {{
+            revampFallback()
+              ['checkout']
+              ?.['shipping-title']
+          }}
+
+        </h2>
+
+        <div class="form-group">
+
+          <label>
+
+            {{
+              revampFallback()
+                ['checkout']
+                ?.['full-name-label']
+            }}
+
+          </label>
+
+
+          <input
+            type="text"
+            formControlName="fullName"
+            [placeholder]="
+              revampFallback()
+                ['checkout']
+                ?.['full-name-placeholder']
+            "
+          />
+
+
+          <div
+            class="error"
+            *ngIf="
+              f['fullName'].touched &&
+              f['fullName'].invalid
+            "
+          >
+
+            <small
+              *ngIf="
+                f['fullName']
+                  .hasError('required') ||
+                f['fullName']
+                  .hasError('whitespace')
+              "
+            >
+
+              Full name is required.
+
+            </small>
+
+
+            <small
+              *ngIf="
+                f['fullName']
+                  .hasError('minlength')
+              "
+            >
+
+              Full name must contain at
+              least 3 characters.
+
+            </small>
+
+
+            <small
+              *ngIf="
+                f['fullName']
+                  .hasError('pattern')
+              "
+            >
+
+              Enter a valid full name.
+
+            </small>
+
+          </div>
+
+        </div>
+
+        <div class="form-group">
+
+          <label>
+
+            {{
+              revampFallback()
+                ['checkout']
+                ?.['email-label']
+            }}
+
+          </label>
+
+
+          <input
+            type="email"
+            formControlName="email"
+            [placeholder]="
+              revampFallback()
+                ['checkout']
+                ?.['email-placeholder']
+            "
+          />
+
+
+          <div
+            class="error"
+            *ngIf="
+              f['email'].touched &&
+              f['email'].invalid
+            "
+          >
+
+            <small
+              *ngIf="
+                f['email']
+                  .hasError('required')
+              "
+            >
+
+              Email address is required.
+
+            </small>
+
+
+            <small
+              *ngIf="
+                f['email']
+                  .hasError('pattern')
+              "
+            >
+
+              Enter a valid email address.
+
+            </small>
+
+          </div>
+
+        </div>
+
+        <div class="form-group">
+
+          <label>
+
+            {{
+              revampFallback()
+                ['checkout']
+                ?.['phone-label']
+            }}
+
+          </label>
+
+
+          <input
+            type="tel"
+            inputmode="numeric"
+            formControlName="phone"
+            maxlength="10"
+            [placeholder]="
+              revampFallback()
+                ['checkout']
+                ?.['phone-placeholder']
+            "
+          />
+
+
+          <div
+            class="error"
+            *ngIf="
+              f['phone'].touched &&
+              f['phone'].invalid
+            "
+          >
+
+            <small
+              *ngIf="
+                f['phone']
+                  .hasError('required')
+              "
+            >
+
+              Phone number is required.
+
+            </small>
+
+
+            <small
+              *ngIf="
+                f['phone']
+                  .hasError('pattern')
+              "
+            >
+
+              Enter a valid 10 digit
+              mobile number.
+
+            </small>
+
+          </div>
+
+        </div>
+
+        <div class="form-group">
+
+          <label>
+
+            {{
+              revampFallback()
+                ['checkout']
+                ?.['address-label']
+            }}
+
+          </label>
+
+
+          <textarea
+            rows="3"
+            formControlName="address"
+            [placeholder]="
+              revampFallback()
+                ['checkout']
+                ?.['address-placeholder']
+            "
+          ></textarea>
+
+
+          <div
+            class="error"
+            *ngIf="
+              f['address'].touched &&
+              f['address'].invalid
+            "
+          >
+
+            <small
+              *ngIf="
+                f['address']
+                  .hasError('required') ||
+                f['address']
+                  .hasError('whitespace')
+              "
+            >
+
+              Address is required.
+
+            </small>
+
+
+            <small
+              *ngIf="
+                f['address']
+                  .hasError('minlength')
+              "
+            >
+
+              Address must contain at least
+              10 characters.
+
+            </small>
+
+          </div>
+
+        </div>
+
+        <div class="form-row">
+
+
+          <!-- CITY -->
+
+          <div class="form-group">
+
+            <label>
+
+              {{
+                revampFallback()
+                  ['checkout']
+                  ?.['city-label']
+              }}
+
+            </label>
+
+
+            <input
+              type="text"
+              formControlName="city"
+              placeholder="Enter city"
+            />
+
+
+            <div
+              class="error"
+              *ngIf="
+                f['city'].touched &&
+                f['city'].invalid
+              "
+            >
+
+              <small
+                *ngIf="
+                  f['city']
+                    .hasError('required') ||
+                  f['city']
+                    .hasError('whitespace')
+                "
+              >
+
+                City is required.
+
+              </small>
+
+
+              <small
+                *ngIf="
+                  f['city']
+                    .hasError('pattern')
+                "
+              >
+
+                Enter a valid city name.
+
+              </small>
+
+            </div>
+
+          </div>
+
+          <div class="form-group">
+
+            <label>
+
+              {{
+                revampFallback()
+                  ['checkout']
+                  ?.['state-label']
+              }}
+
+            </label>
+
+
+            <input
+              type="text"
+              formControlName="state"
+              placeholder="Enter state"
+            />
+
+
+            <div
+              class="error"
+              *ngIf="
+                f['state'].touched &&
+                f['state'].invalid
+              "
+            >
+
+              <small
+                *ngIf="
+                  f['state']
+                    .hasError('required') ||
+                  f['state']
+                    .hasError('whitespace')
+                "
+              >
+
+                State is required.
+
+              </small>
+
+
+              <small
+                *ngIf="
+                  f['state']
+                    .hasError('pattern')
+                "
+              >
+
+                Enter a valid state name.
+
+              </small>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="form-group">
+
+          <label>
+
+            {{
+              revampFallback()
+                ['checkout']
+                ?.['pincode-label']
+            }}
+
+          </label>
+
+
+          <input
+            type="text"
+            inputmode="numeric"
+            formControlName="pinCode"
+            placeholder="Enter 6 digit pincode"
+            maxlength="6"
+          />
+
+
+          <div
+            class="error"
+            *ngIf="
+              f['pinCode'].touched &&
+              f['pinCode'].invalid
+            "
+          >
+
+            <small
+              *ngIf="
+                f['pinCode']
+                  .hasError('required')
+              "
+            >
+
+              Pincode is required.
+
+            </small>
+
+
+            <small
+              *ngIf="
+                f['pinCode']
+                  .hasError('pattern')
+              "
+            >
+
+              Enter a valid 6 digit pincode.
+
+            </small>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <section class="payment-section">
+
+        <div class="payment-header">
+
+          <span class="payment-eyebrow">
+
+            PAYMENT
+
+          </span>
+
+
+          <h2>
+
+            Payment Method
+
+          </h2>
+
+
+          <p>
+
+            Choose how you would like
+            to pay for your order.
+
+          </p>
+
+        </div>
+
+        <div class="payment-options">
+
+          <label
+            class="payment-card"
+            [class.payment-card-active]="
+              checkoutForm
+                .get('paymentMethod')
+                ?.value === 'cod'
+            "
+          >
+
+            <input
+              type="radio"
+              formControlName="paymentMethod"
+              value="cod"
+              (change)="
+                selectPaymentMethod('cod')
+              "
+            />
+
+
+            <div class="payment-card-icon">
+
+              💵
+
+            </div>
+
+
+            <div class="payment-card-content">
+
+              <div class="payment-card-title">
+
+                <strong>
+
+                  Cash on Delivery
+
+                </strong>
+
+
+                <span
+                  class="selected-badge"
+                  *ngIf="
+                    checkoutForm
+                      .get('paymentMethod')
+                      ?.value === 'cod'
+                  "
+                >
+
+                  Selected
+
+                </span>
+
+              </div>
+
+
+              <p>
+
+                Pay with cash when your
+                order arrives at your doorstep.
+
+              </p>
+
+            </div>
+
+          </label>
+
+          <label
+            class="payment-card"
+            [class.payment-card-active]="
+              checkoutForm
+                .get('paymentMethod')
+                ?.value === 'upi'
+            "
+          >
+
+            <input
+              type="radio"
+              formControlName="paymentMethod"
+              value="upi"
+              (change)="
+                selectPaymentMethod('upi')
+              "
+            />
+
+
+            <div
+              class="payment-card-icon upi-icon"
+            >
+
+              ₹
+
+            </div>
+
+
+            <div class="payment-card-content">
+
+              <div class="payment-card-title">
+
+                <strong>
+
+                  UPI Payment
+
+                </strong>
+
+
+                <span
+                  class="selected-badge"
+                  *ngIf="
+                    checkoutForm
+                      .get('paymentMethod')
+                      ?.value === 'upi'
+                  "
+                >
+
+                  Selected
+
+                </span>
+
+              </div>
+
+
+              <p>
+
+                Pay securely using any UPI
+                app or your UPI ID.
+
+              </p>
+
+            </div>
+
+          </label>
+
+        </div>
+
+        <div
+          class="upi-payment-box"
+          *ngIf="
+            checkoutForm
+              .get('paymentMethod')
+              ?.value === 'upi'
+          "
+        >
+
+          <div class="upi-header">
+
+            <div class="upi-header-icon">
+
+              ₹
+
+            </div>
+
+
+            <div>
+
+              <h3>
+
+                Enter UPI Details
+
+              </h3>
+
+
+              <p>
+
+                Enter your registered
+                UPI ID to continue.
+
+              </p>
+
+            </div>
+
+          </div>
+
+          <div class="upi-form-group">
+
+            <label for="upiId">
+
+              UPI ID
+
+            </label>
+
+
+            <div class="upi-input-wrapper">
+
+              <span class="upi-input-icon">
+
+                @
+
+              </span>
+
+
+              <input
+                id="upiId"
+                type="text"
+                formControlName="upiId"
+                placeholder="example@upi"
+                autocomplete="off"
+                (input)="
+                  paymentError = ''
+                "
+              />
+
+
+              <span
+                class="verified-icon"
+                *ngIf="
+                  f['upiId'].valid &&
+                  f['upiId'].value
+                "
+              >
+
+                ✓
+
+              </span>
+
+            </div>
+
+
+
+            <!-- UPI VALIDATION -->
+
+            <div
+              class="error"
+              *ngIf="
+                f['upiId'].touched &&
+                f['upiId'].invalid
+              "
+            >
+
+              <small
+                *ngIf="
+                  f['upiId']
+                    .hasError('required') ||
+                  f['upiId']
+                    .hasError('whitespace')
+                "
+              >
+
+                UPI ID is required.
+
+              </small>
+
+
+              <small
+                *ngIf="
+                  f['upiId']
+                    .hasError('pattern')
+                "
+              >
+
+                Enter a valid UPI ID.
+
+              </small>
+
+            </div>
+
+
+
+            <!-- EXAMPLE -->
+
+            <div class="upi-example">
+
+              <span>
+
+                Examples:
+
+              </span>
+
+
+              <span class="upi-example-item">
+
+                shivraj@okaxis
+
+              </span>
+
+
+              <span class="upi-example-item">
+
+                9108902664@ybl
+
+              </span>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- SECURITY -->
+
+          <div class="payment-security">
+
+            <span class="security-icon">
+
+              🔒
+
+            </span>
+
+
+            <div>
+
+              <strong>
+
+                Secure Payment
+
+              </strong>
+
+
+              <p>
+
+                Your payment information
+                is protected and securely
+                processed.
+
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- ===================================
+             PAYMENT ERROR
+        ==================================== -->
+
+        <div
+          class="payment-error"
+          *ngIf="paymentError"
+        >
+
+          <span>
+
+            ⚠
+
+          </span>
+
+          {{ paymentError }}
+
+        </div>
+
+      </section>
+
+
+    </form>
+
+
+
+    <!-- =======================================
+         ORDER SUMMARY
+    ======================================== -->
+
+    <aside class="order-summary">
+
+      <span class="section-label">
+
+        YOUR ORDER
+
+      </span>
+
+
+      <h2>
+
+        {{
+          revampFallback()
+            ['checkout']
+            ?.['order-summary-title']
+        }}
+
+      </h2>
+
+
+
+      <!-- ITEMS -->
+
+      <div class="checkout-items">
+
+        <div
+          class="checkout-item"
+          *ngFor="
+            let item of cartItems
+          "
+        >
+
+          <div class="checkout-image">
+
+            <img
+              [src]="item.image"
+              [alt]="item.name"
+            />
+
+          </div>
+
+
+          <div class="checkout-item-info">
+
+            <strong>
+
+              {{ item.name }}
+
+            </strong>
+
+
+            <span>
+
+              Qty:
+              {{ item.quantity }}
+
+            </span>
+
+          </div>
+
+
+          <strong class="item-total">
+
+            ₹{{
+              getItemTotal(
+                item
+              )
+                | number
+            }}
+
+          </strong>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="summary-divider">
+      </div>
+
+
+
+      <!-- SUBTOTAL -->
+
+      <div class="summary-line">
+
+        <span>
+
+          {{
+            revampFallback()
+              ['checkout']
+              ?.['subtotal-label']
+          }}
+
+        </span>
+
+
+        <strong>
+
+          ₹{{
+            getSubtotal()
+              | number
+          }}
+
+        </strong>
+
+      </div>
+
+
+
+      <!-- DELIVERY -->
+
+      <div class="summary-line">
+
+        <span>
+
+          {{
+            revampFallback()
+              ['checkout']
+              ?.['delivery-label']
+          }}
+
+        </span>
+
+
+        <strong class="free">
+
+          FREE
+
+        </strong>
+
+      </div>
+
+
+
+      <div class="summary-divider">
+      </div>
+
+
+
+      <!-- TOTAL -->
+
+      <div class="summary-total">
+
+        <span>
+
+          {{
+            revampFallback()
+              ['checkout']
+              ?.['total-label']
+          }}
+
+        </span>
+
+
+        <strong>
+
+          ₹{{
+            getTotal()
+              | number
+          }}
+
+        </strong>
+
+      </div>
+
+
+
+      <!-- =====================================
+           PLACE ORDER
+      ====================================== -->
+
+      <button
+        type="button"
+        class="place-order-button"
+        (click)="placeOrder()"
+      >
+
+        {{
+          revampFallback()
+            ['checkout']
+            ?.['place-order']
+        }}
+
+        →
+
+      </button>
+
+    </aside>
+
+  </div>
+
+</div>
