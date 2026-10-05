@@ -3,7 +3,7 @@ export const ORDER_FALLBACK = {
   "order-list": {
 
     "eyebrow":
-      "ORDER HISTORYsssssssssssssssssssssssssss",
+      "ORDER HISTORY",
 
     "title":
       "My Orders",
@@ -22,7 +22,6 @@ export const ORDER_FALLBACK = {
 
     "clear-search-aria-label":
       "Clear search",
-
 
     // Order information
     "order-id-label":
@@ -106,160 +105,103 @@ export const ORDER_FALLBACK = {
 
   },
 
+  "order-detail": {
 
-  // ==========================================
-  // ORDER DETAIL
-  // ==========================================
+    "eyebrow":
+      "ORDER DETAILS",
 
- // ==========================================
-// ORDER DETAIL
-// ==========================================
+    "back-label":
+      "← Back to Orders",
 
-"order-detail": {
+    "title":
+      "Order Details",
 
-  // ========================================
-  // HEADER
-  // ========================================
+    "placed-on-label":
+      "Placed on",
 
-  "eyebrow":
-    "ORDER DETAILS",
+    "status-default":
+      "Placed",
 
-  "back-label":
-    "← Back to Orders",
+    "order-id-label":
+      "Order ID",
 
-  "title":
-    "Order Details",
+    "order-date-label":
+      "Order Date",
 
-  "placed-on-label":
-    "Placed on",
+    "status-label":
+      "Status",
 
-  "status-default":
-    "Placed",
+    "items-label":
+      "Items",
 
+    "payment-label":
+      "Payment",
 
-  // ========================================
-  // ORDER INFORMATION
-  // ========================================
+    "payment-not-available":
+      "Not Available",
 
-  "order-id-label":
-    "Order ID",
+    "total-amount-label":
+      "Total Amount",
 
-  "order-date-label":
-    "Order Date",
+    "products-title":
+      "Products",
 
-  "status-label":
-    "Status",
+    "product-label":
+      "Product",
 
+    "price-label":
+      "Price",
 
-  // ========================================
-  // SUMMARY
-  // ========================================
+    "quantity-label":
+      "Quantity",
 
-  "items-label":
-    "Items",
+    "subtotal-label":
+      "Subtotal",
 
-  "payment-label":
-    "Payment",
+    "delivery-label":
+      "Delivery",
 
-  "payment-not-available":
-    "Not Available",
+    "delivery-address-title":
+      "Delivery Address",
 
-  "total-amount-label":
-    "Total Amount",
+    "shipping-title":
+      "Shipping Address",
 
+    "phone-label":
+      "Phone",
 
-  // ========================================
-  // PRODUCTS
-  // ========================================
+    "email-label":
+      "Email",
 
-  "products-title":
-    "Products",
+    "payment-title":
+      "Payment Details",
 
-  "product-label":
-    "Product",
+    "total-label":
+      "Total Amount",
 
-  "price-label":
-    "Price",
-
-  "quantity-label":
-    "Quantity",
-
-  "subtotal-label":
-    "Subtotal",
+    "order-total-label":
+      "Order Total",
 
 
-  // ========================================
-  // DELIVERY
-  // ========================================
+    "not-found-icon":
+      "😕",
 
-  "delivery-label":
-    "Delivery",
+    "not-found-title":
+      "Order Not Found",
 
-  "delivery-address-title":
-    "Delivery Address",
+    "not-found-description":
+      "The requested order could not be found.",
 
-  "shipping-title":
-    "Shipping Address",
+    "not-found-button":
+      "Back to Orders",
 
-  "phone-label":
-    "Phone",
+    "key":
+      "order-detail",
 
-  "email-label":
-    "Email",
+    "device":
+      "both"
 
-
-  // ========================================
-  // PAYMENT
-  // ========================================
-
-  "payment-title":
-    "Payment Details",
-
-
-  // ========================================
-  // TOTAL
-  // ========================================
-
-  "total-label":
-    "Total Amount",
-
-  "order-total-label":
-    "Order Total",
-
-
-  // ========================================
-  // NOT FOUND
-  // ========================================
-
-  "not-found-icon":
-    "😕",
-
-  "not-found-title":
-    "Order Not Found",
-
-  "not-found-description":
-    "The requested order could not be found.",
-
-  "not-found-button":
-    "Back to Orders",
-
-
-  // ========================================
-  // METADATA
-  // ========================================
-
-  "key":
-    "order-detail",
-
-  "device":
-    "both"
-
-},
-
-
-  // ==========================================
-  // ORDERS LOADER
-  // ==========================================
+  },
 
   "orders-loader": {
 
@@ -274,7 +216,5 @@ export const ORDER_FALLBACK = {
 
     "device":
       "both"
-
   }
-
 };

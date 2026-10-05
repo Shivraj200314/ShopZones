@@ -10,11 +10,9 @@ function isObject(
 
 }
 
-
 function hasValidKey(
   item: any
 ): boolean {
-
   return (
     item?.key !== null &&
     item?.key !== undefined &&
@@ -22,19 +20,12 @@ function hasValidKey(
       item.key
     ).trim() !== ''
   );
-
 }
-
 
 function findMatchingIndex(
   baseArray: any[],
   apiItem: any
 ): number {
-
-
-  // ==========================================
-  // TRY KEY FIRST
-  // ==========================================
 
   if (
     hasValidKey(
@@ -152,11 +143,6 @@ export function mergeData(
 
   }
 
-
-  // ==========================================
-  // ARRAYS
-  // ==========================================
-
   if (
     Array.isArray(
       baseData
@@ -165,10 +151,6 @@ export function mergeData(
       apiData
     )
   ) {
-
-
-    // API ARRAY EMPTY
-    // KEEP CONSTANT ARRAY
 
     if (
       apiData.length === 0
@@ -189,10 +171,6 @@ export function mergeData(
           item === null
       );
 
-
-    // Primitive array
-    // API wins
-
     if (
       isPrimitiveArray
     ) {
@@ -200,9 +178,6 @@ export function mergeData(
       return apiData;
 
     }
-
-
-    // Object array
 
     const result = [
       ...baseData
@@ -214,15 +189,11 @@ export function mergeData(
         apiItem: any
       ) => {
 
-
         const index =
           findMatchingIndex(
             result,
             apiItem
           );
-
-
-        // API item not in constant
 
         if (
           index === -1
@@ -235,9 +206,6 @@ export function mergeData(
           return;
 
         }
-
-
-        // Merge existing object
 
         result[index] =
           mergeData(
@@ -252,11 +220,6 @@ export function mergeData(
     return result;
 
   }
-
-
-  // ==========================================
-  // OBJECTS
-  // ==========================================
 
   if (
     isObject(
@@ -311,12 +274,6 @@ export function mergeData(
     return result;
 
   }
-
-
-  // ==========================================
-  // NORMAL VALUE
-  // API WINS
-  // ==========================================
 
   return apiData;
 

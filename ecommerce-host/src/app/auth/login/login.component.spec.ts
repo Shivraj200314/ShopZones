@@ -22,6 +22,18 @@ import {
   AuthService
 } from '../../auth.service';
 
+import {
+  LoginRevampService
+} from '../../services/login-revamp.service';
+
+import {
+  MatSnackBar
+} from '@angular/material/snack-bar';
+
+import {
+  of
+} from 'rxjs';
+
 
 describe(
   'LoginComponent',
@@ -105,6 +117,29 @@ describe(
 
                 useValue:
                   routerMock
+              },
+
+              {
+                provide:
+                  LoginRevampService,
+
+                useValue: {
+                  getRevampContent: () => of({
+                    login: {
+                      'invalid-error':
+                        'Invalid email or password.'
+                    }
+                  })
+                }
+              },
+
+              {
+                provide:
+                  MatSnackBar,
+
+                useValue: {
+                  open: jest.fn()
+                }
               }
 
             ]
@@ -173,6 +208,11 @@ describe(
 
 
         expect(
+          component.role
+        ).toBe('CUSTOMER');
+
+
+        expect(
           component.errorMessage
         ).toBe('');
 
@@ -180,6 +220,34 @@ describe(
         expect(
           component.isLoading
         ).toBe(false);
+
+      }
+    );
+
+
+    it(
+      'should preselect the role saved in the account profile',
+      () => {
+
+        localStorage.setItem(
+          'shopzone_profile',
+          JSON.stringify({
+            role: 'SELLER'
+          })
+        );
+
+
+        component.ngOnInit();
+
+
+        expect(
+          component.role
+        ).toBe('SELLER');
+
+
+        localStorage.removeItem(
+          'shopzone_profile'
+        );
 
       }
     );
@@ -320,7 +388,7 @@ describe(
     // =====================================
 
     it(
-      'should login and navigate home when credentials are valid',
+      'should login and navigate home for a seller',
       fakeAsync(
         () => {
 
@@ -336,6 +404,9 @@ describe(
 
           component.password =
             '123456';
+
+          component.role =
+            'SELLER';
 
 
         component.login(
@@ -355,14 +426,15 @@ describe(
           ).not.toHaveBeenCalled();
 
 
-          tick(1000);
+          tick(1300);
 
 
           expect(
             authServiceMock.login
           ).toHaveBeenCalledWith(
             'test@gmail.com',
-            '123456'
+            '123456',
+            'SELLER'
           );
 
 
@@ -417,7 +489,8 @@ describe(
             authServiceMock.login
           ).toHaveBeenCalledWith(
             'wrong@gmail.com',
-            'wrong'
+            'wrong',
+            'CUSTOMER'
           );
 
 

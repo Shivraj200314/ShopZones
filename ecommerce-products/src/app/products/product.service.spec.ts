@@ -54,7 +54,7 @@ describe(
 
         id: 1,
 
-        name:
+        title:
           'Test Phone',
 
         brand:
@@ -92,7 +92,7 @@ describe(
 
         id: 2,
 
-        name:
+        title:
           'Test Laptop',
 
         brand:
@@ -406,7 +406,7 @@ describe(
         // ======================================
 
         expect(
-          result[0].name
+          result[0].title
         ).toBe(
           'Test Phone'
         );
@@ -477,6 +477,48 @@ describe(
         ).toBe(
           0
         );
+
+      }
+    );
+
+
+    it(
+      'should apply shared inventory overrides to API stock',
+      () => {
+
+        localStorage.setItem(
+          'shopzone_inventory_stock',
+          JSON.stringify({
+            '1': 28
+          })
+        );
+
+        let result:
+          Product[] = [];
+
+        service
+          .getProducts()
+          .subscribe(
+            products => {
+              result = products;
+            }
+          );
+
+        const request =
+          httpMock.expectOne(
+            'https://dummyjson.com/c/49b5-905a-4627-8869'
+          );
+
+        request.flush(
+          createApiResponse([
+            createApiProduct({ stock: 29 })
+          ])
+        );
+
+
+        expect(
+          result[0].stock
+        ).toBe(28);
 
       }
     );
@@ -930,7 +972,7 @@ describe(
 
 
         expect(
-          result?.name
+          result?.title
         ).toBe(
           'Selected Product'
         );

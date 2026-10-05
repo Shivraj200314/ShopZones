@@ -6,10 +6,10 @@
   min-height: 100vh;
 
   background:
-    #f6f7fb;
+    #f7f4ee;
 
   color:
-    #111827;
+    #17211f;
 }
 
 
@@ -32,24 +32,19 @@
 
   background:
     rgba(
-      255,
-      255,
-      255,
-      0.96
+      29,
+      48,
+      43,
+      0.97
     );
 
   border-bottom:
     1px solid
-    #e9eaf0;
+    rgba(235, 190, 126, 0.22);
 
   box-shadow:
     0 4px 20px
-    rgba(
-      31,
-      35,
-      65,
-      0.05
-    );
+    rgba(10, 25, 20, 0.16);
 
   backdrop-filter:
     blur(14px);
@@ -134,33 +129,14 @@
   justify-content:
     center;
 
-  background:
-    linear-gradient(
-      135deg,
-      #f0edff,
-      #e4e0ff
-    );
-
-  border-radius:
-    12px;
-
-  font-size:
-    20px;
-
-  box-shadow:
-    0 5px 15px
-    rgba(
-      101,
-      87,
-      232,
-      0.12
-    );
+  object-fit:
+    contain;
 }
 
 
 .brand-name {
   color:
-    #6557e8;
+    #f0c889;
 
   font-size:
     23px;
@@ -218,7 +194,7 @@
     10px;
 
   color:
-    #4b5163;
+    #d9e0d9;
 
   font-size:
     13px;
@@ -239,10 +215,10 @@
 
 .nav-links a:hover {
   background:
-    #f2f0ff;
+    rgba(255, 255, 255, 0.10);
 
   color:
-    #6557e8;
+    #f0c889;
 
   transform:
     translateY(-1px);
@@ -251,23 +227,14 @@
 
 .nav-links a.active {
   background:
-    linear-gradient(
-      135deg,
-      #6c5ce7,
-      #5846df
-    );
+    #e7bd7d;
 
   color:
-    #ffffff;
+    #20322d;
 
   box-shadow:
     0 7px 18px
-    rgba(
-      91,
-      75,
-      230,
-      0.25
-    );
+    rgba(235, 190, 126, 0.18);
 }
 
 
@@ -343,10 +310,10 @@
 
 .user-profile:hover {
   background:
-    #f7f6ff;
+    rgba(255, 255, 255, 0.10);
 
   border-color:
-    #e4e0ff;
+    rgba(235, 190, 126, 0.3);
 }
 
 
@@ -370,11 +337,7 @@
     center;
 
   background:
-    linear-gradient(
-      135deg,
-      #6c5ce7,
-      #5140d8
-    );
+    #c06e4a;
 
   color:
     #ffffff;
@@ -390,12 +353,7 @@
 
   box-shadow:
     0 6px 15px
-    rgba(
-      91,
-      75,
-      230,
-      0.22
-    );
+    rgba(192, 110, 74, 0.25);
 }
 
 
@@ -422,7 +380,7 @@
     hidden;
 
   color:
-    #222736;
+    #ffffff;
 
   font-size:
     12px;
@@ -449,7 +407,7 @@
     hidden;
 
   color:
-    #9297a5;
+    #b8c5bd;
 
   font-size:
     9px;
@@ -467,7 +425,7 @@
     2px;
 
   color:
-    #a1a5b2;
+    #b8c5bd;
 
   font-size:
     18px;
@@ -480,7 +438,7 @@
 .user-profile:hover
 .profile-arrow {
   color:
-    #6557e8;
+    #f0c889;
 
   transform:
     translateX(2px);
@@ -518,10 +476,10 @@
     10px;
 
   background:
-    #ffffff;
+    rgba(255, 255, 255, 0.08);
 
   color:
-    #353a49;
+    #d9e0d9;
 
   font-size:
     11px;
@@ -545,10 +503,10 @@
     #fff4f4;
 
   border-color:
-    #fecaca;
+    rgba(235, 190, 126, 0.45);
 
   color:
-    #dc2626;
+    #f0c889;
 
   transform:
     translateY(-1px);
@@ -781,13 +739,9 @@
   border-radius: 10px;
 
   background:
-    linear-gradient(
-      135deg,
-      #6c5ce7,
-      #5544df
-    );
+    #e7bd7d;
 
-  color: #ffffff;
+  color: #20322d;
 
   font-size: 12px;
   font-weight: 700;
@@ -796,7 +750,7 @@
 
   box-shadow:
     0 7px 18px
-    rgba(91, 75, 230, 0.22);
+    rgba(235, 190, 126, 0.20);
 
   transition:
     transform 0.2s ease,
@@ -810,10 +764,199 @@
 
   box-shadow:
     0 10px 24px
-    rgba(91, 75, 230, 0.30);
+    rgba(235, 190, 126, 0.30);
 }
 
 
 .login-icon {
   font-size: 14px;
+}
+
+/* =========================================
+   Glow Ring Navigation Button
+   ========================================= */
+
+.glow-nav-button {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  min-width: 190px;
+  height: 64px;
+
+  padding: 6px 22px 6px 6px;
+
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 40px;
+
+  background: #080808;
+  color: #ffffff;
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+
+/* =========================================
+   Circular Icon
+   ========================================= */
+
+.glow-nav-icon {
+  position: relative;
+
+  width: 52px;
+  height: 52px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #111111;
+
+  isolation: isolate;
+}
+
+
+/* Animated ring */
+
+.glow-nav-icon::before {
+  content: '';
+
+  position: absolute;
+
+  inset: -3px;
+
+  border-radius: 50%;
+
+  background: conic-gradient(
+    from 0deg,
+    #ff9d3d,
+    #ffd36a,
+    #ffffff,
+    #4d7cff,
+    #8b4dff,
+    #38d9ff,
+    #ff9d3d
+  );
+
+  animation: glowRingRotate 4s linear infinite;
+
+  z-index: -1;
+
+  filter: blur(1px);
+}
+
+
+/* Inner circle */
+
+.glow-nav-icon::after {
+  content: '';
+
+  position: absolute;
+
+  inset: 3px;
+
+  border-radius: 50%;
+
+  background: #111111;
+
+  z-index: -1;
+}
+
+
+/* =========================================
+   Icon
+   ========================================= */
+
+.logout-icon {
+  position: relative;
+
+  z-index: 2;
+
+  font-size: 25px;
+
+  color: #ffffff;
+
+  line-height: 1;
+
+  text-shadow:
+    0 0 8px rgba(255, 255, 255, 0.6),
+    0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+
+/* =========================================
+   Text
+   ========================================= */
+
+.glow-nav-text {
+  font-size: 18px;
+
+  font-weight: 500;
+
+  white-space: nowrap;
+
+  color: #ffffff;
+}
+
+
+/* =========================================
+   Hover
+   ========================================= */
+
+.glow-nav-button:hover {
+  transform: translateY(-2px);
+
+  border-color: rgba(255, 255, 255, 0.6);
+
+  box-shadow:
+    0 0 15px rgba(100, 140, 255, 0.15),
+    0 0 35px rgba(130, 80, 255, 0.12);
+}
+
+
+.glow-nav-button:hover .glow-nav-icon::before {
+  filter: blur(3px);
+
+  box-shadow:
+    0 0 15px rgba(100, 150, 255, 0.6),
+    0 0 30px rgba(180, 80, 255, 0.4);
+}
+
+
+/* =========================================
+   Click
+   ========================================= */
+
+.glow-nav-button:active {
+  transform: scale(0.97);
+}
+
+
+/* =========================================
+   Animation
+   ========================================= */
+
+@keyframes glowRingRotate {
+
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+
 }

@@ -53,6 +53,39 @@
 
   </div>
 
+  <section
+    class="order-success"
+    *ngIf="orderSuccessMessage"
+    role="status"
+    aria-live="polite"
+  >
+
+    <div class="order-success-icon">
+      ✓
+    </div>
+
+    <div>
+
+      <h2>
+        Order Placed Successfully
+      </h2>
+
+      <p>
+        {{ orderSuccessMessage }}
+      </p>
+
+    </div>
+
+    <button
+      type="button"
+      class="success-shopping-button"
+      (click)="continueShopping()"
+    >
+      Continue Shopping
+    </button>
+
+  </section>
+
   <div
     class="empty-checkout"
     *ngIf="

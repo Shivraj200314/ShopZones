@@ -12,22 +12,17 @@ import {
 } from '../../core/constants/shell-fallback.constants';
 import { mergeData } from 'src/app/units/merge';
 import { ShellRevampService } from 'src/app/services/shell-revamp.service';
-
+import { Language, LanguageService } from 'src/app/services/language.service';
 
 interface LoggedInUser {
-
   id?: number;
-
+  fullName?: string;
   firstName?: string;
-
   lastName?: string;
-
   name?: string;
-
   email: string;
-
+  role?: string;
 }
-
 
 @Component({
   selector: 'app-main-layout',
@@ -37,29 +32,19 @@ interface LoggedInUser {
 export class MainLayoutComponent
   implements OnInit {
 
-
-  // =========================================
-  // REVAMP FALLBACK
-  // =========================================
+    selectedLanguage: Language = 'en';
 
   revampFallback =
     signal<any>(
       SHELL_FALLBACK
     );
 
-
-  // =========================================
-  // USER
-  // =========================================
-
   currentUser:
     LoggedInUser | null =
       null;
 
-
   userName: string =
     'User';
-
 
   userInitial: string =
     'U';
@@ -70,18 +55,30 @@ isLoggedIn: boolean =
     private router:
       Router,
        private shellRevampService:
-    ShellRevampService
+    ShellRevampService,
+    private languageService: LanguageService
   ) { }
-
-
-  // =========================================
-  // INIT
-  // =========================================
 
   ngOnInit(): void {
 this.loadRevampData();
     this.loadUser();
+  this.redirectNonOwnersFromRestrictedRoutes();
+       this.selectedLanguage =
+      this.languageService.getLanguage();
 
+  }
+
+   onLanguageChange(event: Event): void {
+
+    const select =
+      event.target as HTMLSelectElement;
+
+    const language =
+      select.value as Language;
+
+    this.languageService.setLanguage(language);
+
+    this.selectedLanguage = language;
   }
 
   goToLogin(): void {
@@ -91,6 +88,84 @@ this.loadRevampData();
   ]);
 
 }
+
+  get isOwner(): boolean {
+
+    return this.isLoggedIn &&
+      this.currentUser?.role
+        ?.trim()
+        .toUpperCase() === 'OWNER';
+
+  }
+
+  get isCustomer(): boolean {
+
+    return this.isLoggedIn &&
+      this.currentUser?.role
+        ?.trim()
+        .toUpperCase() === 'CUSTOMER';
+
+  }
+
+  goToDefaultPage(): void {
+
+    this.router.navigate([
+      this.isLoggedIn
+        ? '/home'
+        : '/login'
+    ]);
+
+  }
+
+  private redirectNonOwnersFromRestrictedRoutes(): void {
+
+    if (
+      !this.isLoggedIn ||
+      this.isOwner
+    ) {
+
+      return;
+
+    }
+
+
+    const currentPath =
+      (this.router.url || '')
+        .split('?')[0];
+
+    const restrictedPaths: string[] = [];
+
+
+    if (
+      this.currentUser?.role
+        ?.trim()
+        .toUpperCase() === 'SELLER'
+    ) {
+
+      restrictedPaths.push(
+        '/cart',
+        '/checkout',
+        '/orders'
+      );
+
+    }
+
+
+    if (
+      restrictedPaths.some(
+        path =>
+          currentPath === path ||
+          currentPath.startsWith(`${path}/`)
+      )
+    ) {
+
+      this.router.navigate([
+        '/products'
+      ]);
+
+    }
+
+  }
 
   loadRevampData(): void {
 
@@ -141,9 +216,6 @@ goToProfile(): void {
   ]);
 
 }
-  // =========================================
-  // LOAD USER FROM LOCAL STORAGE
-  // =========================================
 
 loadUser(): void {
 
@@ -152,16 +224,10 @@ loadUser(): void {
       'access_token'
     );
 
-
   const storedUser =
     localStorage.getItem(
       'shopzone_user'
     );
-
-
-  // =====================================
-  // USER NOT LOGGED IN
-  // =====================================
 
   if (
     !accessToken ||
@@ -184,7 +250,6 @@ loadUser(): void {
 
   }
 
-
   try {
 
     this.currentUser =
@@ -192,16 +257,20 @@ loadUser(): void {
         storedUser
       );
 
-
     this.isLoggedIn =
       true;
 
-
-    // =====================================
-    // GET USER NAME
-    // =====================================
-
     if (
+      this.currentUser?.fullName
+    ) {
+
+      this.userName =
+        this.currentUser.fullName
+          .trim();
+
+    }
+
+    else if (
       this.currentUser?.firstName
     ) {
 
@@ -224,27 +293,12 @@ loadUser(): void {
 
     }
 
-    else if (
-      this.currentUser?.email
-    ) {
-
-      this.userName =
-        this.currentUser.email
-          .split('@')[0];
-
-    }
-
     else {
 
       this.userName =
         'User';
 
     }
-
-
-    // =====================================
-    // AVATAR INITIAL
-    // =====================================
 
     this.userInitial =
       this.userName
@@ -279,15 +333,11 @@ loadUser(): void {
 
 }
 
-  // =========================================
-  // LOGOUT
-  // =========================================
 logout(): void {
 
   localStorage.removeItem(
     'access_token'
   );
-
 
   localStorage.removeItem(
     'shopzone_user'
@@ -301,14 +351,11 @@ logout(): void {
   this.currentUser =
     null;
 
-
   this.userName =
     'User';
 
-
   this.userInitial =
     'U';
-
 
   this.router.navigate([
     '/login'
@@ -316,5 +363,4 @@ logout(): void {
 
 }
   
-
 }

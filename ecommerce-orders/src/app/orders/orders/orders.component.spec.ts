@@ -1503,6 +1503,66 @@ describe(
     );
 
 
+    it(
+      'should automatically persist pending and delivered statuses from elapsed time',
+      () => {
+
+        const order =
+          createOrder();
+
+        localStorage.setItem(
+          'shopzone_orders',
+          JSON.stringify([
+            order
+          ])
+        );
+
+        component.loadOrders();
+
+
+        const createdAt =
+          Date.parse(
+            order.createdAt
+          );
+
+
+        component.updateOrderStatuses(
+          createdAt + 30_000
+        );
+
+        expect(
+          component.pendingOrders
+        ).toBe(1);
+
+        expect(
+          JSON.parse(
+            localStorage.getItem(
+              'shopzone_orders'
+            ) as string
+          )[0].status
+        ).toBe('Pending');
+
+
+        component.updateOrderStatuses(
+          createdAt + 90_000
+        );
+
+        expect(
+          component.deliveredOrders
+        ).toBe(1);
+
+        expect(
+          JSON.parse(
+            localStorage.getItem(
+              'shopzone_orders'
+            ) as string
+          )[0].status
+        ).toBe('Delivered');
+
+      }
+    );
+
+
     // ==========================================
     // ITEMS
     // ==========================================
@@ -2197,7 +2257,7 @@ describe(
 
 
     it(
-      'should format valid date',
+      'should format valid date with time',
       () => {
 
         const result =
@@ -2215,6 +2275,12 @@ describe(
           result
         ).toContain(
           '2026'
+        );
+
+        expect(
+          result
+        ).toMatch(
+          /(AM|PM)/i
         );
 
       }

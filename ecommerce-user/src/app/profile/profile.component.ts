@@ -4,8 +4,6 @@ import {
   OnInit,
   signal
 } from '@angular/core';
-
-
 import {
   AbstractControl,
   FormBuilder,
@@ -14,315 +12,171 @@ import {
   ValidatorFn,
   Validators
 } from '@angular/forms';
-
 import {
   Router
 } from '@angular/router';
-
 import {
   Subject,
   takeUntil
 } from 'rxjs';
-
 import {
   User,
   UserService
 } from '../service/user.service';
-
 import {
   UserRevampService
 } from '../service/user-revamp.service';
-
 import {
   USER_FALLBACK
 } from '../core/constants/user-fallback.constants';
-
 import {
   Location
 } from '@angular/common';
-
 @Component({
   selector: 'app-profile',
-
-  templateUrl:
-    './profile.component.html',
-
+  templateUrl: './profile.component.html',
   styleUrls: [
-    './profile.component.css'
+    './profile.component.css',
+    './profile-theme.component.css'
   ]
 })
 export class ProfileComponent
   implements OnInit, OnDestroy {
-
-
-  // ==========================================
-  // REVAMP FALLBACK
-  // ==========================================
-
   revampFallback =
     signal<any>(
       USER_FALLBACK
     );
-
-
-  // ==========================================
-  // CURRENT USER
-  // ==========================================
-
   user:
     User | null = null;
-
-
-  // ==========================================
-  // PROFILE FORM
-  // ==========================================
-
   profileForm!:
     FormGroup;
-
-
-  // ==========================================
-  // UI STATES
-  // ==========================================
-
   isEditMode =
     false;
-
-
   isSaving =
     false;
-
-
+  readonly roleOptions = [
+    'CUSTOMER',
+    'SELLER',
+    'OWNER'
+  ];
   successMessage =
     '';
-
-
   errorMessage =
     '';
-
-
-  // ==========================================
-  // DESTROY
-  // ==========================================
-
   private destroy$ =
     new Subject<void>();
-
-
-  // ==========================================
-  // CONSTRUCTOR
-  // ==========================================
-
   constructor(
-
     private fb:
       FormBuilder,
-
     private userService:
       UserService,
-
     private userRevampService:
       UserRevampService,
-
     private router:
       Router,
         private location:
     Location
-
   ) {}
-
-
-  // ==========================================
-  // INIT
-  // ==========================================
-
   ngOnInit(): void {
-
     this.loadRevampContent();
-
-
     const userLoaded =
       this.loadUser();
-
-
-    // User not logged in
     if (
       !userLoaded
     ) {
-
       return;
-
     }
-
-
-    this.createForm();
-
+this.createForm();
   }
-
-  
 goBack(): void {
-
   this.location.back();
-
 }
-
-  // ==========================================
-  // LOAD REVAMP CONTENT
-  // ==========================================
-
   loadRevampContent(): void {
-
     this.userRevampService
       .getRevampContent()
-
       .pipe(
-
         takeUntil(
           this.destroy$
         )
-
       )
-
       .subscribe({
-
         next: (
           response: any
         ) => {
-
           this.revampFallback
             .set(
               response
             );
-
         },
-
-
         error: (
           error
         ) => {
-
           console.error(
             'Profile revamp error:',
             error
           );
-
-
           this.revampFallback
             .set(
               USER_FALLBACK
             );
-
         }
-
       });
-
-  }
-
-
-  // ==========================================
-  // LOAD USER
-  // ==========================================
-
+    }
   loadUser(): boolean {
-
     this.user =
       this.userService
         .getUser();
-
-
     if (
       !this.user
     ) {
-
       this.router.navigate([
         '/login'
       ]);
-
-
       return false;
-
     }
-
-
     return true;
-
   }
-
-
-  // ==========================================
-  // CREATE FORM
-  // ==========================================
-
   createForm(): void {
-
     this.profileForm =
       this.fb.group({
-
-        // ======================================
-        // FULL NAME
-        // ======================================
-
         fullName: [
           this.user?.fullName || '',
           [
-
             Validators.required,
-
             this.noWhitespaceValidator(),
-
             Validators.minLength(
               3
             ),
-
             Validators.maxLength(
               50
             ),
-
             Validators.pattern(
               /^[A-Za-z][A-Za-z .'-]*$/
             )
-
           ]
         ],
-
-
-        // ======================================
-        // EMAIL
-        // ======================================
-
         email: [
           this.user?.email || '',
           [
-
             Validators.required,
-
             Validators.pattern(
               /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|org|net|edu|gov|co\.in)$/
             )
-
           ]
         ],
-
-
-        // ======================================
-        // PHONE
-        // ======================================
-
         phone: [
           this.user?.phone || '',
           [
-
             Validators.pattern(
               /^[6-9][0-9]{9}$/
             )
-
           ]
+        ],
+        role: [
+          this.user?.role || 'CUSTOMER',
+          Validators.required
         ]
-
       });
-
-
-    // Initially read-only
     this.profileForm
       .disable();
 
@@ -404,7 +258,10 @@ editProfile(): void {
       this.user?.email || '',
 
     phone:
-      this.user?.phone || ''
+      this.user?.phone || '',
+
+    role:
+      this.user?.role || 'CUSTOMER'
 
   });
 
@@ -506,6 +363,10 @@ editProfile(): void {
         ?.trim() ||
       '';
 
+    const role =
+      value.role ||
+      'CUSTOMER';
+
 
     // ========================================
     // CHECK CHANGES
@@ -528,6 +389,10 @@ editProfile(): void {
       ).trim() !==
       phone;
 
+    const roleChanged =
+      this.user.role !==
+      role;
+
 
     // ========================================
     // NO CHANGES
@@ -536,7 +401,8 @@ editProfile(): void {
     if (
       !nameChanged &&
       !emailChanged &&
-      !phoneChanged
+      !phoneChanged &&
+      !roleChanged
     ) {
 
       this.isSaving =
@@ -580,8 +446,7 @@ editProfile(): void {
           phone,
 
         role:
-          this.user.role ||
-          'CUSTOMER'
+          role
 
       };
 
@@ -634,7 +499,10 @@ editProfile(): void {
 
         phone:
           updatedUser.phone ||
-          ''
+          '',
+
+        role:
+          updatedUser.role
 
       });
 
@@ -719,11 +587,6 @@ editProfile(): void {
     this.isSaving =
       false;
 
-
-    // ========================================
-    // GO LOGIN
-    // ========================================
-
     this.router.navigate(
       [
         '/login'
@@ -741,11 +604,6 @@ editProfile(): void {
     );
 
   }
-
-
-  // ==========================================
-  // LOGOUT
-  // ==========================================
 
   logout(): void {
 
@@ -767,11 +625,6 @@ editProfile(): void {
 
   }
 
-
-  // ==========================================
-  // FULL NAME CUSTOM VALIDATOR
-  // ==========================================
-
   private noWhitespaceValidator():
     ValidatorFn {
 
@@ -782,7 +635,6 @@ editProfile(): void {
 
       const value =
         control.value;
-
 
       if (
         typeof value !==
@@ -814,11 +666,6 @@ editProfile(): void {
     };
 
   }
-
-
-  // ==========================================
-  // FULL NAME ERROR
-  // ==========================================
 
   getFullNameError():
     string {
@@ -897,11 +744,6 @@ editProfile(): void {
 
   }
 
-
-  // ==========================================
-  // EMAIL ERROR
-  // ==========================================
-
   getEmailError():
     string {
 
@@ -946,11 +788,6 @@ editProfile(): void {
 
   }
 
-
-  // ==========================================
-  // PHONE ERROR
-  // ==========================================
-
   getPhoneError():
     string {
 
@@ -984,11 +821,6 @@ editProfile(): void {
 
   }
 
-
-  // ==========================================
-  // CHECK INVALID FIELD
-  // ==========================================
-
   isInvalid(
     controlName: string
   ): boolean {
@@ -1007,11 +839,6 @@ editProfile(): void {
     );
 
   }
-
-
-  // ==========================================
-  // CHECK VALID FIELD
-  // ==========================================
 
   isValid(
     controlName: string
@@ -1032,11 +859,6 @@ editProfile(): void {
     );
 
   }
-
-
-  // ==========================================
-  // DESTROY
-  // ==========================================
 
   ngOnDestroy(): void {
 

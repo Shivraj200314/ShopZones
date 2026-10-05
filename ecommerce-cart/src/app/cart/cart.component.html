@@ -1,9 +1,5 @@
 <div class="cart-page">
 
-  <!-- =========================================
-       HEADER
-  ========================================== -->
-
   <section class="cart-header">
 
     <div class="header-content">
@@ -71,13 +67,7 @@
     </div>
 
   </section>
-
-
-
-  <!-- =========================================
-       EMPTY CART
-  ========================================== -->
-
+  
   <section
     class="empty-cart"
     *ngIf="cartItems.length === 0"
@@ -96,8 +86,6 @@
       </div>
 
     </div>
-
-
     <h2>
 
       {{
@@ -144,26 +132,11 @@
 
   </section>
 
-
-
-  <!-- =========================================
-       CART CONTENT
-  ========================================== -->
-
   <section
     class="cart-container"
-    *ngIf="cartItems.length > 0"
-  >
-
-
-    <!-- =====================================
-         LEFT SIDE
-    ====================================== -->
+    *ngIf="cartItems.length > 0">
 
     <div class="cart-content">
-
-
-      <!-- TOP BAR -->
 
       <div class="cart-list-header">
 
@@ -179,7 +152,6 @@
 
         </div>
 
-
         <button
           type="button"
           class="continue-shopping-button"
@@ -192,21 +164,11 @@
 
       </div>
 
-
-
-      <!-- =====================================
-           CART ITEMS
-      ====================================== -->
-
       <div class="cart-items">
 
         <article
           class="cart-item"
-          *ngFor="let item of cartItems"
-        >
-
-
-          <!-- PRODUCT IMAGE -->
+          *ngFor="let item of cartItems">
 
           <div class="cart-image">
 
@@ -216,11 +178,6 @@
             />
 
           </div>
-
-
-
-          <!-- PRODUCT INFORMATION -->
-
           <div class="cart-info">
 
             <span class="brand">
@@ -232,13 +189,11 @@
 
             </span>
 
-
             <h3>
 
               {{ item.name }}
 
             </h3>
-
 
             <div class="price-area">
 
@@ -251,15 +206,12 @@
 
               </strong>
 
-
               <del
                 class="old-price"
                 *ngIf="
                   item.oldPrice &&
                   item.oldPrice >
-                  item.price
-                "
-              >
+                  item.price">
 
                 ₹{{
                   item.oldPrice
@@ -268,15 +220,12 @@
 
               </del>
 
-
               <span
                 class="sale-chip"
                 *ngIf="
                   item.oldPrice &&
                   item.oldPrice >
-                  item.price
-                "
-              >
+                  item.price">
 
                 SALE
 
@@ -286,18 +235,11 @@
 
           </div>
 
-
-
-          <!-- =================================
-               QUANTITY
-          ================================== -->
-
           <div class="quantity-section">
 
             <span class="quantity-label">
               Quantity
             </span>
-
 
             <div class="quantity-control">
 
@@ -308,7 +250,6 @@
               >
                 −
               </button>
-
 
               <span>
                 {{ item.quantity }}
@@ -325,12 +266,6 @@
             </div>
 
           </div>
-
-
-
-          <!-- =================================
-               ITEM TOTAL
-          ================================== -->
 
           <div class="item-price-section">
 
@@ -349,12 +284,6 @@
             </strong>
 
           </div>
-
-
-
-          <!-- =================================
-               REMOVE
-          ================================== -->
 
           <button
             type="button"
@@ -380,18 +309,11 @@
 
     </div>
 
-
-
-    <!-- =====================================
-         RIGHT SIDE - SUMMARY
-    ====================================== -->
-
     <aside class="cart-summary">
 
       <div class="summary-icon">
         🧾
       </div>
-
 
       <h2>
 
@@ -408,15 +330,8 @@
         Review your order before checkout.
       </p>
 
-
-
       <div class="summary-divider">
       </div>
-
-
-
-      <!-- ITEMS -->
-
       <div class="summary-row">
 
         <span>
@@ -436,10 +351,6 @@
         </strong>
 
       </div>
-
-
-
-      <!-- DELIVERY -->
 
       <div class="summary-row">
 
@@ -505,10 +416,6 @@
         </strong>
 
       </div>
-
-
-
-      <!-- CHECKOUT -->
 
       <button
         type="button"

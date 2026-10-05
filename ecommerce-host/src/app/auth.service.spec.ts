@@ -117,5 +117,98 @@ describe(
       }
     );
 
+
+    it(
+      'should save the selected role for a first login',
+      () => {
+
+        expect(
+          service.login(
+            'seller@example.com',
+            'password',
+            'seller'
+          )
+        ).toBe(true);
+
+
+        expect(
+          service.getUserRole()
+        ).toBe('SELLER');
+
+      }
+    );
+
+
+    it(
+      'should create a new demo profile for a different email',
+      () => {
+
+        localStorage.setItem(
+          'shopzone_profile',
+          JSON.stringify({
+            email: 'previous@example.com',
+            role: 'CUSTOMER'
+          })
+        );
+
+
+        expect(
+          service.login(
+            'seller@example.com',
+            'password',
+            'SELLER'
+          )
+        ).toBe(true);
+
+
+        expect(
+          service.getCurrentUser()
+        ).toEqual(
+          expect.objectContaining({
+            email: 'seller@example.com',
+            role: 'SELLER'
+          })
+        );
+
+      }
+    );
+
+
+    it(
+      'should apply the selected role to an existing profile',
+      () => {
+
+        localStorage.setItem(
+          'shopzone_profile',
+          JSON.stringify({
+            email: 'owner@example.com',
+            role: 'SELLER'
+          })
+        );
+
+
+        expect(
+          service.login(
+            'owner@example.com',
+            'password',
+            'OWNER'
+          )
+        ).toBe(true);
+
+
+        expect(
+          service.getUserRole()
+        ).toBe('OWNER');
+
+
+        expect(
+          JSON.parse(
+            localStorage.getItem('shopzone_profile') || '{}'
+          ).role
+        ).toBe('OWNER');
+
+      }
+    );
+
   }
 );

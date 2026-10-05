@@ -40,12 +40,10 @@ export class OrdersRevampService {
             this.revampUrl
           );
 
-
         console.log(
           'Orders Revamp HTTP Status:',
           response.status
         );
-
 
         if (
           !response.ok
@@ -56,11 +54,6 @@ export class OrdersRevampService {
           );
 
         }
-
-
-        // =====================================
-        // READ AS TEXT FIRST
-        // =====================================
 
         const responseText =
           await response.text();

@@ -1,39 +1,24 @@
 const {
   shareAll,
   withModuleFederationPlugin
-} = require(
-  '@angular-architects/module-federation/webpack'
-);
-
+} = require('@angular-architects/module-federation/webpack');
 
 module.exports =
   withModuleFederationPlugin({
 
-    name:
-      'ecommerceUser',
+    name: 'ecommerceUser',
 
     exposes: {
-
       './UsersModule':
         './src/app/users.module.ts'
-
     },
 
     shared: {
-
       ...shareAll({
-
-        singleton:
-          true,
-
-        strictVersion:
-          true,
-
-        requiredVersion:
-          'auto'
-
+        singleton: true,
+        strictVersion: false,
+        requiredVersion: 'auto'
       })
-
     }
 
   });

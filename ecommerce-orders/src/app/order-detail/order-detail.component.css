@@ -3,7 +3,7 @@
 
   padding: 40px 24px 70px;
 
-  background: #f7f8fc;
+  background: #f7f4ee;
 }
 
 
@@ -34,8 +34,8 @@
 
 
 .back-button:hover {
-  border-color: #6757f5;
-  color: #6757f5;
+  border-color: #c06e4a;
+  color: #9a5f3b;
 }
 
 
@@ -51,7 +51,7 @@
 
 
 .eyebrow {
-  color: #6757f5;
+  color: #9a5f3b;
 
   font-size: 12px;
   font-weight: 800;
@@ -247,7 +247,7 @@
 
 
 .final-total strong {
-  color: #6757f5;
+  color: #9a5f3b;
 
   font-size: 26px;
   font-weight: 800;
@@ -291,7 +291,7 @@
   border: none;
   border-radius: 9px;
 
-  background: #6757f5;
+  background: #c06e4a;
   color: #ffffff;
 
   font-weight: 700;

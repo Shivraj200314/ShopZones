@@ -1,32 +1,14 @@
 <div class="app-shell">
-
-  <!-- =========================================
-       NAVBAR
-  ========================================== -->
-
   <header class="main-header">
 
     <nav class="navbar">
 
-      <!-- =====================================
-           BRAND
-      ====================================== -->
-
       <button
         type="button"
         class="brand"
-        routerLink="/home"
-      >
+        (click)="goToDefaultPage()">
 
-        <span class="brand-icon">
-
-          {{
-            revampFallback()
-              ?.['main-layout']
-              ?.['logo-icon']
-          }}
-
-        </span>
+        <img class="brand-icon" src="assets/shopzones-mark.svg" alt="" aria-hidden="true" />
 
         <span class="brand-name">
 
@@ -40,17 +22,10 @@
 
       </button>
 
-
-      <!-- =====================================
-           NAVIGATION
-      ====================================== -->
-
       <div class="nav-links">
 
-
-        <!-- HOME -->
-
         <a
+          *ngIf="isLoggedIn"
           routerLink="/home"
           routerLinkActive="active"
           [routerLinkActiveOptions]="{
@@ -73,12 +48,8 @@
           </span>
 
         </a>
-
-
-
-        <!-- PRODUCT -->
-
         <a
+          *ngIf="isLoggedIn"
           routerLink="/products"
           routerLinkActive="active"
         >
@@ -99,11 +70,8 @@
 
         </a>
 
-
-
-        <!-- CART -->
-
         <a
+          *ngIf="isOwner || isCustomer"
           routerLink="/cart"
           routerLinkActive="active"
         >
@@ -129,12 +97,8 @@
           </span>
 
         </a>
-
-
-
-        <!-- ORDERS -->
-
-        <a
+ <a
+          *ngIf="isOwner || isCustomer"
           routerLink="/orders"
           routerLinkActive="active"
         >
@@ -157,45 +121,22 @@
 
       </div>
 
-
-
-      <!-- =====================================
-           USER AREA
-      ====================================== -->
-
-      <!-- =====================================
-     USER AREA
-====================================== -->
-
 <div class="user-section">
-
-
-  <!-- ===================================
-       LOGGED IN
-  ==================================== -->
-
   <ng-container
     *ngIf="
       isLoggedIn;
-      else loggedOutTemplate
-    "
-  >
-
-    <!-- PROFILE -->
+      else loggedOutTemplate">
 
     <button
       type="button"
       class="user-profile"
-      (click)="goToProfile()"
-    >
+      (click)="goToProfile()">
 
       <span class="user-avatar">
 
         {{ userInitial }}
 
       </span>
-
-
       <span class="user-details">
 
         <strong>
@@ -203,7 +144,6 @@
           {{ userName }}
 
         </strong>
-
 
         <small>
 
@@ -216,15 +156,11 @@
 
       </span>
 
-
       <span class="profile-arrow">
         ›
       </span>
 
     </button>
-
-
-    <!-- LOGOUT -->
 
     <button
       type="button"
@@ -235,7 +171,6 @@
       <span class="logout-icon">
         ↪
       </span>
-
 
       <span>
 
@@ -251,12 +186,6 @@
     </button>
 
   </ng-container>
-
-
-
-  <!-- ===================================
-       NOT LOGGED IN
-  ==================================== -->
 
   <ng-template
     #loggedOutTemplate
@@ -281,21 +210,10 @@
   </ng-template>
 
 </div>
-
     </nav>
-
   </header>
-
-
-  <!-- =========================================
-       PAGE CONTENT
-  ========================================== -->
-
   <main class="main-content">
-
     <router-outlet>
     </router-outlet>
-
   </main>
-
 </div>

@@ -1,35 +1,28 @@
 <div class="orders-page">
 
-
-  <!-- =========================================
-       HEADER
-  ========================================== -->
-
   <section class="orders-header">
 
     <div>
 
       <span class="eyebrow">
         {{
-          revampFallback()
-            ?.['order-list']
-            ?.['eyebrow']
+        revampFallback()?.['order-list']?.['eyebrow']
         }}
       </span>
 
       <h1>
         {{
-          revampFallback()
-            ?.['order-list']
-            ?.['title']
+        revampFallback()
+        ?.['order-list']
+        ?.['title']
         }}
       </h1>
 
       <p>
         {{
-          revampFallback()
-            ?.['order-list']
-            ?.['subtitle']
+        revampFallback()
+        ?.['order-list']
+        ?.['subtitle']
         }}
       </p>
 
@@ -49,16 +42,7 @@
 
   </section>
 
-
-
-  <!-- =========================================
-       DASHBOARD SUMMARY
-  ========================================== -->
-
-  <section
-    class="order-stats"
-    *ngIf="totalOrders > 0"
-  >
+  <section class="order-stats" *ngIf="totalOrders > 0">
 
 
     <div class="stat-card">
@@ -126,6 +110,27 @@
 
     <div class="stat-card">
 
+      <div class="stat-icon pending-icon">
+        ◷
+      </div>
+
+      <div>
+
+        <span>
+          Pending
+        </span>
+
+        <strong>
+          {{ pendingOrders }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
       <div class="stat-icon money-icon">
         ₹
       </div>
@@ -138,8 +143,8 @@
 
         <strong>
           ₹{{
-            totalSpent
-              | number:'1.2-2'
+          totalSpent
+          | number:'1.2-2'
           }}
         </strong>
 
@@ -149,66 +154,33 @@
 
   </section>
 
-
-
-  <!-- =========================================
-       FILTER TOOLBAR
-  ========================================== -->
-
-  <section
-    class="orders-toolbar"
-    *ngIf="totalOrders > 0"
-  >
-
-
-    <!-- SEARCH -->
+  <section class="orders-toolbar" *ngIf="totalOrders > 0">
 
     <div class="search-box">
 
       <span class="search-icon">
 
         {{
-          revampFallback()
-            ?.['order-list']
-            ?.['search-icon']
+        revampFallback()
+        ?.['order-list']
+        ?.['search-icon']
         }}
 
       </span>
 
 
-      <input
-        type="text"
-        [formControl]="searchControl"
-        [placeholder]="
+      <input type="text" [formControl]="searchControl" [placeholder]="
           revampFallback()
             ?.['order-list']
             ?.['search-placeholder']
-        "
-        autocomplete="off"
-      />
+        " autocomplete="off" />
 
 
-      <button
-        *ngIf="searchControl.value"
-        type="button"
-        class="clear-search"
-        (click)="clearSearch()"
-      >
-
-        ✕
-
+      <button *ngIf="searchControl.value" type="button" class="clear-search" (click)="clearSearch()">✕
       </button>
 
     </div>
-
-
-
-    <!-- STATUS -->
-
-    <select
-      class="filter-select"
-      [formControl]="statusControl"
-    >
+    <select class="filter-select" [formControl]="statusControl">
 
       <option value="All">
         All Status
@@ -232,14 +204,7 @@
 
     </select>
 
-
-
-    <!-- SORT -->
-
-    <select
-      class="filter-select"
-      [formControl]="sortControl"
-    >
+    <select class="filter-select" [formControl]="sortControl">
 
       <option value="latest">
         Latest First
@@ -259,36 +224,16 @@
 
     </select>
 
-
-
-    <!-- CLEAR FILTER -->
-
-    <button
-      type="button"
-      class="clear-filter-button"
-      *ngIf="hasActiveFilters"
-      (click)="clearFilters()"
-    >
+    <button type="button" class="clear-filter-button" *ngIf="hasActiveFilters" (click)="clearFilters()">
 
       Clear Filters
 
     </button>
 
   </section>
-
-
-
-  <!-- =========================================
-       RESULT INFORMATION
-  ========================================== -->
-
-  <div
-    class="result-info"
-    *ngIf="
+  <div class="result-info" *ngIf="
       totalOrders > 0 &&
-      hasActiveFilters
-    "
-  >
+      hasActiveFilters">
 
     Showing
 
@@ -305,26 +250,15 @@
     orders
 
   </div>
-
-
-
-  <!-- =========================================
-       NO ORDERS
-  ========================================== -->
-
-  <section
-    class="empty-orders"
-    *ngIf="
-      totalOrders === 0
-    "
-  >
+  <section class="empty-orders" *ngIf="
+      totalOrders === 0">
 
     <div class="empty-icon">
 
       {{
-        revampFallback()
-          ?.['order-list']
-          ?.['empty-icon']
+      revampFallback()
+      ?.['order-list']
+      ?.['empty-icon']
       }}
 
     </div>
@@ -333,61 +267,48 @@
     <h2>
 
       {{
-        revampFallback()
-          ?.['order-list']
-          ?.['empty-title']
+      revampFallback()
+      ?.['order-list']
+      ?.['empty-title']
       }}
 
     </h2>
 
-
     <p>
 
       {{
-        revampFallback()
-          ?.['order-list']
-          ?.['empty-description']
+      revampFallback()
+      ?.['order-list']
+      ?.['empty-description']
       }}
 
     </p>
 
   </section>
 
-
-
-  <!-- =========================================
-       NO FILTER RESULTS
-  ========================================== -->
-
-  <section
-    class="empty-orders"
-    *ngIf="
+  <section class="empty-orders" *ngIf="
       totalOrders > 0 &&
-      orders.length === 0
-    "
-  >
+      orders.length === 0">
 
     <div class="empty-icon">
 
       {{
-        revampFallback()
-          ?.['order-list']
-          ?.['no-results-icon']
+      revampFallback()
+      ?.['order-list']
+      ?.['no-results-icon']
       }}
 
     </div>
 
-
     <h2>
 
       {{
-        revampFallback()
-          ?.['order-list']
-          ?.['no-results-title']
+      revampFallback()
+      ?.['order-list']
+      ?.['no-results-title']
       }}
 
     </h2>
-
 
     <p>
 
@@ -396,12 +317,7 @@
 
     </p>
 
-
-    <button
-      type="button"
-      class="clear-results-button"
-      (click)="clearFilters()"
-    >
+    <button type="button" class="clear-results-button" (click)="clearFilters()">
 
       Clear Filters
 
@@ -409,25 +325,11 @@
 
   </section>
 
+  <section class="orders-list" *ngIf="
+      orders.length > 0 ">
 
-
-  <!-- =========================================
-       ORDERS
-  ========================================== -->
-
-  <section
-    class="orders-list"
-    *ngIf="
-      orders.length > 0
-    "
-  >
-
-
-    <article
-      class="order-card"
-      *ngFor="
-        let order of orders;"
-    >
+    <article class="order-card" *ngFor="
+        let order of orders;">
 
       <div class="order-header">
 
@@ -442,9 +344,9 @@
             <span class="order-label">
 
               {{
-                revampFallback()
-                  ?.['order-list']
-                  ?.['order-id-label']
+              revampFallback()
+              ?.['order-list']
+              ?.['order-id-label']
               }}
 
             </span>
@@ -460,12 +362,9 @@
         </div>
 
 
-        <span
-          class="status"
-          [ngClass]="
+        <span class="status" [ngClass]="
             getStatusClass(order)
-          "
-        >
+          ">
 
           <span class="status-dot">
           </span>
@@ -475,12 +374,6 @@
         </span>
 
       </div>
-
-
-
-      <!-- =====================================
-           ORDER INFORMATION
-      ====================================== -->
 
       <div class="order-info">
 
@@ -500,9 +393,9 @@
             <strong>
 
               {{
-                formatDate(
-                  getCreatedDate(order)
-                )
+              formatDate(
+              getCreatedDate(order)
+              )
               }}
 
             </strong>
@@ -510,7 +403,6 @@
           </div>
 
         </div>
-
 
         <div class="info-card">
 
@@ -573,8 +465,8 @@
             <strong class="purple">
 
               ₹{{
-                getOrderTotal(order)
-                  | number:'1.2-2'
+              getOrderTotal(order)
+              | number:'1.2-2'
               }}
 
             </strong>
@@ -584,12 +476,6 @@
         </div>
 
       </div>
-
-
-
-      <!-- =====================================
-           PRODUCTS
-      ====================================== -->
 
       <div class="order-items">
 
@@ -603,35 +489,18 @@
 
         </div>
 
-
-        <div
-          class="order-item"
-          *ngFor="
-            let item of getOrderItems(order)
-          "
-        >
-
+        <div class="order-item" *ngFor="
+            let item of getOrderItems(order)">
 
           <div class="product-image">
 
-            <img
-              *ngIf="item.image"
-              [src]="item.image"
-              [alt]="item.name"
-            />
+            <img *ngIf="item.image" [src]="item.image" [alt]="item.name" />
 
-
-            <div
-              *ngIf="!item.image"
-              class="image-placeholder"
-            >
-
+            <div *ngIf="!item.image" class="image-placeholder">
               📦
-
             </div>
 
           </div>
-
 
           <div class="product-info">
 
@@ -639,16 +508,14 @@
               {{ item.name }}
             </h3>
 
-
             <span class="product-price">
 
               ₹{{
-                item.price
-                  | number:'1.2-2'
+              item.price
+              | number:'1.2-2'
               }}
 
             </span>
-
 
             <span class="quantity">
 
@@ -663,8 +530,8 @@
           <strong class="item-total">
 
             ₹{{
-              getItemTotal(item)
-                | number:'1.2-2'
+            getItemTotal(item)
+            | number:'1.2-2'
             }}
 
           </strong>
@@ -672,17 +539,7 @@
         </div>
 
       </div>
-
-
-
-      <!-- =====================================
-           DELIVERY
-      ====================================== -->
-
-      <div
-        class="customer-info"
-        *ngIf="order.customer"
-      >
+      <div class="customer-info" *ngIf="order.customer">
 
         <div class="delivery-title">
 
@@ -704,7 +561,6 @@
 
         </div>
 
-
         <div class="delivery-details">
 
           <strong>
@@ -713,19 +569,14 @@
 
           </strong>
 
-
           <p>
-
             {{ order.customer.address }},
 
             {{ order.customer.city }}
-
             -
-
             {{ order.customer.pinCode }}
 
           </p>
-
 
           <div class="contact-row">
 
@@ -737,11 +588,9 @@
             </span>
 
 
-            <span
-              *ngIf="
+            <span *ngIf="
                 order.customer.email
-              "
-            >
+              ">
 
               ✉️
               {{ order.customer.email }}
@@ -772,8 +621,8 @@
           <strong>
 
             ₹{{
-              getOrderTotal(order)
-                | number:'1.2-2'
+            getOrderTotal(order)
+            | number:'1.2-2'
             }}
 
           </strong>
@@ -787,28 +636,17 @@
 
           <!-- REORDER -->
 
-          <button
-            type="button"
-            class="reorder-button"
-            (click)="reorder(order)"
-          >
+          <button type="button" class="reorder-button" (click)="reorder(order)">
 
             🛒 Reorder
 
           </button>
 
-
-
           <!-- CANCEL -->
 
-          <button
-            type="button"
-            class="cancel-order-button"
-            *ngIf="
+          <button type="button" class="cancel-order-button" *ngIf="
               canCancel(order)
-            "
-            (click)="cancelOrder(order)"
-          >
+            " (click)="cancelOrder(order)">
 
             Cancel Order
 
@@ -818,18 +656,14 @@
 
           <!-- DETAILS -->
 
-          <button
-            type="button"
-            class="view-details-button"
-            (click)="
+          <button type="button" class="view-details-button" (click)="
               viewOrderDetails(order)
-            "
-          >
+            ">
 
             {{
-              revampFallback()
-                ?.['order-list']
-                ?.['view-details-label']
+            revampFallback()
+            ?.['order-list']
+            ?.['view-details-label']
             }}
 
             →

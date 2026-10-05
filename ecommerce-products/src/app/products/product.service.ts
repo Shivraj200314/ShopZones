@@ -89,15 +89,19 @@ export class ProductService {
     throw new Error('Method not implemented.');
   }
 
+  // https://dummyjson.com/c/49b5-905a-4627-8869
   private readonly apiUrl =
-    'https://dummyjson.com/c/8ae3-0be2-4473-8a0c';
+    'https://dummyjson.com/c/49b5-905a-4627-8869';
 
+    // https://dummyjson.com/c/374f-f022-4cb0-bd88
   private readonly cartKey =
     'https://dummyjson.com/c/374f-f022-4cb0-bd88';
 
   private readonly customProductsKey =
     'shopzone_custom_products';
 
+  private readonly inventoryStockKey =
+    'shopzone_inventory_stock';
 
   constructor(
     private http: HttpClient
@@ -248,7 +252,9 @@ export class ProductService {
 
 
       return of(
-        customProduct
+        this.mapProduct(
+          customProduct
+        )
       );
 
     }
@@ -366,6 +372,9 @@ export class ProductService {
 private mapProduct(
   product: any
 ): Product {
+
+  const stockOverrides =
+    this.getInventoryStock();
 
   const price =
     Number(
@@ -493,12 +502,65 @@ private mapProduct(
 
     stock:
       Number(
-        product.stock ?? 0
+        stockOverrides[
+          String(product.id ?? 0)
+        ] ??
+        product.stock ??
+        0
       )
 
   };
 
 }
+
+
+  private getInventoryStock():
+    Record<string, number> {
+
+    const savedStock =
+      localStorage.getItem(
+        this.inventoryStockKey
+      );
+
+
+    if (
+      !savedStock
+    ) {
+
+      return {};
+
+    }
+
+
+    try {
+
+      const parsedStock =
+        JSON.parse(
+          savedStock
+        );
+
+      return parsedStock &&
+        typeof parsedStock === 'object' &&
+        !Array.isArray(parsedStock)
+        ? parsedStock
+        : {};
+
+    }
+
+    catch (
+      error
+    ) {
+
+      console.error(
+        'Error reading product inventory:',
+        error
+      );
+
+      return {};
+
+    }
+
+  }
 
 
   // =============================================

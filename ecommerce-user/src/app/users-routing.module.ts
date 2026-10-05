@@ -11,6 +11,10 @@ import {
   ProfileComponent
 } from './profile/profile.component';
 
+import {
+  LoginComponent
+} from './login/login.component';
+
 
 const routes:
   Routes = [
@@ -43,6 +47,39 @@ const routes:
 
       component:
         ProfileComponent
+    },
+
+    {
+      path:
+        'home',
+
+      redirectTo:
+        'profile',
+
+      pathMatch:
+        'full'
+    },
+
+    {
+      path:
+        'login',
+
+      title:
+        'Login',
+
+      component:
+        LoginComponent
+    },
+
+    {
+      path:
+        'signup',
+
+      redirectTo:
+        'login',
+
+      pathMatch:
+        'full'
     }
 
   ];

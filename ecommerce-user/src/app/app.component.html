@@ -1,2 +1,45 @@
-<router-outlet>
-</router-outlet>
+<div class="user-shell">
+  <header class="user-header">
+    <div class="brand-block">
+      <img class="brand-mark" src="assets/shopzones-mark.svg" alt="" aria-hidden="true" />
+      <span class="brand-name">ShopZones</span>
+    </div>
+
+    <nav class="user-nav" aria-label="Main navigation">
+      <a routerLink="/profile" routerLinkActive="active">
+        <span class="nav-icon">🏠</span>
+        <span>Home</span>
+      </a>
+      <a routerLink="/profile" routerLinkActive="active">
+        <span class="nav-icon">🛍️</span>
+        <span>Product</span>
+      </a>
+      <a routerLink="/profile" routerLinkActive="active">
+        <span class="nav-icon">🛒</span>
+        <span>Cart</span>
+      </a>
+      <a routerLink="/profile" routerLinkActive="active">
+        <span class="nav-icon">📦</span>
+        <span>Orders</span>
+      </a>
+    </nav>
+
+    <div class="user-session">
+      <div class="session-profile">
+        <div class="session-avatar">S</div>
+        <div class="session-meta">
+          <strong>SHIVRAJ</strong>
+          <small>shivraj@gmail.com</small>
+        </div>
+      </div>
+      <button type="button" class="logout-button">
+        <span class="logout-icon">↪</span>
+        <span>Logout</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="user-main">
+    <router-outlet></router-outlet>
+  </main>
+</div>

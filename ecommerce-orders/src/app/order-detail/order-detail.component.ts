@@ -42,44 +42,19 @@ import {
 export class OrderDetailComponent
   implements OnInit, OnDestroy {
 
-
-  // ==========================================
-  // REVAMP FALLBACK
-  // ==========================================
-
   revampFallback =
     signal<any>(
       ORDER_FALLBACK
     );
 
-
-  // ==========================================
-  // ORDER
-  // ==========================================
-
   order:
     Order | null = null;
-
-
-  // ==========================================
-  // ORDER ID
-  // ==========================================
 
   orderId =
     '';
 
-
-  // ==========================================
-  // DESTROY
-  // ==========================================
-
   private destroy$ =
     new Subject<void>();
-
-
-  // ==========================================
-  // CONSTRUCTOR
-  // ==========================================
 
   constructor(
 
@@ -92,12 +67,7 @@ export class OrderDetailComponent
     private ordersRevampService:
       OrdersRevampService
 
-  ) {}
-
-
-  // ==========================================
-  // INIT
-  // ==========================================
+  ) { }
 
   ngOnInit(): void {
 
@@ -133,11 +103,6 @@ export class OrderDetailComponent
 
   }
 
-
-  // ==========================================
-  // LOAD REVAMP
-  // ==========================================
-
   loadRevampContent(): void {
 
     this.ordersRevampService
@@ -170,22 +135,17 @@ export class OrderDetailComponent
 
         },
 
-
         error: (
-          error
+          error: unknown
         ) => {
-
           console.error(
             'Order detail revamp failed:',
             error
           );
 
-
-          this.revampFallback
-            .set(
-              ORDER_FALLBACK
-            );
-
+          this.revampFallback.set(
+            ORDER_FALLBACK
+          );
         }
 
       });
@@ -278,7 +238,7 @@ export class OrderDetailComponent
     }
 
     catch (
-      error
+    error
     ) {
 
       console.error(
@@ -418,11 +378,6 @@ export class OrderDetailComponent
 
   }
 
-
-  // ==========================================
-  // STATUS
-  // ==========================================
-
   getOrderStatus():
     string {
 
@@ -435,8 +390,8 @@ export class OrderDetailComponent
       currentOrder?.status ||
 
       this.revampFallback()
-        ['order-detail']
-        ['status-default']
+      ['order-detail']
+      ['status-default']
 
     );
 
@@ -534,8 +489,8 @@ export class OrderDetailComponent
 
 
     return this.revampFallback()
-      ['order-detail']
-      ['payment-not-available'];
+    ['order-detail']
+    ['payment-not-available'];
 
   }
 
@@ -560,7 +515,7 @@ export class OrderDetailComponent
     return new Date(
       date
     )
-      .toLocaleDateString(
+      .toLocaleString(
         'en-IN',
         {
 
@@ -571,7 +526,16 @@ export class OrderDetailComponent
             'short',
 
           year:
-            'numeric'
+            'numeric',
+
+          hour:
+            '2-digit',
+
+          minute:
+            '2-digit',
+
+          hour12:
+            true
 
         }
       );

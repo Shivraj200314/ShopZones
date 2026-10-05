@@ -1,5 +1,7 @@
 import {
   Component,
+  HostListener,
+  OnDestroy,
   OnInit,
   signal
 } from '@angular/core';
@@ -16,6 +18,11 @@ import {
 } from '@angular/router';
 
 import {
+  Subject,
+  takeUntil
+} from 'rxjs';
+
+import {
   Product
 } from '../product';
 
@@ -26,8 +33,19 @@ import {
 import {
   PRODUCT_FALLBACK
 } from '../core/constants/product-fallback.constants';
-import { ProductRevampService } from '../services/product-revamp.service';
-import { mergeData } from 'src/app/units/marge';
+
+import {
+  ProductRevampService
+} from '../services/product-revamp.service';
+
+import {
+  mergeData
+} from 'src/app/units/marge';
+
+import {
+  ProductLanguageService
+} from '../services/product-language.service';
+import { AuthService } from 'src/app/auth.service';
 
 
 @Component({
@@ -36,7 +54,7 @@ import { mergeData } from 'src/app/units/marge';
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent
-  implements OnInit {
+  implements OnInit, OnDestroy {
 
 
   // ==========================================
@@ -48,43 +66,73 @@ export class ProductListComponent
       PRODUCT_FALLBACK
     );
 
-  allProducts: Product[] = [];
 
-  products: Product[] = [];
+  // ==========================================
+  // ALL PRODUCTS
+  // ==========================================
+
+  allProducts:
+    Product[] = [];
 
 
   // ==========================================
-  // CATEGORY
+  // FILTERED PRODUCTS
+  // ==========================================
+
+  products:
+    Product[] = [];
+
+
+  // ==========================================
+  // SELECTED CATEGORY
   // ==========================================
 
   selectedCategory:
     string = 'All';
 
 
-  categories: string[] = [
-    'beauty',
-    'fragrances',
-    'groceries'
-  ];
+  // ==========================================
+  // PRODUCT CATEGORIES
+  // ==========================================
+
+  categories:
+    string[] = [
+
+      'beauty',
+
+      'fragrances',
+
+      'groceries'
+
+    ];
 
 
   // ==========================================
-  // SEARCH
+  // SEARCH TEXT
   // ==========================================
 
   searchText:
     string = '';
 
+
+  // ==========================================
+  // CART COUNT
+  // ==========================================
+
   cartCount:
     number = 0;
 
+
+  // ==========================================
+  // CART MESSAGE
+  // ==========================================
 
   cartMessage:
     string = '';
 
 
   // ==========================================
-  // ERROR
+  // ERROR MESSAGE
   // ==========================================
 
   errorMessage:
@@ -92,191 +140,569 @@ export class ProductListComponent
 
 
   // ==========================================
-  // ADD PRODUCT
+  // ADD PRODUCT FORM VISIBILITY
   // ==========================================
 
   showAddProductForm:
     boolean = false;
 
 
+  // ==========================================
+  // ADD PRODUCT FORM
+  // ==========================================
+
   addProductForm!:
     FormGroup;
 
 
- constructor(
-  private productService:
-    ProductService,
-
-  private router:
-    Router,
-
-  private route:
-    ActivatedRoute,
-
-  private fb:
-    FormBuilder,
-
-    private productRevampService:ProductRevampService
-
-    
-) { }
-
-
- ngOnInit(): void {
-
-  this.createAddProductForm();
-
-  // Constant already loaded first
-
-  this.readCategoryFromUrl();
-  this.loadProducts();
-this.loadRevampData();
-  this.updateCartCount();
-
-}
-loadRevampData(): void {
-
-  this.productRevampService
-    .getRevampContent()
-    .subscribe({
-
-      next: (response: any) => {
-
-        console.log(
-          'RAW REVAMP API:',
-          response
-        );
-
-        const apiData =
-          response?.data
-            ? response.data
-            : response;
-
-
-        console.log(
-          'API EYEBROW:',
-          apiData
-            ?.['product-list']
-            ?.['eyebrow']
-        );
-
-
-        const finalData =
-          mergeData(
-            PRODUCT_FALLBACK,
-            apiData
-          );
-
-
-        console.log(
-          'FINAL EYEBROW:',
-          finalData
-            ?.['product-list']
-            ?.['eyebrow']
-        );
-
-
-        this.revampFallback.set(
-          finalData
-        );
-
-      },
-
-      error: (error: any) => {
-
-        console.error(
-          'Product Revamp API Error:',
-          error
-        );
-
-        this.revampFallback.set(
-          PRODUCT_FALLBACK
-        );
-
-      }
-
-    });
-
-}
-
-viewAllProducts(): void {
-
   // ==========================================
-  // CLEAR SEARCH
+  // CURRENT USER ROLE
   // ==========================================
 
-  this.searchText = '';
+  userRole:
+    string = '';
 
 
   // ==========================================
-  // SELECT ALL PRODUCTS
+  // DESTROY SUBJECT
   // ==========================================
 
-  this.selectedCategory =
-    'All';
-
-
-  // ==========================================
-  // REMOVE CATEGORY FROM URL
-  // ==========================================
-
-  this.router.navigate(
-    [],
-    {
-
-      relativeTo:
-        this.route,
-
-      queryParams: {
-
-        category:
-          null
-
-      },
-
-      queryParamsHandling:
-        'merge'
-
-    }
-  );
+  private readonly destroy$ =
+    new Subject<void>();
 
 
   // ==========================================
-  // SHOW ALL PRODUCTS
+  // CONSTRUCTOR
   // ==========================================
 
-  this.applyFilters();
+  constructor(
 
-}
+    private productService:
+      ProductService,
+
+    private router:
+      Router,
+
+    private route:
+      ActivatedRoute,
+
+    private fb:
+      FormBuilder,
+
+    private productRevampService:
+      ProductRevampService,
+
+    private productLanguageService:
+      ProductLanguageService,
+
+       private authService:
+    AuthService
+
+  ) {}
 
 
+  // ==========================================
+  // INIT
+  // ==========================================
 
-private normalizeRevampData(
-  response: any
-): any {
+  ngOnInit(): void {
+
+    // ========================================
+    // CREATE ADD PRODUCT FORM
+    // ========================================
+
+    this.createAddProductForm();
 
 
-  if (!response) {
+    // ========================================
+    // READ CATEGORY FROM URL
+    // ========================================
 
-    return {};
+    this.readCategoryFromUrl();
+
+
+    // ========================================
+    // LOAD USER ROLE
+    // ========================================
+
+    this.loadUserRole();
+
+
+    // ========================================
+    // LOAD PRODUCTS
+    // ========================================
+
+    this.loadProducts();
+
+
+    // ========================================
+    // LOAD REVAMP CONTENT
+    // ========================================
+
+    this.loadRevampData();
+
+
+    // ========================================
+    // UPDATE CART COUNT
+    // ========================================
+
+    this.updateCartCount();
+
+
+    // ========================================
+    // LOAD LANGUAGE
+    // ========================================
+
+    const language =
+      localStorage.getItem(
+        'shopzones-language'
+      ) === 'mr'
+        ? 'mr'
+        : 'en';
+
+
+    this.productLanguageService
+      .loadLanguage(language)
+      .pipe(
+        takeUntil(
+          this.destroy$
+        )
+      )
+      .subscribe();
 
   }
 
 
   // ==========================================
-  // CASE 1
-  // API ALREADY MATCHES FALLBACK
-  //
-  // {
-  //   "product-list": {...}
-  // }
+  // LOAD CURRENT USER ROLE
   // ==========================================
 
-  if (
-    response['product-list'] ||
-    response['product-detail'] ||
-    response['products-loader']
-  ) {
+  loadUserRole(): void {
+
+    const userData =
+      localStorage.getItem(
+        'shopzone_user'
+      );
+
+
+    // ========================================
+    // USER NOT LOGGED IN
+    // ========================================
+
+    if (!userData) {
+
+      this.userRole = '';
+
+      return;
+
+    }
+
+
+    // ========================================
+    // PARSE USER DATA
+    // ========================================
+
+    try {
+
+      const user =
+        JSON.parse(
+          userData
+        );
+
+
+      this.userRole =
+        user?.role
+          ?.trim()
+          .toUpperCase()
+          ?? '';
+
+    }
+
+    catch (
+      error
+    ) {
+
+      console.error(
+        'User data parse error:',
+        error
+      );
+
+
+      this.userRole =
+        '';
+
+    }
+
+  }
+
+
+  // ==========================================
+  // CHECK CAN ADD PRODUCT
+  // ==========================================
+
+  get canAddProduct(): boolean {
+
+    return (
+
+      this.userRole ===
+        'SELLER'
+
+      ||
+
+      this.userRole ===
+        'OWNER'
+
+    );
+
+  }
+
+
+  get canAddToCart(): boolean {
+
+    return (
+      this.userRole === 'CUSTOMER' ||
+      this.userRole === 'OWNER'
+    );
+
+  }
+
+
+  @HostListener(
+    'window:shopzone-inventory-updated'
+  )
+  onInventoryUpdated(): void {
+
+    this.refreshInventory();
+
+  }
+
+
+  @HostListener(
+    'window:storage',
+    ['$event']
+  )
+  onStorageChange(
+    event: StorageEvent
+  ): void {
+
+    if (
+      event.key === 'shopzone_inventory_stock'
+    ) {
+
+      this.refreshInventory();
+
+    }
+
+  }
+
+
+  refreshInventory(): void {
+
+    const savedStock =
+      localStorage.getItem(
+        'shopzone_inventory_stock'
+      );
+
+
+    if (
+      !savedStock
+    ) {
+
+      return;
+
+    }
+
+
+    try {
+
+      const stockOverrides =
+        JSON.parse(
+          savedStock
+        ) as Record<string, number>;
+
+
+      this.allProducts =
+        this.allProducts.map(
+          product => ({
+            ...product,
+            stock: Number(
+              stockOverrides[String(product.id)] ??
+              product.stock
+            )
+          })
+        );
+
+      this.applyFilters();
+
+    }
+
+    catch {
+
+      return;
+
+    }
+
+  }
+
+
+  // ==========================================
+  // LOAD REVAMP CONTENT
+  // ==========================================
+
+  loadRevampData(): void {
+
+    this.productRevampService
+      .getRevampContent()
+
+      .pipe(
+        takeUntil(
+          this.destroy$
+        )
+      )
+
+      .subscribe({
+
+        // ======================================
+        // SUCCESS
+        // ======================================
+
+        next: (
+          response: any
+        ) => {
+
+          console.log(
+            'RAW REVAMP API:',
+            response
+          );
+
+
+          // ====================================
+          // GET API DATA
+          // ====================================
+
+          const apiData =
+            response?.data
+              ? response.data
+              : response;
+
+
+          console.log(
+            'API EYEBROW:',
+            apiData
+              ?.['product-list']
+              ?.['eyebrow']
+          );
+
+
+          // ====================================
+          // MERGE FALLBACK + API
+          // ====================================
+
+          const finalData =
+            mergeData(
+              PRODUCT_FALLBACK,
+              apiData
+            );
+
+
+          console.log(
+            'FINAL EYEBROW:',
+            finalData
+              ?.['product-list']
+              ?.['eyebrow']
+          );
+
+
+          // ====================================
+          // UPDATE SIGNAL
+          // ====================================
+
+          this.revampFallback.set(
+            finalData
+          );
+
+        },
+
+
+        // ======================================
+        // ERROR
+        // ======================================
+
+        error: (
+          error: any
+        ) => {
+
+          console.error(
+            'Product Revamp API Error:',
+            error
+          );
+
+
+          this.revampFallback.set(
+            PRODUCT_FALLBACK
+          );
+
+        }
+
+      });
+
+  }
+
+
+  // ==========================================
+  // NORMALIZE REVAMP DATA
+  // ==========================================
+
+  private normalizeRevampData(
+    response: any
+  ): any {
+
+    // ========================================
+    // EMPTY RESPONSE
+    // ========================================
+
+    if (!response) {
+
+      return {};
+
+    }
+
+
+    // ========================================
+    // CASE 1
+    // API ALREADY MATCHES FALLBACK
+    // ========================================
+
+    if (
+
+      response['product-list']
+
+      ||
+
+      response['product-detail']
+
+      ||
+
+      response['products-loader']
+
+    ) {
+
+      return response;
+
+    }
+
+
+    // ========================================
+    // CASE 2
+    // API RETURNS { data: {...} }
+    // ========================================
+
+    if (
+      response.data
+    ) {
+
+      return this.normalizeRevampData(
+        response.data
+      );
+
+    }
+
+
+    // ========================================
+    // CASE 3
+    // API RETURNS screenContent ARRAY
+    // ========================================
+
+    if (
+
+      Array.isArray(
+        response.screenContent
+      )
+
+    ) {
+
+      return this.convertKeyArrayToObject(
+        response.screenContent
+      );
+
+    }
+
+
+    // ========================================
+    // CASE 4
+    // AEM / EM STYLE
+    // ========================================
+
+    if (
+
+      Array.isArray(
+        response.content
+      )
+
+    ) {
+
+      const finalData:
+        any = {};
+
+
+      response.content.forEach(
+        (
+          screen: any
+        ) => {
+
+          if (
+
+            Array.isArray(
+              screen?.screenContent
+            )
+
+          ) {
+
+            const screenData =
+              this.convertKeyArrayToObject(
+                screen.screenContent
+              );
+
+
+            Object.assign(
+              finalData,
+              screenData
+            );
+
+          }
+
+        }
+      );
+
+
+      return finalData;
+
+    }
+
+
+    // ========================================
+    // CASE 5
+    // DIRECT ARRAY
+    // ========================================
+
+    if (
+
+      Array.isArray(
+        response
+      )
+
+    ) {
+
+      return this.convertKeyArrayToObject(
+        response
+      );
+
+    }
+
+
+    // ========================================
+    // DEFAULT
+    // ========================================
 
     return response;
 
@@ -284,177 +710,82 @@ private normalizeRevampData(
 
 
   // ==========================================
-  // CASE 2
-  // API RETURNS { data: {...} }
+  // CONVERT KEY ARRAY TO OBJECT
   // ==========================================
 
-  if (
-    response.data
-  ) {
+  private convertKeyArrayToObject(
+    items: any[]
+  ): any {
 
-    return this.normalizeRevampData(
-      response.data
-    );
-
-  }
+    const result:
+      any = {};
 
 
-  // ==========================================
-  // CASE 3
-  // API RETURNS screenContent ARRAY
-  // ==========================================
-
-  if (
-    Array.isArray(
-      response.screenContent
-    )
-  ) {
-
-    return this.convertKeyArrayToObject(
-      response.screenContent
-    );
-
-  }
-
-
-  // ==========================================
-  // CASE 4
-  // EM / AEM STYLE
-  //
-  // {
-  //   content: [
-  //     {
-  //       screenIdentifier: "...",
-  //       screenContent: [...]
-  //     }
-  //   ]
-  // }
-  // ==========================================
-
-  if (
-    Array.isArray(
-      response.content
-    )
-  ) {
-
-    const finalData: any = {};
-
-
-    response.content.forEach(
+    items.forEach(
       (
-        screen: any
+        item: any
       ) => {
 
         if (
-          Array.isArray(
-            screen?.screenContent
-          )
+
+          !item
+
+          ||
+
+          !item.key
+
         ) {
 
-          const screenData =
-            this.convertKeyArrayToObject(
-              screen.screenContent
-            );
-
-
-          Object.assign(
-            finalData,
-            screenData
-          );
+          return;
 
         }
 
+
+        result[
+          item.key
+        ] = {
+
+          ...item
+
+        };
+
       }
     );
 
 
-    return finalData;
+    return result;
 
   }
 
 
   // ==========================================
-  // CASE 5
-  // DIRECT ARRAY
-  //
-  // [
-  //   {
-  //     key: 'product-list',
-  //     ...
-  //   }
-  // ]
+  // GET REVAMP PRODUCT
   // ==========================================
 
-  if (
-    Array.isArray(
-      response
-    )
-  ) {
+  getRevampProduct(
+    productId: number
+  ): any {
 
-    return this.convertKeyArrayToObject(
-      response
+    return (
+
+      this.revampFallback()
+        ?.['products']
+        ?.find(
+          (
+            item: any
+          ) =>
+            item.id ===
+            productId
+        )
+
+      ||
+
+      {}
+
     );
 
   }
 
-
-  return response;
-
-}
-private convertKeyArrayToObject(
-  items: any[]
-): any {
-
-  const result: any = {};
-
-
-  items.forEach(
-    (
-      item: any
-    ) => {
-
-      if (
-        !item ||
-        !item.key
-      ) {
-
-        return;
-
-      }
-
-
-      result[
-        item.key
-      ] = {
-
-        ...item
-
-      };
-
-    }
-  );
-
-
-  return result;
-
-}
-
-
-getRevampProduct(
-  productId: number
-): any {
-
-  return (
-    this.revampFallback()
-      ?.['products']
-      ?.find(
-        (item: any) =>
-          item.id === productId
-      )
-    || {}
-  );
-
-}
 
   // ==========================================
   // CREATE ADD PRODUCT FORM
@@ -466,48 +797,77 @@ getRevampProduct(
       this.fb.group({
 
         name: [
+
           '',
+
           Validators.required
+
         ],
 
         brand: [
+
           '',
+
           Validators.required
+
         ],
 
         category: [
+
           '',
+
           Validators.required
+
         ],
 
         price: [
+
           '',
+
           [
+
             Validators.required,
+
             Validators.min(1)
+
           ]
+
         ],
 
         oldPrice: [
+
           ''
+
         ],
 
         stock: [
+
           '',
+
           [
+
             Validators.required,
+
             Validators.min(1)
+
           ]
+
         ],
 
         image: [
+
           '',
+
           Validators.required
+
         ],
 
         description: [
+
           '',
+
           Validators.required
+
         ]
 
       });
@@ -534,6 +894,13 @@ getRevampProduct(
 
     this.route
       .queryParamMap
+
+      .pipe(
+        takeUntil(
+          this.destroy$
+        )
+      )
+
       .subscribe(
         params => {
 
@@ -543,17 +910,31 @@ getRevampProduct(
             );
 
 
+          // ====================================
+          // VALID CATEGORY
+          // ====================================
+
           if (
-            category &&
+
+            category
+
+            &&
+
             this.categories.includes(
               category.toLowerCase()
             )
+
           ) {
 
             this.selectedCategory =
               category.toLowerCase();
 
           }
+
+
+          // ====================================
+          // ALL PRODUCTS
+          // ====================================
 
           else {
 
@@ -577,12 +958,24 @@ getRevampProduct(
 
   loadProducts(): void {
 
-    this.errorMessage = '';
+    this.errorMessage =
+      '';
 
 
     this.productService
       .getProducts()
+
+      .pipe(
+        takeUntil(
+          this.destroy$
+        )
+      )
+
       .subscribe({
+
+        // ======================================
+        // SUCCESS
+        // ======================================
 
         next: (
           response: Product[]
@@ -596,6 +989,10 @@ getRevampProduct(
 
         },
 
+
+        // ======================================
+        // ERROR
+        // ======================================
 
         error: (
           error: any
@@ -618,7 +1015,7 @@ getRevampProduct(
 
 
   // ==========================================
-  // SEARCH
+  // SEARCH PRODUCTS
   // ==========================================
 
   searchProducts(): void {
@@ -634,11 +1031,18 @@ getRevampProduct(
 
   clearSearch(): void {
 
-    this.searchText = '';
+    this.searchText =
+      '';
+
 
     this.applyFilters();
 
   }
+
+
+  // ==========================================
+  // SELECT CATEGORY
+  // ==========================================
 
   selectCategory(
     category: string
@@ -650,6 +1054,7 @@ getRevampProduct(
 
     this.router.navigate(
       [],
+
       {
 
         relativeTo:
@@ -658,9 +1063,17 @@ getRevampProduct(
         queryParams: {
 
           category:
-            category === 'All'
-              ? null
-              : category
+
+            category ===
+            'All'
+
+              ?
+
+            null
+
+              :
+
+            category
 
         },
 
@@ -675,6 +1088,11 @@ getRevampProduct(
 
   }
 
+
+  // ==========================================
+  // APPLY FILTERS
+  // ==========================================
+
   applyFilters(): void {
 
     const search =
@@ -685,12 +1103,15 @@ getRevampProduct(
 
     this.products =
       this.allProducts.filter(
+
         (
           product: Product
         ) => {
 
+          // ==================================
+          // CATEGORY MATCH
+          // ==================================
 
-          // CATEGORY
           const categoryMatch =
 
             this.selectedCategory ===
@@ -704,7 +1125,10 @@ getRevampProduct(
               .toLowerCase();
 
 
-          // SEARCH
+          // ==================================
+          // SEARCH MATCH
+          // ==================================
+
           const searchMatch =
 
             !search
@@ -713,37 +1137,55 @@ getRevampProduct(
 
             product.title
               ?.toLowerCase()
-              .includes(search)
+              .includes(
+                search
+              )
 
             ||
 
             product.brand
               ?.toLowerCase()
-              .includes(search)
+              .includes(
+                search
+              )
 
             ||
 
             product.category
               ?.toLowerCase()
-              .includes(search);
+              .includes(
+                search
+              );
 
 
           return (
-            categoryMatch &&
+
+            categoryMatch
+
+            &&
+
             searchMatch
+
           );
 
         }
+
       );
 
   }
+
+
+  // ==========================================
+  // GET CATEGORY COUNT
+  // ==========================================
 
   getCategoryCount(
     category: string
   ): number {
 
     if (
-      category === 'All'
+      category ===
+      'All'
     ) {
 
       return this.allProducts.length;
@@ -776,7 +1218,7 @@ getRevampProduct(
   ): string {
 
     switch (
-    category.toLowerCase()
+      category.toLowerCase()
     ) {
 
       case 'beauty':
@@ -811,7 +1253,9 @@ getRevampProduct(
     category: string
   ): string {
 
-    if (!category) {
+    if (
+      !category
+    ) {
 
       return '';
 
@@ -834,7 +1278,48 @@ getRevampProduct(
 
 
   // ==========================================
-  // VIEW DETAILS
+  // VIEW ALL PRODUCTS
+  // ==========================================
+
+  viewAllProducts(): void {
+
+    this.searchText =
+      '';
+
+
+    this.selectedCategory =
+      'All';
+
+
+    this.router.navigate(
+      [],
+
+      {
+
+        relativeTo:
+          this.route,
+
+        queryParams: {
+
+          category:
+            null
+
+        },
+
+        queryParamsHandling:
+          'merge'
+
+      }
+    );
+
+
+    this.applyFilters();
+
+  }
+
+
+  // ==========================================
+  // VIEW PRODUCT DETAILS
   // ==========================================
 
   viewDetails(
@@ -855,42 +1340,101 @@ getRevampProduct(
   // ADD TO CART
   // ==========================================
 
-  addToCart(
-    product: Product,
-    event: Event
-  ): void {
+// ==========================================
+// ADD TO CART
+// ==========================================
 
-    event.stopPropagation();
+addToCart(
+  product: Product,
+  event: Event
+): void {
 
+  // ========================================
+  // STOP PRODUCT CARD CLICK
+  // ========================================
 
-    this.productService
-      .addToCart(
-        product,
-        1
-      );
-
-
-    this.updateCartCount();
+  event.stopPropagation();
 
 
-    this.cartMessage =
-      `${product.title} added to cart`;
+  // ========================================
+  // CHECK USER LOGIN
+  // ========================================
 
+  if (
+    !this.authService.isLoggedIn()
+  ) {
 
-    setTimeout(
-      () => {
+    // ======================================
+    // USER IS NOT LOGGED IN
+    // ======================================
 
-        this.cartMessage = '';
-
-      },
-      2000
+    this.router.navigate(
+      ['/login'],
+      {
+        queryParams: {
+          returnUrl:
+            this.router.url
+        }
+      }
     );
+
+    return;
 
   }
 
 
+  if (
+    !this.canAddToCart
+  ) {
+
+    return;
+
+  }
+
+
+  // ========================================
+  // USER IS LOGGED IN
+  // ========================================
+
+  this.productService.addToCart(
+    product,
+    1
+  );
+
+
+  // ========================================
+  // UPDATE CART COUNT
+  // ========================================
+
+  this.updateCartCount();
+
+
+  // ========================================
+  // SUCCESS MESSAGE
+  // ========================================
+
+  this.cartMessage =
+    `${product.title} added to cart`;
+
+
+  // ========================================
+  // CLEAR MESSAGE
+  // ========================================
+
+  setTimeout(
+    () => {
+
+      this.cartMessage = '';
+
+    },
+    2000
+  );
+
+}
+
+
   // ==========================================
-  // CART COUNT
+  // UPDATE CART COUNT
   // ==========================================
 
   updateCartCount(): void {
@@ -909,7 +1453,9 @@ getRevampProduct(
   goToCart(): void {
 
     this.router.navigate(
-      ['/cart']
+      [
+        '/cart'
+      ]
     );
 
   }
@@ -920,6 +1466,14 @@ getRevampProduct(
   // ==========================================
 
   openAddProductForm(): void {
+
+    if (
+      !this.canAddProduct
+    ) {
+
+      return;
+
+    }
 
     this.showAddProductForm =
       true;
@@ -948,7 +1502,18 @@ getRevampProduct(
 
   addProduct(): void {
 
-    // Show validation errors
+    if (
+      !this.canAddProduct
+    ) {
+
+      return;
+
+    }
+
+    // ========================================
+    // SHOW VALIDATION ERRORS
+    // ========================================
+
     this.addProductForm
       .markAllAsTouched();
 
@@ -962,6 +1527,10 @@ getRevampProduct(
     }
 
 
+    // ========================================
+    // FORM VALUE
+    // ========================================
+
     const formValue =
       this.addProductForm.value;
 
@@ -970,9 +1539,9 @@ getRevampProduct(
     // CREATE NEW PRODUCT
     // ========================================
 
-    const newProduct: Product = {
+    const newProduct:
+      Product = {
 
-      // Unique local product id
       id:
         Date.now(),
 
@@ -1020,7 +1589,7 @@ getRevampProduct(
 
 
     // ========================================
-    // SAVE IN LOCAL STORAGE THROUGH SERVICE
+    // SAVE PRODUCT
     // ========================================
 
     this.productService
@@ -1030,7 +1599,7 @@ getRevampProduct(
 
 
     // ========================================
-    // UPDATE PRODUCT LIST IMMEDIATELY
+    // UPDATE PRODUCT LIST
     // ========================================
 
     this.allProducts = [
@@ -1042,12 +1611,18 @@ getRevampProduct(
     ];
 
 
-    // Show all products after adding
+    // ========================================
+    // SHOW ALL PRODUCTS
+    // ========================================
+
     this.selectedCategory =
       'All';
 
 
-    // Clear search
+    // ========================================
+    // CLEAR SEARCH
+    // ========================================
+
     this.searchText =
       '';
 
@@ -1055,9 +1630,13 @@ getRevampProduct(
     this.applyFilters();
 
 
-    // Remove category from URL
+    // ========================================
+    // REMOVE CATEGORY FROM URL
+    // ========================================
+
     this.router.navigate(
       [],
+
       {
 
         relativeTo:
@@ -1083,8 +1662,27 @@ getRevampProduct(
     );
 
 
-    // Close modal
+    // ========================================
+    // CLOSE MODAL
+    // ========================================
+
     this.closeAddProductForm();
+
+  }
+
+
+  // ==========================================
+  // COMPONENT DESTROY
+  // ==========================================
+
+  ngOnDestroy(): void {
+
+    this.destroy$
+      .next();
+
+
+    this.destroy$
+      .complete();
 
   }
 

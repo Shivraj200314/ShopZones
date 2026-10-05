@@ -42,6 +42,8 @@ interface CartItem {
 
   quantity: number;
 
+  stock?: number;
+
 }
 
 
@@ -158,6 +160,10 @@ export class CheckoutComponent
   // ==========================================
 
   paymentError =
+    '';
+
+
+  orderSuccessMessage =
     '';
 
 
@@ -623,6 +629,11 @@ export class CheckoutComponent
             quantity:
               Number(
                 item.quantity || 1
+              ),
+
+            stock:
+              Number(
+                item.stock ?? 0
               )
 
           };
@@ -736,6 +747,15 @@ export class CheckoutComponent
   }
 
 
+  continueShopping(): void {
+
+    this.router.navigateByUrl(
+      '/products'
+    );
+
+  }
+
+
   // ==========================================
   // PLACE ORDER
   // ==========================================
@@ -762,6 +782,9 @@ export class CheckoutComponent
       this.checkoutForm.invalid
     ) {
 
+      this.paymentError =
+        'Please complete all required details before placing your order.';
+
       console.log(
         'Checkout form invalid'
       );
@@ -780,10 +803,29 @@ export class CheckoutComponent
       this.cartItems.length === 0
     ) {
 
+      this.paymentError =
+        'Your cart is empty. Add a product before placing your order.';
+
       console.log(
         'Cart is empty'
       );
 
+
+      return;
+
+    }
+
+
+    const updatedInventory =
+      this.getInventoryAfterOrder();
+
+
+    if (
+      !updatedInventory
+    ) {
+
+      this.paymentError =
+        'One or more products no longer have enough stock. Update your cart and try again.';
 
       return;
 
@@ -983,6 +1025,20 @@ export class CheckoutComponent
     );
 
 
+    localStorage.setItem(
+      'shopzone_inventory_stock',
+      JSON.stringify(
+        updatedInventory
+      )
+    );
+
+    window.dispatchEvent(
+      new CustomEvent(
+        'shopzone-inventory-updated'
+      )
+    );
+
+
     console.log(
       'Saved Orders:',
       updatedOrders
@@ -1068,15 +1124,107 @@ export class CheckoutComponent
     // SUCCESS
     // ========================================
 
-    alert(
-      'Order placed successfully!'
-    );
+    this.orderSuccessMessage =
+      `Order placed successfully! Your order ID is ${order.orderId}.`;
+
+  }
 
 
-    this.router
-      .navigateByUrl(
-        '/products'
+  private getInventoryAfterOrder():
+    Record<string, number> | null {
+
+    let inventory:
+      Record<string, number> = {};
+
+    const savedInventory =
+      localStorage.getItem(
+        'shopzone_inventory_stock'
       );
+
+
+    if (
+      savedInventory
+    ) {
+
+      try {
+
+        const parsedInventory =
+          JSON.parse(
+            savedInventory
+          );
+
+        if (
+          parsedInventory &&
+          typeof parsedInventory === 'object' &&
+          !Array.isArray(parsedInventory)
+        ) {
+
+          inventory =
+            parsedInventory;
+
+        }
+
+      }
+
+      catch {
+
+        inventory = {};
+
+      }
+
+    }
+
+
+    const updatedInventory = {
+      ...inventory
+    };
+
+
+    for (
+      const item of this.cartItems
+    ) {
+
+      if (
+        !Number.isFinite(item.id)
+      ) {
+
+        continue;
+
+      }
+
+
+      const productId =
+        String(item.id);
+
+      const currentStock =
+        Number(
+          updatedInventory[productId] ??
+          item.stock
+        );
+
+      const quantity =
+        Number(item.quantity);
+
+
+      if (
+        !Number.isFinite(currentStock) ||
+        !Number.isFinite(quantity) ||
+        quantity < 1 ||
+        currentStock < quantity
+      ) {
+
+        return null;
+
+      }
+
+
+      updatedInventory[productId] =
+        currentStock - quantity;
+
+    }
+
+
+    return updatedInventory;
 
   }
 

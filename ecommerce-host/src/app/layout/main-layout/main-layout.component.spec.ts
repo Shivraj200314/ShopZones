@@ -15,6 +15,18 @@ import {
   MainLayoutComponent
 } from './main-layout.component';
 
+import {
+  ShellRevampService
+} from '../../services/shell-revamp.service';
+
+import {
+  LanguageService
+} from '../../services/language.service';
+
+import {
+  of
+} from 'rxjs';
+
 
 describe(
   'MainLayoutComponent',
@@ -28,6 +40,7 @@ describe(
 
     let routerMock: {
       navigate: jest.Mock;
+      url: string;
     };
 
 
@@ -37,7 +50,10 @@ describe(
         routerMock = {
 
           navigate:
-            jest.fn()
+            jest.fn(),
+
+          url:
+            '/home'
 
         };
 
@@ -57,6 +73,25 @@ describe(
 
                 useValue:
                   routerMock
+              },
+
+              {
+                provide:
+                  ShellRevampService,
+
+                useValue: {
+                  getRevampContent: () => of({})
+                }
+              },
+
+              {
+                provide:
+                  LanguageService,
+
+                useValue: {
+                  getLanguage: () => 'en',
+                  setLanguage: jest.fn()
+                }
               }
 
             ],
@@ -134,6 +169,132 @@ describe(
         ).toBe(
           'U'
         );
+
+      }
+    );
+
+
+    it(
+      'should allow sellers to access Home and redirect restricted routes',
+      () => {
+
+        routerMock.url =
+          '/orders';
+
+        localStorage.setItem(
+          'access_token',
+          'test-token'
+        );
+
+        localStorage.setItem(
+          'shopzone_user',
+          JSON.stringify({
+            email: 'seller@example.com',
+            role: 'SELLER'
+          })
+        );
+
+
+        component.ngOnInit();
+
+
+        expect(
+          component.isOwner
+        ).toBe(false);
+
+        expect(
+          routerMock.navigate
+        ).toHaveBeenCalledWith([
+          '/products'
+        ]);
+
+
+        routerMock.navigate.mockClear();
+        routerMock.url =
+          '/home';
+
+        component.ngOnInit();
+
+        component.goToDefaultPage();
+
+        expect(
+          routerMock.navigate
+        ).toHaveBeenCalledWith([
+          '/home'
+        ]);
+
+      }
+    );
+
+
+    it(
+      'should identify an owner for full navigation',
+      () => {
+
+        localStorage.setItem(
+          'access_token',
+          'test-token'
+        );
+
+        localStorage.setItem(
+          'shopzone_user',
+          JSON.stringify({
+            email: 'owner@example.com',
+            role: 'OWNER'
+          })
+        );
+
+
+        component.loadUser();
+
+
+        expect(
+          component.isOwner
+        ).toBe(true);
+
+      }
+    );
+
+
+    it(
+      'should allow customers to open orders and show shopping navigation',
+      () => {
+
+        routerMock.url =
+          '/orders';
+
+        localStorage.setItem(
+          'access_token',
+          'test-token'
+        );
+
+        localStorage.setItem(
+          'shopzone_user',
+          JSON.stringify({
+            email: 'customer@example.com',
+            role: 'CUSTOMER'
+          })
+        );
+
+
+        component.ngOnInit();
+
+
+        expect(
+          component.isCustomer
+        ).toBe(true);
+
+        expect(
+          routerMock.navigate
+        ).not.toHaveBeenCalled();
+
+        component.goToDefaultPage();
+
+        expect(
+          routerMock.navigate
+        ).toHaveBeenCalledWith([
+          '/home'
+        ]);
 
       }
     );

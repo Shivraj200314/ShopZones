@@ -2,203 +2,139 @@
 
   <div class="auth-card">
 
-
-    <!-- LOGO -->
-
     <div class="logo">
 
-      <span class="logo-icon">
-
-        {{
-          revampFallback()
-            ['login']
-            ['logo-icon']
-        }}
-
-      </span>
-
+      <img class="logo-icon" src="assets/shopzones-mark.svg" alt="" aria-hidden="true" />
 
       <span>
 
         {{
-          revampFallback()
-            ['login']
-            ['brand-name']
+        revampFallback()
+        ['login']
+        ['brand-name']
         }}
 
       </span>
 
     </div>
 
-
     <div class="auth-content">
-
 
       <h1>
 
         {{
-          revampFallback()
-            ['login']
-            ['title']
+        revampFallback()
+        ['login']
+        ['title']
         }}
 
       </h1>
 
-
       <p>
 
         {{
-          revampFallback()
-            ['login']
-            ['subtitle']
+        revampFallback()
+        ['login']
+        ['subtitle']
         }}
 
       </p>
 
-
-
-      <!-- ERROR -->
-
-      <div
-        class="error-message"
-        *ngIf="errorMessage"
-      >
+      <div class="error-message" *ngIf="errorMessage">
 
         {{ errorMessage }}
 
       </div>
 
-
-
-      <!-- EMAIL -->
-
       <div class="form-group">
 
         <label>
 
           {{
-            revampFallback()
-              ['login']
-              ['email-label']
+          revampFallback()
+          ['login']
+          ['email-label']
           }}
 
         </label>
 
-
-       <input
-  type="email"
-  [(ngModel)]="email"
-  [placeholder]="
+        <input type="email" [(ngModel)]="email" [placeholder]="
     revampFallback()
       ['login']
       ['email-placeholder']
-  "
-  [disabled]="isLoading"
-/>
+  " [disabled]="isLoading" />
 
       </div>
-
-
-
-      <!-- PASSWORD -->
 
       <div class="form-group">
 
         <label>
 
           {{
-            revampFallback()
-              ['login']
-              ['password-label']
+          revampFallback()
+          ['login']
+          ['password-label']
           }}
 
         </label>
 
 
-      <input
-  type="password"
-  [(ngModel)]="password"
-  [placeholder]="
+        <input type="password" [(ngModel)]="password" [placeholder]="
     revampFallback()
       ['login']
       ['password-placeholder']
-  "
-  [disabled]="isLoading"
-/>
+  " [disabled]="isLoading" />
 
       </div>
 
+      <button type="button" class="primary-button" (click)="login()" [disabled]="isLoading">
 
-
-      <!-- LOGIN -->
-
-      <button
-        type="button"
-        class="primary-button"
-        (click)="login()"
-        [disabled]="isLoading"
-      >
-
-        <span
-          class="spinner"
-          *ngIf="isLoading"
-        >
+        <span class="spinner" *ngIf="isLoading">
         </span>
 
 
-        <span
-          *ngIf="!isLoading"
-        >
+        <span *ngIf="!isLoading">
 
           {{
-            revampFallback()
-              ['login']
-              ['login-button']
+          revampFallback()
+          ['login']
+          ['login-button']
           }}
 
         </span>
 
 
-        <span
-          *ngIf="isLoading"
-        >
+        <span *ngIf="isLoading">
 
           {{
-            revampFallback()
-              ['login']
-              ['loading-button']
+          revampFallback()
+          ['login']
+          ['loading-button']
           }}
 
         </span>
 
       </button>
 
-
-
-      <!-- SIGNUP -->
-
       <div class="auth-footer">
 
         <span>
 
           {{
-            revampFallback()
-              ['login']
-              ['signup-text']
+          revampFallback()
+          ['login']
+          ['signup-text']
           }}
 
         </span>
 
 
-        <button
-          type="button"
-          (click)="goToSignup()"
-        >
+        <button type="button" (click)="goToSignup()">
 
           {{
-            revampFallback()
-              ['login']
-              ['signup-button']
+          revampFallback()
+          ['login']
+          ['signup-button']
           }}
 
         </button>

@@ -28,6 +28,10 @@ import {
   CART_FALLBACK
 } from './core/constants/cart-fallback.constants';
 
+import {
+  CartItem
+} from './cart-item';
+
 
 describe(
   'CartComponent',
@@ -39,6 +43,10 @@ describe(
     let fixture:
       ComponentFixture<CartComponent>;
 
+
+    // =========================================
+    // MOCK SERVICES
+    // =========================================
 
     let cartServiceMock: {
 
@@ -73,66 +81,86 @@ describe(
     };
 
 
-    const cartItems = [
+    // =========================================
+    // TEST CART DATA
+    // =========================================
 
-      {
+    const cartItems:
+      CartItem[] = [
 
-        id: 1,
+        {
 
-        name:
-          'Laptop',
+          id:
+            1,
 
-        image:
-          'laptop.jpg',
+          name:
+            'Laptop',
 
-        brand:
-          'Brand A',
+          image:
+            'laptop.jpg',
 
-        price:
-          1000,
+          brand:
+            'Brand A',
 
-        quantity:
-          2,
+          price:
+            1000,
 
-        stock:
-          5
+          quantity:
+            2,
 
-      },
+          stock:
+            5
 
-      {
+        },
 
-        id: 2,
+        {
 
-        name:
-          'Phone',
+          id:
+            2,
 
-        image:
-          'phone.jpg',
+          name:
+            'Phone',
 
-        brand:
-          'Brand B',
+          image:
+            'phone.jpg',
 
-        price:
-          500,
+          brand:
+            'Brand B',
 
-        quantity:
-          3,
+          price:
+            500,
 
-        stock:
-          10
+          quantity:
+            3,
 
-      }
+          stock:
+            10
 
-    ];
+        }
 
+      ];
+
+
+    // =========================================
+    // BEFORE EACH
+    // =========================================
 
     beforeEach(
       async () => {
 
+        // Clear localStorage before each test
+        localStorage.clear();
+
+
+        // =====================================
+        // CART SERVICE MOCK
+        // =====================================
+
         cartServiceMock = {
 
           getCartItems:
-            jest.fn()
+            jest
+              .fn()
               .mockReturnValue(
                 []
               ),
@@ -149,10 +177,15 @@ describe(
         };
 
 
+        // =====================================
+        // REVAMP SERVICE MOCK
+        // =====================================
+
         cartRevampServiceMock = {
 
           getRevampContent:
-            jest.fn()
+            jest
+              .fn()
               .mockReturnValue(
                 of(
                   CART_FALLBACK
@@ -162,6 +195,10 @@ describe(
         };
 
 
+        // =====================================
+        // ROUTER MOCK
+        // =====================================
+
         routerMock = {
 
           navigate:
@@ -169,6 +206,10 @@ describe(
 
         };
 
+
+        // =====================================
+        // CONSOLE MOCKS
+        // =====================================
 
         jest
           .spyOn(
@@ -190,46 +231,60 @@ describe(
           );
 
 
+        // =====================================
+        // TESTBED
+        // =====================================
+
         await TestBed
           .configureTestingModule({
 
             declarations: [
+
               CartComponent
+
             ],
 
             providers: [
 
               {
+
                 provide:
                   CartService,
 
                 useValue:
                   cartServiceMock
+
               },
 
               {
+
                 provide:
                   CartRevampService,
 
                 useValue:
                   cartRevampServiceMock
+
               },
 
               {
+
                 provide:
                   Router,
 
                 useValue:
                   routerMock
+
               }
 
             ]
 
           })
 
-          // TypeScript unit testing only.
-          // Prevents template dependencies
-          // affecting logic coverage.
+
+          // ===================================
+          // TEMPLATE NOT REQUIRED
+          // ===================================
+
           .overrideComponent(
             CartComponent,
             {
@@ -247,6 +302,10 @@ describe(
           .compileComponents();
 
 
+        // =====================================
+        // CREATE COMPONENT
+        // =====================================
+
         fixture =
           TestBed.createComponent(
             CartComponent
@@ -260,8 +319,14 @@ describe(
     );
 
 
+    // =========================================
+    // AFTER EACH
+    // =========================================
+
     afterEach(
       () => {
+
+        localStorage.clear();
 
         jest.restoreAllMocks();
 
@@ -269,9 +334,9 @@ describe(
     );
 
 
-    // =====================================
+    // =========================================
     // CREATE
-    // =====================================
+    // =========================================
 
     it(
       'should create',
@@ -285,9 +350,9 @@ describe(
     );
 
 
-    // =====================================
-    // DEFAULTS
-    // =====================================
+    // =========================================
+    // DEFAULT VALUES
+    // =========================================
 
     it(
       'should initialize default values',
@@ -302,20 +367,24 @@ describe(
 
         expect(
           component.cartItems
-        ).toEqual([]);
+        ).toEqual(
+          []
+        );
 
 
         expect(
           component.total
-        ).toBe(0);
+        ).toBe(
+          0
+        );
 
       }
     );
 
 
-    // =====================================
-    // ON INIT
-    // =====================================
+    // =========================================
+    // NG ON INIT
+    // =========================================
 
     it(
       'should load cart and revamp content on init',
@@ -343,25 +412,30 @@ describe(
             );
 
 
-        component.ngOnInit();
+        component
+          .ngOnInit();
 
 
         expect(
           loadCartSpy
-        ).toHaveBeenCalled();
+        ).toHaveBeenCalledTimes(
+          1
+        );
 
 
         expect(
           revampSpy
-        ).toHaveBeenCalled();
+        ).toHaveBeenCalledTimes(
+          1
+        );
 
       }
     );
 
 
-    // =====================================
+    // =========================================
     // REVAMP SUCCESS
-    // =====================================
+    // =========================================
 
     it(
       'should update fallback when revamp content loads successfully',
@@ -393,6 +467,14 @@ describe(
 
 
         expect(
+          cartRevampServiceMock
+            .getRevampContent
+        ).toHaveBeenCalledTimes(
+          1
+        );
+
+
+        expect(
           component.revampFallback()
         ).toEqual(
           response
@@ -410,9 +492,9 @@ describe(
     );
 
 
-    // =====================================
+    // =========================================
     // REVAMP ERROR
-    // =====================================
+    // =========================================
 
     it(
       'should use CART_FALLBACK when revamp content fails',
@@ -455,9 +537,9 @@ describe(
     );
 
 
-    // =====================================
+    // =========================================
     // LOAD CART
-    // =====================================
+    // =========================================
 
     it(
       'should load cart items and calculate total',
@@ -475,11 +557,27 @@ describe(
 
 
         expect(
+          cartServiceMock
+            .getCartItems
+        ).toHaveBeenCalledTimes(
+          1
+        );
+
+
+        expect(
           component.cartItems
         ).toEqual(
           cartItems
         );
 
+
+        // Laptop:
+        // 1000 * 2 = 2000
+        //
+        // Phone:
+        // 500 * 3 = 1500
+        //
+        // Total = 3500
 
         expect(
           component.total
@@ -489,17 +587,55 @@ describe(
 
 
         expect(
-          cartServiceMock
-            .getCartItems
-        ).toHaveBeenCalled();
+          console.log
+        ).toHaveBeenCalledWith(
+          'Cart MFE items:',
+          cartItems
+        );
 
       }
     );
 
 
-    // =====================================
-    // EMPTY CART TOTAL
-    // =====================================
+    // =========================================
+    // LOAD EMPTY CART
+    // =========================================
+
+    it(
+      'should load empty cart',
+      () => {
+
+        cartServiceMock
+          .getCartItems
+          .mockReturnValue(
+            []
+          );
+
+
+        component
+          .loadCart();
+
+
+        expect(
+          component.cartItems
+        ).toEqual(
+          []
+        );
+
+
+        expect(
+          component.total
+        ).toBe(
+          0
+        );
+
+      }
+    );
+
+
+    // =========================================
+    // CALCULATE EMPTY TOTAL
+    // =========================================
 
     it(
       'should calculate zero total for empty cart',
@@ -515,15 +651,17 @@ describe(
 
         expect(
           component.total
-        ).toBe(0);
+        ).toBe(
+          0
+        );
 
       }
     );
 
 
-    // =====================================
-    // TOTAL
-    // =====================================
+    // =========================================
+    // CALCULATE TOTAL
+    // =========================================
 
     it(
       'should calculate cart total',
@@ -547,26 +685,27 @@ describe(
     );
 
 
-    // =====================================
+    // =========================================
     // INCREASE
-    // =====================================
+    // =========================================
 
     it(
       'should increase quantity and recalculate total',
       () => {
 
-        const updatedItems = [
+        const updatedItems:
+          CartItem[] = [
 
-          {
+            {
 
-            ...cartItems[0],
+              ...cartItems[0],
 
-            quantity:
-              3
+              quantity:
+                3
 
-          }
+            }
 
-        ];
+          ];
 
 
         cartServiceMock
@@ -607,26 +746,27 @@ describe(
     );
 
 
-    // =====================================
+    // =========================================
     // DECREASE
-    // =====================================
+    // =========================================
 
     it(
       'should decrease quantity and recalculate total',
       () => {
 
-        const updatedItems = [
+        const updatedItems:
+          CartItem[] = [
 
-          {
+            {
 
-            ...cartItems[0],
+              ...cartItems[0],
 
-            quantity:
-              1
+              quantity:
+                1
 
-          }
+            }
 
-        ];
+          ];
 
 
         cartServiceMock
@@ -651,6 +791,13 @@ describe(
 
 
         expect(
+          component.cartItems
+        ).toEqual(
+          updatedItems
+        );
+
+
+        expect(
           component.total
         ).toBe(
           1000
@@ -660,19 +807,27 @@ describe(
     );
 
 
-    // =====================================
+    // =========================================
     // REMOVE
-    // =====================================
+    // =========================================
 
     it(
       'should remove item and recalculate total',
       () => {
 
+        const remainingItems:
+          CartItem[] = [
+
+            cartItems[1]
+
+          ];
+
+
         cartServiceMock
           .removeItem
-          .mockReturnValue([
-            cartItems[1]
-          ]);
+          .mockReturnValue(
+            remainingItems
+          );
 
 
         component
@@ -691,9 +846,9 @@ describe(
 
         expect(
           component.cartItems
-        ).toEqual([
-          cartItems[1]
-        ]);
+        ).toEqual(
+          remainingItems
+        );
 
 
         expect(
@@ -706,17 +861,80 @@ describe(
     );
 
 
-    // =====================================
-    // CHECKOUT
-    // =====================================
+    // =========================================
+    // CHECKOUT - EMPTY CART
+    // =========================================
 
     it(
-      'should navigate to checkout',
+      'should not navigate to checkout when cart is empty',
       () => {
 
-        component
-          .checkout();
+        component.cartItems =
+          [];
 
+
+        component
+          .proceedToCheckout();
+
+
+        expect(
+          routerMock.navigate
+        ).not.toHaveBeenCalled();
+
+
+        expect(
+          localStorage.getItem(
+            'checkout_cart'
+          )
+        ).toBeNull();
+
+      }
+    );
+
+
+    // =========================================
+    // CHECKOUT - NULL CART
+    // =========================================
+
+    it(
+      'should not navigate to checkout when cart items are unavailable',
+      () => {
+
+        component.cartItems =
+          null as any;
+
+
+        component
+          .proceedToCheckout();
+
+
+        expect(
+          routerMock.navigate
+        ).not.toHaveBeenCalled();
+
+      }
+    );
+
+
+    // =========================================
+    // CHECKOUT SUCCESS
+    // =========================================
+
+    it(
+      'should save checkout data and navigate to checkout',
+      () => {
+
+        component.cartItems =
+          cartItems;
+
+
+        component
+          .proceedToCheckout();
+
+
+        // =====================================
+        // ROUTER
+        // =====================================
 
         expect(
           routerMock.navigate
@@ -724,13 +942,244 @@ describe(
           '/checkout'
         ]);
 
+
+        // =====================================
+        // LOCAL STORAGE
+        // =====================================
+
+        const storedCheckout =
+          localStorage.getItem(
+            'checkout_cart'
+          );
+
+
+        expect(
+          storedCheckout
+        ).not.toBeNull();
+
+
+        const parsedCheckout =
+          JSON.parse(
+            storedCheckout as string
+          );
+
+
+        expect(
+          parsedCheckout.items
+        ).toEqual(
+          cartItems
+        );
+
+
+        // Quantity:
+        // 2 + 3 = 5
+
+        expect(
+          parsedCheckout.totalItems
+        ).toBe(
+          5
+        );
+
+
+        // Total:
+        // 1000 * 2
+        // +
+        // 500 * 3
+        // =
+        // 3500
+
+        expect(
+          parsedCheckout.totalAmount
+        ).toBe(
+          3500
+        );
+
+
+        expect(
+          parsedCheckout.createdAt
+        ).toEqual(
+          expect.any(
+            String
+          )
+        );
+
+
+        expect(
+          console.log
+        ).toHaveBeenCalledWith(
+          'Checkout saved cart:',
+          expect.objectContaining({
+
+            items:
+              cartItems,
+
+            totalItems:
+              5,
+
+            totalAmount:
+              3500,
+
+            createdAt:
+              expect.any(
+                String
+              )
+
+          })
+        );
+
       }
     );
 
 
-    // =====================================
+    // =========================================
+    // CHECKOUT DEFAULT QUANTITY
+    // =========================================
+
+    it(
+      'should use quantity 1 when checkout item quantity is missing',
+      () => {
+
+        const itemsWithoutQuantity:
+          any[] = [
+
+            {
+
+              id:
+                1,
+
+              name:
+                'Laptop',
+
+              image:
+                'laptop.jpg',
+
+              brand:
+                'Brand A',
+
+              price:
+                1000,
+
+              stock:
+                5
+
+            }
+
+          ];
+
+
+        component.cartItems =
+          itemsWithoutQuantity as any;
+
+
+        component
+          .proceedToCheckout();
+
+
+        const storedCheckout =
+          localStorage.getItem(
+            'checkout_cart'
+          );
+
+
+        const parsedCheckout =
+          JSON.parse(
+            storedCheckout as string
+          );
+
+
+        expect(
+          parsedCheckout.totalItems
+        ).toBe(
+          1
+        );
+
+
+        expect(
+          parsedCheckout.totalAmount
+        ).toBe(
+          1000
+        );
+
+      }
+    );
+
+
+    // =========================================
+    // CHECKOUT DEFAULT PRICE
+    // =========================================
+
+    it(
+      'should use zero when checkout item price is missing',
+      () => {
+
+        const itemWithoutPrice:
+          any[] = [
+
+            {
+
+              id:
+                1,
+
+              name:
+                'Laptop',
+
+              image:
+                'laptop.jpg',
+
+              brand:
+                'Brand A',
+
+              quantity:
+                2,
+
+              stock:
+                5
+
+            }
+
+          ];
+
+
+        component.cartItems =
+          itemWithoutPrice as any;
+
+
+        component
+          .proceedToCheckout();
+
+
+        const storedCheckout =
+          localStorage.getItem(
+            'checkout_cart'
+          );
+
+
+        const parsedCheckout =
+          JSON.parse(
+            storedCheckout as string
+          );
+
+
+        expect(
+          parsedCheckout.totalItems
+        ).toBe(
+          2
+        );
+
+
+        expect(
+          parsedCheckout.totalAmount
+        ).toBe(
+          0
+        );
+
+      }
+    );
+
+
+    // =========================================
     // CONTINUE SHOPPING
-    // =====================================
+    // =========================================
 
     it(
       'should navigate to products',

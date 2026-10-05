@@ -43,7 +43,6 @@ export class CartRevampService {
 
   }
 
-
   getRevampContent():
     Observable<any> {
 
@@ -60,11 +59,6 @@ export class CartRevampService {
             response
           );
 
-
-          // ==========================================
-          // MERGE FALLBACK + API
-          // ==========================================
-
           const mergedResponse = {
 
             ...CART_FALLBACK,
@@ -72,37 +66,27 @@ export class CartRevampService {
             ...response,
 
             cart: {
-
-              // fallback first
               ...CART_FALLBACK.cart,
-
-              // API second
-              // API values will override fallback
               ...(response?.cart || {})
 
             }
 
           };
 
-
           console.log(
             'Cart Revamp Merged Response:',
             mergedResponse
           );
 
-
           return mergedResponse;
 
         }),
 
-
         catchError(error => {
-
           console.error(
             'Cart Revamp API Failed. Using CART_FALLBACK:',
             error
           );
-
 
           return of(
             CART_FALLBACK

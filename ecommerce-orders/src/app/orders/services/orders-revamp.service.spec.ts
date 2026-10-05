@@ -37,7 +37,7 @@ describe(
     // ==========================================
 
     const REVAMP_URL =
-      '/assets/em/orders-content.json';
+      'https://dummyjson.com/c/19c6-da96-4b0d-87a1';
 
 
     // ==========================================

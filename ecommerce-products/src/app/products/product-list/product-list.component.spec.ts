@@ -30,6 +30,18 @@ import {
   PRODUCT_FALLBACK
 } from '../core/constants/product-fallback.constants';
 
+import {
+  ProductRevampService
+} from '../services/product-revamp.service';
+
+import {
+  ProductLanguageService
+} from '../services/product-language.service';
+
+import {
+  AuthService
+} from 'src/app/auth.service';
+
 
 describe(
   'ProductListComponent',
@@ -63,6 +75,10 @@ describe(
 
     };
 
+    let authServiceMock: {
+      isLoggedIn: jest.Mock;
+    };
+
 
     let queryParamMapSubject:
       BehaviorSubject<any>;
@@ -77,7 +93,7 @@ describe(
 
         id: 1,
 
-        name:
+        title:
           'Beauty Cream',
 
         brand:
@@ -115,7 +131,7 @@ describe(
 
         id: 2,
 
-        name:
+        title:
           'Rose Perfume',
 
         brand:
@@ -153,7 +169,7 @@ describe(
 
         id: 3,
 
-        name:
+        title:
           'Fresh Apple',
 
         brand:
@@ -230,6 +246,11 @@ describe(
         };
 
 
+        authServiceMock = {
+          isLoggedIn: jest.fn(() => true)
+        };
+
+
         queryParamMapSubject =
           new BehaviorSubject(
             convertToParamMap({})
@@ -255,6 +276,18 @@ describe(
 
     new FormBuilder()
 
+    ,
+
+    {
+      getRevampContent: () => of(PRODUCT_FALLBACK)
+    } as unknown as ProductRevampService,
+
+    {
+      loadLanguage: () => of(undefined)
+    } as unknown as ProductLanguageService,
+
+    authServiceMock as unknown as AuthService
+
   );
 
       }
@@ -267,6 +300,8 @@ describe(
 
     afterEach(
       () => {
+
+        localStorage.clear();
 
         jest.useRealTimers();
 
@@ -374,6 +409,93 @@ describe(
         ).toBe(
           false
         );
+
+      }
+    );
+
+
+    it(
+      'should allow product creation for sellers and owners only',
+      () => {
+
+        localStorage.setItem(
+          'shopzone_user',
+          JSON.stringify({ role: 'CUSTOMER' })
+        );
+        component.loadUserRole();
+        expect(component.canAddProduct).toBe(false);
+
+        component.openAddProductForm();
+        expect(component.showAddProductForm).toBe(false);
+
+        localStorage.setItem(
+          'shopzone_user',
+          JSON.stringify({ role: 'SELLER' })
+        );
+        component.loadUserRole();
+        expect(component.canAddProduct).toBe(true);
+
+        component.openAddProductForm();
+        expect(component.showAddProductForm).toBe(true);
+
+        localStorage.setItem(
+          'shopzone_user',
+          JSON.stringify({ role: 'OWNER' })
+        );
+        component.loadUserRole();
+        expect(component.canAddProduct).toBe(true);
+
+      }
+    );
+
+
+    it(
+      'should prevent sellers from adding products to the cart',
+      () => {
+
+        localStorage.setItem(
+          'shopzone_user',
+          JSON.stringify({ role: 'SELLER' })
+        );
+        component.loadUserRole();
+
+
+        component.addToCart(
+          beautyProduct,
+          { stopPropagation: jest.fn() } as unknown as Event
+        );
+
+
+        expect(
+          productServiceMock.addToCart
+        ).not.toHaveBeenCalled();
+
+      }
+    );
+
+
+    it(
+      'should refresh visible stock from the shared inventory ledger',
+      () => {
+
+        component.allProducts = [
+          beautyProduct
+        ];
+
+        localStorage.setItem(
+          'shopzone_inventory_stock',
+          JSON.stringify({
+            '1': 28
+          })
+        );
+
+
+        component.refreshInventory();
+
+
+        expect(
+          component.products[0].stock
+        ).toBe(28);
 
       }
     );
@@ -1976,7 +2098,7 @@ describe(
             id:
               123456,
 
-            name:
+            title:
               'New Phone',
 
             brand:

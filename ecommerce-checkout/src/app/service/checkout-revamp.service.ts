@@ -1,39 +1,20 @@
-import {
-  Injectable
-} from '@angular/core';
+import {Injectable} from '@angular/core';
 
-import {
-  HttpClient
-} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 
-import {
-  Observable,
-  catchError,
-  map,
-  of
-} from 'rxjs';
+import {Observable,catchError,map, of} from 'rxjs';
 
-import {
-  CHECKOUT_FALLBACK
-} from '../checkout/core/constants/checkout-fallback.constants';
-
+import {CHECKOUT_FALLBACK} from '../checkout/core/constants/checkout-fallback.constants';
 
 @Injectable()
 export class CheckoutRevampService {
 
-
   private readonly apiUrl =
     'http://localhost:4203/assets/em/checkout-content.json';
-
 
   constructor(
     private http: HttpClient
   ) {}
-
-
-  // ==========================================
-  // GET REVAMP CONTENT
-  // ==========================================
 
   getRevampContent():
     Observable<any> {
@@ -52,7 +33,6 @@ export class CheckoutRevampService {
             const fallback: any =
               CHECKOUT_FALLBACK;
 
-
             response?.content?.forEach(
               (screen: any) => {
 
@@ -64,7 +44,6 @@ export class CheckoutRevampService {
                       return;
 
                     }
-
 
                     apiContent[item.key] = {
 
@@ -83,7 +62,6 @@ export class CheckoutRevampService {
               }
             );
 
-
             return {
 
               ...fallback,
@@ -95,7 +73,6 @@ export class CheckoutRevampService {
           }
         ),
 
-
         catchError(
           (error: any) => {
 
@@ -103,7 +80,6 @@ export class CheckoutRevampService {
               'Checkout Revamp API failed. Using fallback:',
               error
             );
-
 
             return of(
               CHECKOUT_FALLBACK

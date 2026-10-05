@@ -20,7 +20,6 @@ import {
   USER_FALLBACK
 } from '../core/constants/user-fallback.constants';
 
-
 @Component({
   selector:
     'app-login',
@@ -35,32 +34,22 @@ import {
 export class LoginComponent
   implements OnInit {
 
-
-  // ==========================================
-  // REVAMP
-  // ==========================================
-
   revampFallback =
     signal<any>(
       USER_FALLBACK
     );
 
-
   email =
     '';
-
 
   password =
     '';
 
-
   errorMessage =
     '';
 
-
   isLoading =
     false;
-
 
   constructor(
 
@@ -80,11 +69,6 @@ export class LoginComponent
 
   this.loadRevampContent();
 
-
-  // ========================================
-  // GET EMAIL CHANGED FROM PROFILE
-  // ========================================
-
   const changedEmail =
     localStorage.getItem(
       'shopzone_login_email'
@@ -101,12 +85,6 @@ export class LoginComponent
   }
 
 }
-
-
-  // ==========================================
-  // LOAD REVAMP
-  // ==========================================
-
   loadRevampContent(): void {
 
     this.userRevampService
@@ -145,11 +123,6 @@ export class LoginComponent
 
   }
 
-
-  // ==========================================
-  // LOGIN
-  // ==========================================
-
   login(): void {
 
     this.errorMessage =
@@ -184,20 +157,16 @@ export class LoginComponent
     ) {
 
       this.errorMessage =
-
         this.revampFallback()
           ['login']
           ['invalid-email-error'];
-
 
       return;
 
     }
 
-
     this.isLoading =
       true;
-
 
     setTimeout(
       () => {
@@ -209,14 +178,12 @@ export class LoginComponent
               this.password
             );
 
-
         if (
           success
         ) {
 
           this.isLoading =
             false;
-
 
           this.router.navigate([
             '/home'
@@ -245,11 +212,6 @@ export class LoginComponent
     );
 
   }
-
-
-  // ==========================================
-  // SIGNUP
-  // ==========================================
 
   goToSignup(): void {
 

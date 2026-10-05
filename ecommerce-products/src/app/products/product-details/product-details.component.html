@@ -184,7 +184,10 @@
 
         </div>
 
-        <div class="quantity-section">
+        <div
+          class="quantity-section"
+          *ngIf="canShop"
+        >
 
           <span class="quantity-label">
 
@@ -229,7 +232,10 @@
 
         </div>
 
-        <div class="actions">
+        <div
+          class="actions"
+          *ngIf="canShop"
+        >
 
           <button
             type="button"

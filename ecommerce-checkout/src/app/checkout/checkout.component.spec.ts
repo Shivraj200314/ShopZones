@@ -28,6 +28,14 @@ import {
   CheckoutComponent
 } from './checkout.component';
 
+import {
+  CheckoutRevampService
+} from '../service/checkout-revamp.service';
+
+import {
+  of
+} from 'rxjs';
+
 
 describe(
   'CheckoutComponent',
@@ -60,6 +68,15 @@ describe(
               ReactiveFormsModule,
               HttpClientTestingModule,
               RouterTestingModule
+            ],
+
+            providers: [
+              {
+                provide: CheckoutRevampService,
+                useValue: {
+                  getRevampContent: () => of({})
+                }
+              }
             ],
 
             schemas: [
@@ -125,7 +142,7 @@ describe(
             'Rohit Yewale',
 
           email:
-            'rohit@example.com',
+            'rohit@gmail.com',
 
           phone:
             '9876543210',
@@ -180,6 +197,9 @@ describe(
 
           quantity:
             1,
+
+          stock:
+            30,
 
           category:
             'electronics',
@@ -801,6 +821,35 @@ describe(
         expect(
           savedOrders.length
         ).toBe(1);
+
+      }
+    );
+
+
+    it(
+      'should decrement shared inventory when an order is placed',
+      () => {
+
+        setValidCheckoutForm();
+
+        component.cartItems = [
+          {
+            ...createCartItem(),
+            stock: 29
+          }
+        ];
+
+
+        component.placeOrder();
+
+
+        expect(
+          JSON.parse(
+            localStorage.getItem(
+              'shopzone_inventory_stock'
+            ) || '{}'
+          )['1']
+        ).toBe(28);
 
       }
     );

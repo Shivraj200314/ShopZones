@@ -8,7 +8,7 @@
   background:
     linear-gradient(
       180deg,
-      #f8f9ff 0%,
+      #f7f4ee 0%,
       #ffffff 100%
     );
 }
@@ -59,12 +59,12 @@
 .back-button:hover {
   transform: translateY(-1px);
 
-  border-color: #6957f5;
-  color: #5b4be1;
+  border-color: #c06e4a;
+  color: #9a5f3b;
 
   box-shadow:
     0 8px 18px
-    rgba(98, 81, 239, 0.08);
+    rgba(192, 110, 74, 0.10);
 }
 
 
@@ -131,8 +131,8 @@
   background:
     linear-gradient(
       145deg,
-      #f9f9ff 0%,
-      #f3f0ff 100%
+      #f8f1e7 0%,
+      #eee1d0 100%
     );
 }
 
@@ -148,7 +148,7 @@
   border-radius: 50%;
 
   background:
-    rgba(105, 87, 245, 0.07);
+    rgba(192, 110, 74, 0.09);
 
   filter: blur(1px);
 }
@@ -850,6 +850,46 @@
   }
 
 
+
+
+/* =========================================================
+   SHOPZONE ACTIVE THEME
+========================================================= */
+
+.details-page {
+  background: linear-gradient(180deg, #f7f4ee 0%, #ffffff 100%);
+}
+
+.main-image {
+  background: linear-gradient(145deg, #fffaf4, #f1eadf);
+}
+
+.cart-button {
+  border-color: #c06e4a;
+  color: #9a5f3b;
+}
+
+.cart-button:hover {
+  background: #f3e5d5;
+}
+
+.buy-button {
+  background: linear-gradient(135deg, #c06e4a, #9a5f3b);
+  box-shadow: 0 9px 22px rgba(192, 110, 74, 0.24);
+}
+
+.buy-button:hover {
+  box-shadow: 0 13px 28px rgba(192, 110, 74, 0.30);
+}
+
+.cart-count {
+  background: #f3e5d5;
+  color: #9a5f3b;
+}
+
+.not-found button {
+  background: #c06e4a;
+}
   .availability {
     align-items:
       flex-start;
@@ -858,4 +898,136 @@
       column;
   }
 
+}
+
+
+.details-page {
+  min-height: calc(100vh - 72px);
+  padding: 28px 24px 56px;
+  background: #f5f7f4;
+}
+
+.details-container {
+  max-width: 1220px;
+}
+
+.back-button {
+  margin-bottom: 18px;
+  border-color: #d8e1da;
+  border-radius: 6px;
+  color: #29483f;
+}
+
+.back-button:hover {
+  border-color: #c06e4a;
+  color: #9a5f3b;
+}
+
+.product-details {
+  gap: 36px;
+  padding: 28px;
+  border-color: #e2e9e3;
+  border-radius: 8px;
+  box-shadow: 0 10px 28px rgba(29, 48, 43, 0.06);
+}
+
+.main-image {
+  min-height: 480px;
+  border-radius: 6px;
+  background: #f0f5f1;
+}
+
+.main-image::before {
+  display: none;
+}
+
+.discount {
+  border-radius: 5px;
+  background: #c06e4a;
+  box-shadow: none;
+}
+
+.brand {
+  border-radius: 4px;
+  background: #edf4ef;
+  color: #375d4c;
+}
+
+.product-info h1,
+.rating strong,
+.quantity-label {
+  color: #20322d;
+}
+
+.price {
+  color: #1d302b;
+}
+
+.availability {
+  border-color: #e2e9e3;
+  border-radius: 6px;
+  background: #f7faf7;
+}
+
+.quantity-control {
+  border-color: #d8e1da;
+  border-radius: 6px;
+}
+
+.quantity-control button {
+  background: #f4f7f4;
+}
+
+.quantity-control button:hover {
+  background: #29483f;
+}
+
+.cart-button {
+  border-color: #c06e4a;
+  border-radius: 6px;
+  color: #9a5f3b;
+}
+
+.cart-button:hover {
+  background: #f7eee8;
+  box-shadow: none;
+}
+
+.buy-button,
+.not-found button {
+  border-radius: 6px;
+  background: #c06e4a;
+  box-shadow: 0 8px 18px rgba(192, 110, 74, 0.2);
+}
+
+.buy-button:hover,
+.not-found button:hover {
+  background: #9a5f3b;
+  box-shadow: none;
+}
+
+.cart-count {
+  border-radius: 6px;
+  background: #f3e5d5;
+  color: #9a5f3b;
+}
+
+.not-found {
+  border-color: #e2e9e3;
+  border-radius: 8px;
+}
+
+@media (max-width: 600px) {
+  .details-page {
+    padding: 20px 12px 40px;
+  }
+
+  .product-details {
+    gap: 24px;
+    padding: 18px;
+  }
+
+  .main-image {
+    min-height: 320px;
+  }
 }

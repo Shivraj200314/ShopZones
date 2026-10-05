@@ -1,9 +1,5 @@
 export const LOGIN_FALLBACK = {
 
-  // ==========================================
-  // LOGIN
-  // ==========================================
-
   "login": {
 
     // Logo
@@ -11,8 +7,7 @@ export const LOGIN_FALLBACK = {
       "S",
 
     "brand-name":
-      "ShopZonessssssssssssssssssssssss",
-
+      "ShopZones",
 
     // Header
     "title":
@@ -21,14 +16,12 @@ export const LOGIN_FALLBACK = {
     "subtitle":
       "Login to continue shopping",
 
-
     // Email
     "email-label":
       "Email Address",
 
     "email-placeholder":
       "Enter your email",
-
 
     // Password
     "password-label":
@@ -37,7 +30,6 @@ export const LOGIN_FALLBACK = {
     "password-placeholder":
       "Enter your password",
 
-
     // Login button
     "login-button":
       "Login",
@@ -45,14 +37,12 @@ export const LOGIN_FALLBACK = {
     "loading-button":
       "Logging in...",
 
-
     // Signup
     "signup-text":
       "Don't have an account?",
-
+      
     "signup-button":
       "Sign Up",
-
 
     // Validation
     "required-error":
@@ -60,7 +50,6 @@ export const LOGIN_FALLBACK = {
 
     "invalid-error":
       "Invalid email or password.",
-
 
     // Metadata
     "key":
@@ -70,5 +59,4 @@ export const LOGIN_FALLBACK = {
       "both"
 
   }
-
 };

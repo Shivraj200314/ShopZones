@@ -43,10 +43,6 @@ export class CartComponent implements OnInit {
     return this.getSubtotal();
   }
 
-  // =========================
-  // INCREASE QUANTITY
-  // =========================
-
   increaseQuantity(item: CartItem): void {
 
     if (item.quantity < item.stock) {
@@ -59,10 +55,6 @@ export class CartComponent implements OnInit {
       this.loadCart();
     }
   }
-
-  // =========================
-  // DECREASE QUANTITY
-  // =========================
 
   decreaseQuantity(item: CartItem): void {
 
@@ -77,10 +69,6 @@ export class CartComponent implements OnInit {
     }
   }
 
-  // =========================
-  // REMOVE
-  // =========================
-
   removeItem(item: CartItem): void {
 
     this.productService.removeFromCart(
@@ -90,17 +78,9 @@ export class CartComponent implements OnInit {
     this.loadCart();
   }
 
-  // =========================
-  // CONTINUE SHOPPING
-  // =========================
-
   continueShopping(): void {
     this.router.navigate(['/products']);
   }
-
-  // =========================
-  // CHECKOUT
-  // =========================
 
   checkout(): void {
 

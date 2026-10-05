@@ -1,0 +1,20 @@
+{
+  "productPage": {
+    "collectionLabel": "PRODUCT COLLECTION",
+    "title": "Explore Our Products",
+    "description": "Discover quality products across our collection.",
+    "searchPlaceholder": "Search products...",
+    "ourCollection": "OUR COLLECTION",
+    "shopByCategory": "Shop by Category",
+    "categoryDescription": "Browse products from your favourite categories.",
+    "allProducts": "All Products",
+    "beauty": "Beauty",
+    "fragrances": "Fragrances",
+    "groceries": "Groceries",
+    "shopNow": "SHOP NOW",
+    "products": "Products",
+    "items": "Items",
+    "addProduct": "Add Product",
+    "sale": "SALE"
+  }
+}

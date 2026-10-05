@@ -32,8 +32,7 @@ export const SHELL_FALLBACK = {
     "device":
       "both"
 
-  }
-,
+  },
 
   "home": {
 
@@ -49,11 +48,6 @@ export const SHELL_FALLBACK = {
     "hero-description":
       "Discover amazing products, exclusive deals and a shopping experience made for you.",
 
-
-    // ========================================
-    // HERO BUTTONS
-    // ========================================
-
     "shop-now-label":
       "Shop Now",
 
@@ -62,11 +56,6 @@ export const SHELL_FALLBACK = {
 
     "explore-categories-label":
       "Explore Categories",
-
-
-    // ========================================
-    // HERO VISUAL
-    // ========================================
 
     "hero-icon":
       "🛍️",
@@ -89,11 +78,6 @@ export const SHELL_FALLBACK = {
     "groceries-label":
       "Groceries",
 
-
-    // ========================================
-    // FEATURES
-    // ========================================
-
     "delivery-icon":
       "🚚",
 
@@ -102,7 +86,6 @@ export const SHELL_FALLBACK = {
 
     "delivery-description":
       "On orders above ₹999",
-
 
     "secure-icon":
       "🔒",
@@ -113,7 +96,6 @@ export const SHELL_FALLBACK = {
     "secure-description":
       "100% secure checkout",
 
-
     "return-icon":
       "↩️",
 
@@ -123,7 +105,6 @@ export const SHELL_FALLBACK = {
     "return-description":
       "7 days easy return",
 
-
     "support-icon":
       "🎧",
 
@@ -132,11 +113,6 @@ export const SHELL_FALLBACK = {
 
     "support-description":
       "We're here to help",
-
-
-    // ========================================
-    // CATEGORY SECTION
-    // ========================================
 
     "collection-label":
       "OUR COLLECTION",
@@ -150,11 +126,6 @@ export const SHELL_FALLBACK = {
     "view-all-label":
       "View All →",
 
-
-    // ========================================
-    // ALL PRODUCTS
-    // ========================================
-
     "all-products-icon":
       "🛍️",
 
@@ -163,11 +134,6 @@ export const SHELL_FALLBACK = {
 
     "all-products-description":
       "Explore our complete collection",
-
-
-    // ========================================
-    // BEAUTY
-    // ========================================
 
     "beauty-category-icon":
       "💄",
@@ -178,11 +144,6 @@ export const SHELL_FALLBACK = {
     "beauty-category-description":
       "Makeup & beauty products",
 
-
-    // ========================================
-    // FRAGRANCES
-    // ========================================
-
     "fragrances-category-icon":
       "🌸",
 
@@ -191,11 +152,6 @@ export const SHELL_FALLBACK = {
 
     "fragrances-category-description":
       "Perfumes & premium scents",
-
-
-    // ========================================
-    // GROCERIES
-    // ========================================
 
     "groceries-category-icon":
       "🛒",
@@ -206,10 +162,6 @@ export const SHELL_FALLBACK = {
     "groceries-category-description":
       "Daily essentials & groceries",
 
-
-    // ========================================
-    // DEALS
-    // ========================================
 
     "deal-label":
       "LIMITED TIME OFFER",
@@ -228,11 +180,6 @@ export const SHELL_FALLBACK = {
 
     "deal-icon":
       "🔥",
-
-
-    // ========================================
-    // META
-    // ========================================
 
     "key":
       "home",

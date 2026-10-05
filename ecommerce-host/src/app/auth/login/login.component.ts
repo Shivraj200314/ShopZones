@@ -77,6 +77,20 @@ export class LoginComponent
 
 
   // ==========================================
+  // ACCOUNT ROLE
+  // ==========================================
+
+  role =
+    'CUSTOMER';
+
+  readonly roles = [
+    'CUSTOMER',
+    'SELLER',
+    'OWNER'
+  ];
+
+
+  // ==========================================
   // FORM SUBMITTED
   // ==========================================
 
@@ -166,6 +180,52 @@ export class LoginComponent
 
     }
 
+
+    const profileData =
+      localStorage.getItem(
+        'shopzone_profile'
+      );
+
+
+    if (
+      profileData
+    ) {
+
+      try {
+
+        const savedProfile =
+          JSON.parse(
+            profileData
+          );
+
+        const savedRole =
+          String(savedProfile?.role || '')
+            .trim()
+            .toUpperCase();
+
+
+        if (
+          this.roles.includes(
+            savedRole
+          )
+        ) {
+
+          this.role =
+            savedRole;
+
+        }
+
+      }
+
+      catch {
+
+        this.role =
+          'CUSTOMER';
+
+      }
+
+    }
+
   }
 
 
@@ -249,6 +309,33 @@ export class LoginComponent
       '';
 
 
+    const trimmedEmail =
+      this.email?.trim();
+
+    const trimmedPassword =
+      this.password?.trim();
+
+
+    if (
+      !trimmedEmail ||
+      !trimmedPassword
+    ) {
+
+      this.errorMessage =
+        this.revampFallback()
+          ?.['login']
+          ?.['required-error']
+        || 'Please enter email and password.';
+
+      loginForm.control
+        ?.markAllAsTouched();
+
+
+      return;
+
+    }
+
+
     // ========================================
     // INVALID FORM
     // ========================================
@@ -290,7 +377,9 @@ export class LoginComponent
                 .trim()
                 .toLowerCase(),
 
-              this.password
+              this.password,
+
+              this.role
 
             );
 

@@ -444,21 +444,21 @@
 
           <!-- ADD PRODUCT -->
 
-          <button
-            type="button"
-            class="add-product-button"
-            (click)="openAddProductForm()"
-          >
+        <button
+  *ngIf="canAddProduct"
+  type="button"
+  class="add-product-button"
+  (click)="openAddProductForm()"
+>
+  +
 
-            +
+  {{
+    revampFallback()
+      ['product-list']
+      ?.['add-product']
+  }}
 
-            {{
-              revampFallback()
-                ['product-list']
-                ?.['add-product']
-            }}
-
-          </button>
+</button>
 
         </div>
 
@@ -1152,6 +1152,7 @@
 
 
     <button
+      *ngIf="canAddToCart"
       type="button"
       class="add-cart-button"
 

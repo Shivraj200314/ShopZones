@@ -1,0 +1,96 @@
+.profile-page {
+  background: linear-gradient(180deg, #f7f4ee, #f3eee5);
+  color: #20322d;
+}
+
+.dashboard-back-button {
+  border-color: #e8dfd1;
+  background: #ffffff;
+  color: #20322d;
+}
+
+.dashboard-back-button:hover {
+  border-color: #c06e4a;
+  color: #9a5f3b;
+}
+
+.profile-header {
+  background: linear-gradient(115deg, #1d302b, #29483f);
+  box-shadow: 0 16px 32px rgba(32, 50, 45, 0.18);
+}
+
+.profile-avatar {
+  background: #e7bd7d;
+  color: #20322d;
+}
+
+.profile-eyebrow {
+  color: #f0c889;
+}
+
+.profile-header p {
+  color: #d9e0d9;
+}
+
+.profile-summary,
+.profile-card {
+  border-color: #e8dfd1;
+  box-shadow: 0 10px 25px rgba(32, 50, 45, 0.08);
+}
+
+.summary-kicker,
+.section-kicker {
+  color: #9a5f3b;
+}
+
+.summary-icon {
+  background: #f3e5d5;
+  color: #9a5f3b;
+}
+
+.secure-label {
+  background: #e8efe9;
+  color: #28704e;
+}
+
+.input-wrapper,
+.readonly-field {
+  border-color: #ddd5c9;
+  background: #fffaf4;
+}
+
+.input-wrapper:focus-within,
+.readonly-field:focus-within {
+  border-color: #c06e4a;
+  box-shadow: 0 0 0 3px rgba(192, 110, 74, 0.12);
+}
+
+.edit-button,
+.save-button {
+  background: #c06e4a;
+  color: #ffffff;
+}
+
+.edit-button:hover,
+.save-button:hover {
+  background: #9a5f3b;
+}
+
+.cancel-button {
+  border-color: #e8dfd1;
+  background: #ffffff;
+  color: #20322d;
+}
+
+.logout-button {
+  border-color: #e2b7a0;
+  background: #fff4ef;
+  color: #9a5f3b;
+}
+
+.profile-page button:focus-visible,
+.profile-page input:focus-visible,
+.profile-page select:focus-visible {
+  outline: 3px solid rgba(192, 110, 74, 0.4);
+  outline-offset: 2px;
+}

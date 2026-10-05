@@ -15,6 +15,7 @@ import {
 
 import {
   combineLatest,
+  interval,
   Subject
 } from 'rxjs';
 
@@ -33,12 +34,66 @@ import {
 } from '../models/order-item.model';
 
 import {
+  Customer
+} from '../models/customer.model';
+
+import {
   ORDER_FALLBACK
 } from '../core/constants/order-fallback.constants';
 
 import {
   OrdersRevampService
 } from '../services/orders-revamp.service';
+
+
+const PENDING_AFTER_MS = 30_000;
+
+const DELIVERED_AFTER_PENDING_MS = 60_000;
+
+const STATUS_REFRESH_INTERVAL_MS = 1_000;
+
+
+interface StoredCustomer extends Customer {
+
+  fullName?: string;
+
+  paymentMethod?: string;
+
+}
+
+
+interface StoredOrder extends Order {
+
+  orderId?: number | string;
+
+  createdAt?: string;
+
+  statusUpdatedAt?: string;
+
+  totalAmount?: number;
+
+  payment?: {
+    method?: string;
+  };
+
+  customer?: StoredCustomer;
+
+}
+
+
+interface StoredOrderItem extends OrderItem {
+
+  title?: string;
+
+  brand?: string;
+
+  thumbnail?: string;
+
+  oldPrice?: number;
+
+  stock?: number;
+
+}
 
 
 @Component({
@@ -71,7 +126,7 @@ export class OrdersComponent
   // ==========================================
 
   orders:
-    Order[] = [];
+    StoredOrder[] = [];
 
 
   // ==========================================
@@ -79,7 +134,7 @@ export class OrdersComponent
   // ==========================================
 
   private allOrders:
-    Order[] = [];
+    StoredOrder[] = [];
 
 
   // ==========================================
@@ -144,7 +199,7 @@ export class OrdersComponent
     private router:
       Router
 
-  ) {}
+  ) { }
 
 
   // ==========================================
@@ -156,6 +211,20 @@ export class OrdersComponent
     this.loadRevampContent();
 
     this.loadOrders();
+
+    this.updateOrderStatuses();
+
+    interval(
+      STATUS_REFRESH_INTERVAL_MS
+    )
+      .pipe(
+        takeUntil(
+          this.destroy$
+        )
+      )
+      .subscribe(
+        () => this.updateOrderStatuses()
+      );
 
     this.setupFilters();
 
@@ -244,9 +313,7 @@ export class OrdersComponent
         !savedOrders
       ) {
 
-        this.allOrders = [];
-
-        this.orders = [];
+        this.resetOrders();
 
         return;
 
@@ -265,9 +332,7 @@ export class OrdersComponent
         )
       ) {
 
-        this.allOrders = [];
-
-        this.orders = [];
+        this.resetOrders();
 
         return;
 
@@ -275,14 +340,14 @@ export class OrdersComponent
 
 
       this.allOrders =
-        parsedOrders as Order[];
+        parsedOrders as StoredOrder[];
 
 
       // Latest order first
       this.allOrders.sort(
         (
-          first: Order,
-          second: Order
+          first: StoredOrder,
+          second: StoredOrder
         ) => {
 
           return (
@@ -320,7 +385,7 @@ export class OrdersComponent
     }
 
     catch (
-      error
+    error
     ) {
 
       console.error(
@@ -410,15 +475,15 @@ export class OrdersComponent
   applyFilters(
     searchText:
       string =
-        this.searchControl.value,
+      this.searchControl.value,
 
     status:
       string =
-        this.statusControl.value,
+      this.statusControl.value,
 
     sort:
       string =
-        this.sortControl.value
+      this.sortControl.value
 
   ): void {
 
@@ -444,7 +509,7 @@ export class OrdersComponent
       filteredOrders =
         filteredOrders.filter(
           (
-            order: Order
+            order: StoredOrder
           ) => {
 
 
@@ -578,13 +643,13 @@ export class OrdersComponent
 
     filteredOrders.sort(
       (
-        first: Order,
-        second: Order
+        first: StoredOrder,
+        second: StoredOrder
       ) => {
 
 
         switch (
-          sort
+        sort
         ) {
 
 
@@ -795,6 +860,159 @@ export class OrdersComponent
   }
 
 
+  get pendingOrders():
+    number {
+
+    return this
+      .allOrders
+      .filter(
+        order =>
+
+          this.getOrderStatus(
+            order
+          )
+            .toLowerCase() ===
+          'pending'
+      )
+      .length;
+
+  }
+
+
+  updateOrderStatuses(
+    now: number = Date.now()
+  ): void {
+
+    let changed = false;
+
+
+    this.allOrders.forEach(
+      order => {
+
+        let status =
+          this.getOrderStatus(
+            order
+          )
+            .toLowerCase();
+
+
+        if (
+          status !== 'placed' &&
+          status !== 'pending'
+        ) {
+
+          return;
+
+        }
+
+
+        const createdAt =
+          Date.parse(
+            this.getCreatedDate(
+              order
+            ) ||
+            (order as any).date ||
+            ''
+          );
+
+
+        if (
+          !Number.isFinite(
+            createdAt
+          )
+        ) {
+
+          return;
+
+        }
+
+
+        if (
+          status === 'placed'
+        ) {
+
+          const pendingAt =
+            createdAt + PENDING_AFTER_MS;
+
+
+          if (
+            now < pendingAt
+          ) {
+
+            return;
+
+          }
+
+
+          order.status =
+            'Pending';
+
+          order.statusUpdatedAt =
+            new Date(
+              pendingAt
+            )
+              .toISOString();
+
+          status = 'pending';
+
+          changed = true;
+
+        }
+
+
+        if (
+          status === 'pending'
+        ) {
+
+          const pendingSince =
+            Date.parse(
+              order.statusUpdatedAt ||
+              new Date(
+                createdAt + PENDING_AFTER_MS
+              )
+                .toISOString()
+            );
+
+          const deliveredAt =
+            pendingSince + DELIVERED_AFTER_PENDING_MS;
+
+
+          if (
+            now >= deliveredAt
+          ) {
+
+            order.status =
+              'Delivered';
+
+            order.statusUpdatedAt =
+              new Date(
+                deliveredAt
+              )
+                .toISOString();
+
+            changed = true;
+
+          }
+
+        }
+
+      }
+    );
+
+
+    if (
+      changed
+    ) {
+
+      this.saveOrders();
+
+      this.applyFilters();
+
+    }
+
+  }
+
+
   // ==========================================
   // DELIVERED COUNT
   // ==========================================
@@ -840,12 +1058,12 @@ export class OrdersComponent
           return (
 
             status ===
-              'cancelled'
+            'cancelled'
 
             ||
 
             status ===
-              'canceled'
+            'canceled'
 
           );
 
@@ -878,12 +1096,12 @@ export class OrdersComponent
           return (
 
             status !==
-              'cancelled'
+            'cancelled'
 
             &&
 
             status !==
-              'canceled'
+            'canceled'
 
           );
 
@@ -892,7 +1110,7 @@ export class OrdersComponent
       .reduce(
         (
           total: number,
-          order: Order
+          order: StoredOrder
         ) =>
 
           total +
@@ -931,7 +1149,7 @@ export class OrdersComponent
 
     if (
       currentOrder.id !==
-        undefined
+      undefined
     ) {
 
       return String(
@@ -1015,12 +1233,12 @@ export class OrdersComponent
 
     if (
       status ===
-        'cancelled'
+      'cancelled'
 
       ||
 
       status ===
-        'canceled'
+      'canceled'
     ) {
 
       return 'cancelled';
@@ -1088,12 +1306,10 @@ export class OrdersComponent
 
     return (
 
-      `${
-        customer.firstName ||
-        ''
-      } ${
-        customer.lastName ||
-        ''
+      `${customer.firstName ||
+      ''
+      } ${customer.lastName ||
+      ''
       }`
 
     )
@@ -1169,7 +1385,7 @@ export class OrdersComponent
       method === 'cod' ||
       method === 'cash' ||
       method ===
-        'cash on delivery'
+      'cash on delivery'
     ) {
 
       return 'Cash on Delivery';
@@ -1188,11 +1404,11 @@ export class OrdersComponent
 
     if (
       method ===
-        'credit-card' ||
+      'credit-card' ||
       method ===
-        'credit_card' ||
+      'credit_card' ||
       method ===
-        'credit card'
+      'credit card'
     ) {
 
       return 'Credit Card';
@@ -1202,11 +1418,11 @@ export class OrdersComponent
 
     if (
       method ===
-        'debit-card' ||
+      'debit-card' ||
       method ===
-        'debit_card' ||
+      'debit_card' ||
       method ===
-        'debit card'
+      'debit card'
     ) {
 
       return 'Debit Card';
@@ -1225,9 +1441,9 @@ export class OrdersComponent
 
     if (
       method ===
-        'netbanking' ||
+      'netbanking' ||
       method ===
-        'net banking'
+      'net banking'
     ) {
 
       return 'Net Banking';
@@ -1285,7 +1501,7 @@ export class OrdersComponent
     return new Date(
       date
     )
-      .toLocaleDateString(
+      .toLocaleString(
         'en-IN',
         {
           day:
@@ -1295,7 +1511,16 @@ export class OrdersComponent
             'short',
 
           year:
-            'numeric'
+            'numeric',
+
+          hour:
+            '2-digit',
+
+          minute:
+            '2-digit',
+
+          hour12:
+            true
         }
       );
 
@@ -1373,9 +1598,9 @@ export class OrdersComponent
 
     if (
       currentOrder.total !==
-        undefined &&
+      undefined &&
       currentOrder.total !==
-        null
+      null
     ) {
 
       return Number(
@@ -1387,9 +1612,9 @@ export class OrdersComponent
 
     if (
       currentOrder.totalAmount !==
-        undefined &&
+      undefined &&
       currentOrder.totalAmount !==
-        null
+      null
     ) {
 
       return Number(
@@ -1438,12 +1663,12 @@ export class OrdersComponent
     return (
 
       status ===
-        'placed'
+      'placed'
 
       ||
 
       status ===
-        'pending'
+      'pending'
 
     );
 
@@ -1516,111 +1741,124 @@ export class OrdersComponent
   // ==========================================
   // REORDER
   // ==========================================
-reorder(
-  order: Order
-): void {
+  reorder(
+    order: Order
+  ): void {
 
-  const orderItems =
-    this.getOrderItems(
-      order
+    const orderItems =
+      this.getOrderItems(
+        order
+      );
+
+
+    if (
+      !orderItems ||
+      orderItems.length === 0
+    ) {
+
+      console.error(
+        'No products found for reorder'
+      );
+
+      return;
+
+    }
+
+
+    const cartItems =
+      orderItems.map(
+        (item: any) => {
+
+          return {
+
+            id:
+              Number(
+                item.id
+              ),
+
+            name:
+              item.name ||
+              item.title ||
+              'Product',
+
+            brand:
+              item.brand ||
+              '',
+
+            image:
+              item.image ||
+              item.thumbnail ||
+              '',
+
+            price:
+              Number(
+                item.price ||
+                0
+              ),
+
+            oldPrice:
+              Number(
+                item.oldPrice ||
+                item.price ||
+                0
+              ),
+
+            quantity:
+              Number(
+                item.quantity ||
+                1
+              ),
+
+            stock:
+              Number(
+                item.stock ||
+                99
+              )
+
+          };
+
+        }
+      );
+
+
+    // ==========================================
+    // REPLACE CART WITH REORDER PRODUCTS
+    // ==========================================
+
+    localStorage.setItem(
+      'shopzone_cart',
+      JSON.stringify(
+        cartItems
+      )
     );
 
 
-  if (
-    !orderItems ||
-    orderItems.length === 0
-  ) {
-
-    console.error(
-      'No products found for reorder'
+    console.log(
+      'REORDER SAVED CART:',
+      localStorage.getItem(
+        'shopzone_cart'
+      )
     );
 
-    return;
+
+    this.router.navigate([
+      '/cart'
+    ]);
 
   }
 
 
-  const cartItems =
-    orderItems.map(
-      (item: any) => {
-
-        return {
-
-          id:
-            Number(
-              item.id
-            ),
-
-          name:
-            item.name ||
-            item.title ||
-            'Product',
-
-          brand:
-            item.brand ||
-            '',
-
-          image:
-            item.image ||
-            item.thumbnail ||
-            '',
-
-          price:
-            Number(
-              item.price ||
-              0
-            ),
-
-          oldPrice:
-            Number(
-              item.oldPrice ||
-              item.price ||
-              0
-            ),
-
-          quantity:
-            Number(
-              item.quantity ||
-              1
-            ),
-
-          stock:
-            Number(
-              item.stock ||
-              99
-            )
-
-        };
-
-      }
-    );
-
-
   // ==========================================
-  // REPLACE CART WITH REORDER PRODUCTS
+  // RESET ORDERS
   // ==========================================
 
-  localStorage.setItem(
-    'shopzone_cart',
-    JSON.stringify(
-      cartItems
-    )
-  );
+  private resetOrders(): void {
 
+    this.allOrders = [];
 
-  console.log(
-    'REORDER SAVED CART:',
-    localStorage.getItem(
-      'shopzone_cart'
-    )
-  );
+    this.orders = [];
 
-
-  this.router.navigate([
-    '/cart'
-  ]);
-
-}
+  }
 
 
   // ==========================================

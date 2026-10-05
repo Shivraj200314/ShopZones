@@ -8,14 +8,15 @@ import {
 })
 export class AuthService {
 
+  // ==========================================
+  // LOCAL STORAGE KEYS
+  // ==========================================
 
   private readonly tokenKey =
     'access_token';
 
-
   private readonly userKey =
     'shopzone_user';
-
 
   private readonly profileKey =
     'shopzone_profile';
@@ -27,7 +28,8 @@ export class AuthService {
 
   login(
     email: string,
-    password: string
+    password: string,
+    role: string = 'CUSTOMER'
   ): boolean {
 
     const cleanEmail =
@@ -41,9 +43,21 @@ export class AuthService {
         .trim();
 
 
+    const cleanRole =
+      role
+        .trim()
+        .toUpperCase();
+
+
+    // ========================================
+    // VALIDATION
+    // ========================================
+
     if (
       !cleanEmail ||
-      !cleanPassword
+      !cleanPassword ||
+      !['CUSTOMER', 'SELLER', 'OWNER']
+        .includes(cleanRole)
     ) {
 
       return false;
@@ -52,7 +66,7 @@ export class AuthService {
 
 
     // ========================================
-    // GET SAVED PROFILE
+    // GET EXISTING PROFILE
     // ========================================
 
     const profileData =
@@ -61,12 +75,8 @@ export class AuthService {
       );
 
 
-    let user: any;
+    let profile: any = null;
 
-
-    // ========================================
-    // EXISTING USER
-    // ========================================
 
     if (
       profileData
@@ -74,35 +84,10 @@ export class AuthService {
 
       try {
 
-        const profile =
+        profile =
           JSON.parse(
             profileData
           );
-
-
-        // ====================================
-        // EMAIL MUST MATCH UPDATED EMAIL
-        // ====================================
-
-        if (
-          profile.email
-            ?.toLowerCase() !==
-          cleanEmail
-        ) {
-
-          return false;
-
-        }
-
-
-        user = {
-
-          ...profile,
-
-          email:
-            cleanEmail
-
-        };
 
       }
 
@@ -119,6 +104,40 @@ export class AuthService {
         return false;
 
       }
+
+    }
+
+
+    let user: any;
+
+
+    // ========================================
+    // EXISTING USER
+    // ========================================
+
+    if (
+      profile &&
+      String(profile.email || '')
+        .trim()
+        .toLowerCase() === cleanEmail
+    ) {
+
+      // ====================================
+      // KEEP PROFILE DETAILS AND APPLY
+      // THE SELECTED DEMO ROLE
+      // ====================================
+
+      user = {
+
+        ...profile,
+
+        email:
+          cleanEmail,
+
+        role:
+          cleanRole
+
+      };
 
     }
 
@@ -145,6 +164,7 @@ export class AuthService {
         username
           .slice(1);
 
+
       user = {
 
         id:
@@ -159,23 +179,28 @@ export class AuthService {
         phone:
           '',
 
+        // ------------------------------------
+        // DEFAULT ROLE
+        // ------------------------------------
+
         role:
-          'CUSTOMER'
+          cleanRole
 
       };
 
 
-      localStorage.setItem(
-
-        this.profileKey,
-
-        JSON.stringify(
-          user
-        )
-
-      );
-
     }
+
+
+    localStorage.setItem(
+
+      this.profileKey,
+
+      JSON.stringify(
+        user
+      )
+
+    );
 
 
     // ========================================
@@ -200,7 +225,7 @@ export class AuthService {
 
 
     // ========================================
-    // UPDATE NAVBAR
+    // UPDATE NAVBAR / OTHER MFEs
     // ========================================
 
     window.dispatchEvent(
@@ -213,6 +238,166 @@ export class AuthService {
 
 
     return true;
+
+  }
+
+
+  // ==========================================
+  // GET CURRENT USER
+  // ==========================================
+
+  getCurrentUser(): any {
+
+    const userData =
+      localStorage.getItem(
+        this.userKey
+      );
+
+
+    // ----------------------------------------
+    // NO USER
+    // ----------------------------------------
+
+    if (!userData) {
+
+      return null;
+
+    }
+
+
+    try {
+
+      return JSON.parse(
+        userData
+      );
+
+    }
+
+    catch (
+      error
+    ) {
+
+      console.error(
+        'User parse error:',
+        error
+      );
+
+
+      return null;
+
+    }
+
+  }
+
+
+  // ==========================================
+  // GET USER ROLE
+  // ==========================================
+
+  getUserRole(): string | null {
+
+    const user =
+      this.getCurrentUser();
+
+
+    if (
+      !user?.role
+    ) {
+
+      return null;
+
+    }
+
+
+    return String(
+      user.role
+    )
+      .trim()
+      .toUpperCase();
+
+  }
+
+
+  // ==========================================
+  // CHECK ROLE
+  // ==========================================
+
+  hasRole(
+    role: string
+  ): boolean {
+
+    const currentRole =
+      this.getUserRole();
+
+
+    if (
+      !currentRole ||
+      !role
+    ) {
+
+      return false;
+
+    }
+
+
+    return currentRole ===
+      role
+        .trim()
+        .toUpperCase();
+
+  }
+
+
+  // ==========================================
+  // CUSTOMER
+  // ==========================================
+
+  isCustomer(): boolean {
+
+    return this.hasRole(
+      'CUSTOMER'
+    );
+
+  }
+
+
+  // ==========================================
+  // SELLER
+  // ==========================================
+
+  isSeller(): boolean {
+
+    return this.hasRole(
+      'SELLER'
+    );
+
+  }
+
+
+  // ==========================================
+  // OWNER
+  // ==========================================
+
+  isOwner(): boolean {
+
+    return this.hasRole(
+      'OWNER'
+    );
+
+  }
+
+
+  // ==========================================
+  // CAN ADD PRODUCT
+  // SELLER + OWNER
+  // ==========================================
+
+  canAddProduct(): boolean {
+
+    return (
+      this.isSeller() ||
+      this.isOwner()
+    );
 
   }
 
@@ -232,20 +417,103 @@ export class AuthService {
 
 
   // ==========================================
-  // LOGOUT
-  // ==========================================
+// UPDATE USER PROFILE
+// ==========================================
+
+updateUserProfile(
+  updatedUser: any
+): void {
+
+  // ========================================
+  // NORMALIZE ROLE
+  // ========================================
+
+  const user = {
+
+    ...updatedUser,
+
+    role:
+      updatedUser?.role
+        ?.trim()
+        .toUpperCase()
+
+  };
+
+
+  // ========================================
+  // UPDATE PROFILE
+  // ========================================
+
+  localStorage.setItem(
+
+    this.profileKey,
+
+    JSON.stringify(
+      user
+    )
+
+  );
+
+
+  // ========================================
+  // UPDATE CURRENT SESSION USER
+  // ========================================
+
+  localStorage.setItem(
+
+    this.userKey,
+
+    JSON.stringify(
+      user
+    )
+
+  );
+
+
+  // ========================================
+  // NOTIFY OTHER COMPONENTS / MFEs
+  // ========================================
+
+  window.dispatchEvent(
+
+    new CustomEvent(
+      'shopzone-user-updated'
+    )
+
+  );
+
+}
 
   logout(): void {
+
+    // ----------------------------------------
+    // REMOVE SESSION TOKEN
+    // ----------------------------------------
 
     localStorage.removeItem(
       this.tokenKey
     );
 
 
+    // ----------------------------------------
+    // REMOVE LOGGED-IN USER
+    // ----------------------------------------
+
     localStorage.removeItem(
       this.userKey
     );
 
+
+    // ----------------------------------------
+    // PROFILE IS NOT REMOVED
+    // ----------------------------------------
+    // This means the user's saved role,
+    // name, email etc. remain available
+    // for the next login.
+
+    // ========================================
+    // UPDATE NAVBAR / OTHER MFEs
+    // ========================================
 
     window.dispatchEvent(
 

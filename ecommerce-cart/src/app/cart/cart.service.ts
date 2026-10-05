@@ -12,11 +12,11 @@ import {
 })
 export class CartService {
 
-  // SAME KEY AS PRODUCT MFE
   private readonly cartKey =
     'https://dummyjson.com/c/374f-f022-4cb0-bd88';
 
-  getCartItems(): CartItem[] {
+  getCartItems():
+    CartItem[] {
 
     const data =
       localStorage.getItem(
@@ -24,7 +24,9 @@ export class CartService {
       );
 
 
-    if (!data) {
+    if (
+      !data
+    ) {
 
       return [];
 
@@ -33,16 +35,36 @@ export class CartService {
 
     try {
 
-      return JSON.parse(
-        data
-      );
+      const parsedData =
+        JSON.parse(
+          data
+        );
 
-    } catch (error) {
+
+      if (
+        Array.isArray(
+          parsedData
+        )
+      ) {
+
+        return parsedData;
+
+      }
+
+
+      return [];
+
+    }
+
+    catch (
+      error
+    ) {
 
       console.error(
-        'Unable to read cart:',
+        'Error reading cart:',
         error
       );
+
 
       return [];
 
@@ -50,28 +72,18 @@ export class CartService {
 
   }
 
+  private saveCart(
+    items: CartItem[]
+  ): void {
 
-  // =========================================
-  // SAVE CART
-  // =========================================
+    localStorage.setItem(
+      this.cartKey,
+      JSON.stringify(
+        items
+      )
+    );
 
- private saveCart(
-  items: CartItem[]
-): void {
-
-  localStorage.setItem(
-    this.cartKey,
-    JSON.stringify(
-      items
-    )
-  );
-
-}
-
-
-  // =========================================
-  // INCREASE
-  // =========================================
+  }
 
   increaseQuantity(
     productId: number
@@ -83,17 +95,20 @@ export class CartService {
 
     const item =
       cartItems.find(
-        item =>
-          item.id === productId
+        currentItem =>
+          currentItem.id ===
+          productId
       );
 
 
     if (
       item &&
-      item.quantity < item.stock
+      item.quantity <
+      item.stock
     ) {
 
-      item.quantity++;
+      item.quantity +=
+        1;
 
     }
 
@@ -106,11 +121,6 @@ export class CartService {
     return cartItems;
 
   }
-
-
-  // =========================================
-  // DECREASE
-  // =========================================
 
   decreaseQuantity(
     productId: number
@@ -122,8 +132,9 @@ export class CartService {
 
     const item =
       cartItems.find(
-        item =>
-          item.id === productId
+        currentItem =>
+          currentItem.id ===
+          productId
       );
 
 
@@ -132,7 +143,8 @@ export class CartService {
       item.quantity > 1
     ) {
 
-      item.quantity--;
+      item.quantity -=
+        1;
 
     }
 
@@ -146,11 +158,6 @@ export class CartService {
 
   }
 
-
-  // =========================================
-  // REMOVE
-  // =========================================
-
   removeItem(
     productId: number
   ): CartItem[] {
@@ -159,7 +166,8 @@ export class CartService {
       this.getCartItems()
         .filter(
           item =>
-            item.id !== productId
+            item.id !==
+            productId
         );
 
 
@@ -172,11 +180,6 @@ export class CartService {
 
   }
 
-
-  // =========================================
-  // CLEAR
-  // =========================================
-
   clearCart(): void {
 
     localStorage.removeItem(
@@ -185,32 +188,33 @@ export class CartService {
 
   }
 
-
-  // =========================================
-  // TOTAL
-  // =========================================
-
-  getTotal(): number {
+  getTotal():
+    number {
 
     return this
       .getCartItems()
       .reduce(
-
         (
           total,
           item
-        ) =>
+        ) => {
 
-          total +
-          (
-            item.price *
-            item.quantity
-          ),
-
+          return (
+            total +
+            (
+              Number(
+                item.price ||
+                0
+              )
+              *
+              Number(
+                item.quantity ||
+                0
+              )
+            )
+          );
+        },
         0
-
       );
-
   }
-
 }

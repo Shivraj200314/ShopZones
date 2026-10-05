@@ -1,0 +1,17 @@
+{
+  "header": {
+    "home": "Home",
+    "products": "Product",
+    "cart": "Cart",
+    "orders": "Orders",
+    "login": "Login",
+    "logout": "Logout",
+    "language": "Language"
+  },
+
+  "user": {
+    "welcome": "Welcome",
+    "profile": "Profile",
+    "account": "Account"
+  }
+}

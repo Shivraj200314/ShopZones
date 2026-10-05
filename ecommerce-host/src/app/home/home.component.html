@@ -95,17 +95,31 @@
 
       <div class="hero-visual">
 
-        <div class="hero-circle">
+        <div class="hero-image-frame">
 
-          <span class="hero-emoji">
+          <img
+            class="hero-image"
+            src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1100&q=85"
+            alt="Modern retail store with curated products"
+          />
 
-            {{
-              revampFallback()
-                ['home']
-                ['hero-icon']
-            }}
+          <div class="hero-image-caption">
 
-          </span>
+            <span class="hero-caption-icon">
+
+              {{
+                revampFallback()
+                  ['home']
+                  ['hero-icon']
+              }}
+
+            </span>
+
+            <span>
+              Curated for your everyday
+            </span>
+
+          </div>
 
         </div>
 
@@ -367,6 +381,60 @@
   </section>
 
 
+  <section class="product-story">
+
+    <div class="product-story-copy">
+
+      <span class="story-label">
+        THE SHOPZONE EDIT
+      </span>
+
+      <h2>
+        Good products deserve a closer look.
+      </h2>
+
+      <p>
+        Explore thoughtful picks for your everyday rituals, from beauty and fragrance to pantry essentials.
+      </p>
+
+      <button
+        type="button"
+        class="story-button"
+        (click)="goToProducts()"
+      >
+        Browse the collection
+        <span aria-hidden="true">→</span>
+      </button>
+
+    </div>
+
+    <div class="product-video-frame">
+
+      <video
+        class="product-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        poster="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=85"
+        aria-label="A calm look at a curated retail collection"
+      >
+        <source
+          src="https://videos.pexels.com/video-files/853800/853800-hd_1920_1080_30fps.mp4"
+          type="video/mp4"
+        />
+      </video>
+
+      <span class="video-badge">
+        <span aria-hidden="true">●</span>
+        In the spotlight
+      </span>
+
+    </div>
+
+  </section>
+
+
 
   <!-- =========================================
        CATEGORY SECTION
@@ -452,6 +520,12 @@
         (click)="goToProducts()"
       >
 
+        <img
+          class="category-image"
+          src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=700&q=85"
+          alt="A selection of products"
+        />
+
         <div class="category-large-icon">
 
           {{
@@ -495,6 +569,12 @@
         class="home-category"
         (click)="goToCategory('beauty')"
       >
+
+        <img
+          class="category-image"
+          src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=700&q=85"
+          alt="Beauty products"
+        />
 
         <div class="category-large-icon">
 
@@ -540,6 +620,12 @@
         (click)="goToCategory('fragrances')"
       >
 
+        <img
+          class="category-image"
+          src="https://images.unsplash.com/photo-1547887538-e3a2f32cb1cc?auto=format&fit=crop&w=700&q=85"
+          alt="Fragrance bottle"
+        />
+
         <div class="category-large-icon">
 
           {{
@@ -583,6 +669,12 @@
         class="home-category"
         (click)="goToCategory('groceries')"
       >
+
+        <img
+          class="category-image"
+          src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=700&q=85"
+          alt="Fresh groceries"
+        />
 
         <div class="category-large-icon">
 
@@ -692,13 +784,23 @@
 
 
 
-    <div class="deal-icon">
+    <div class="deal-visual">
+
+      <img
+        class="deal-image"
+        src="https://images.unsplash.com/photo-1607082349566-187342175e2f?auto=format&fit=crop&w=700&q=85"
+        alt="Shopping bags and a product box"
+      />
+
+      <span class="deal-icon">
 
       {{
         revampFallback()
           ['home']
           ['deal-icon']
       }}
+
+      </span>
 
     </div>
 

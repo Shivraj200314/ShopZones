@@ -39,36 +39,16 @@ const routes: Routes = [
     redirectTo: 'login',
     pathMatch: 'full'
   },
-
-
-  // =========================================
-  // LOGIN
-  // Navbar NOT visible
-  // =========================================
-
   {
     path: 'login',
-    title:"Login Form",
+    title: "Login Form",
     component: LoginComponent
   },
-
-
-  // =========================================
-  // SIGNUP
-  // Navbar NOT visible
-  // =========================================
-
   {
     path: 'signup',
-    title:"SignUp Form",
+    title: "SignUp Form",
     component: SignupComponent
   },
-
-
-  // =========================================
-  // MAIN LAYOUT
-  // Navbar visible
-  // =========================================
 
   {
     path: '',
@@ -78,13 +58,13 @@ const routes: Routes = [
 
       {
         path: 'home',
-        title:"Home Dashboard",
+        title: "Home Dashboard",
         component: HomeComponent
       },
 
       {
         path: 'products',
-        title:"Products Dashboard",
+        title: "Products Dashboard",
         loadChildren: () =>
           loadRemoteModule({
 
@@ -97,14 +77,15 @@ const routes: Routes = [
               './ProductsModule'
 
           })
-          .then(
-            m => m.ProductsModule
-          )
+            .then(
+              m => m.ProductsModule
+            )
       },
 
       {
         path: 'cart',
-           title:"Cart Dashboard",
+        title: 'Cart Dashboard',
+
         loadChildren: () =>
           loadRemoteModule({
 
@@ -117,14 +98,14 @@ const routes: Routes = [
               './CartModule'
 
           })
-          .then(
-            m => m.CartModule
-          )
+            .then(
+              m => m.CartModule
+            )
       },
 
       {
         path: 'checkout',
-        title:"Checkout Dashboard",
+        title: "Checkout Dashboard",
         loadChildren: () =>
           loadRemoteModule({
 
@@ -137,14 +118,14 @@ const routes: Routes = [
               './CheckoutModule'
 
           })
-          .then(
-            m => m.CheckoutModule
-          )
+            .then(
+              m => m.CheckoutModule
+            )
       },
 
       {
         path: 'orders',
-         title:"Orders Dashboard",
+        title: "Orders Dashboard",
         loadChildren: () =>
           loadRemoteModule({
 
@@ -157,16 +138,16 @@ const routes: Routes = [
               './OrdersModule'
 
           })
-          .then(
-            m => m.OrdersModule
-          )
+            .then(
+              m => m.OrdersModule
+            )
       },
 
-      
+
 
     ]
   },
-  {
+ {
   path: 'users',
   title: 'User Dashboard',
 
@@ -182,9 +163,9 @@ const routes: Routes = [
         './UsersModule'
 
     })
-    .then(
-      m => m.UsersModule
-    )
+      .then(
+        m => m.UsersModule
+      )
 },
 
   {
@@ -194,7 +175,6 @@ const routes: Routes = [
 
 ];
 
-
 @NgModule({
 
   imports: [
@@ -202,10 +182,8 @@ const routes: Routes = [
       routes
     )
   ],
-
   exports: [
     RouterModule
   ]
-
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

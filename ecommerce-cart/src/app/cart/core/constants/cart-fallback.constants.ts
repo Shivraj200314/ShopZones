@@ -2,8 +2,11 @@ export const CART_FALLBACK = {
 
   "cart": {
 
+    "key":
+      "cart",
+
     "eyebrow":
-      "SHOPZONEsssssssssssssssssssssssssssssssssssss",
+      "SHOPZONE",
 
     "subtitle":
       "Review your products before checkout.",
@@ -34,9 +37,6 @@ export const CART_FALLBACK = {
 
     "checkout-label":
       "Proceed to Checkout →",
-
-    "key":
-      "cart",
 
     "device":
       "both"

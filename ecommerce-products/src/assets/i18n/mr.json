@@ -1,0 +1,20 @@
+{
+  "productPage": {
+    "collectionLabel": "उत्पादन संग्रह",
+    "title": "आमची उत्पादने पहा",
+    "description": "आमच्या संग्रहातील दर्जेदार उत्पादने शोधा.",
+    "searchPlaceholder": "उत्पादने शोधा...",
+    "ourCollection": "आमचा संग्रह",
+    "shopByCategory": "श्रेणीनुसार खरेदी करा",
+    "categoryDescription": "आपल्या आवडत्या श्रेणीतील उत्पादने पहा.",
+    "allProducts": "सर्व उत्पादने",
+    "beauty": "ब्युटी",
+    "fragrances": "सुगंधी उत्पादने",
+    "groceries": "किराणा",
+    "shopNow": "आता खरेदी करा",
+    "products": "उत्पादने",
+    "items": "वस्तू",
+    "addProduct": "उत्पादन जोडा",
+    "sale": "सेल"
+  }
+}

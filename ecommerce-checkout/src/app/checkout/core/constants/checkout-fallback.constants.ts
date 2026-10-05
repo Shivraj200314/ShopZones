@@ -3,7 +3,7 @@ export const CHECKOUT_FALLBACK = {
   "checkout": {
 
     "eyebrow":
-      "SECURE CHECKOUTsssssssssssssssssssssssss",
+      "SECURE CHECKOUT",
 
     "subtitle":
       "Complete your order details.",
@@ -76,7 +76,6 @@ export const CHECKOUT_FALLBACK = {
 
   },
 
-
   "checkout-success": {
 
     "title":
@@ -98,7 +97,6 @@ export const CHECKOUT_FALLBACK = {
       "both"
 
   },
-
 
   "checkout-loader": {
 

@@ -1,708 +1,86 @@
-<div
-  class="profile-page"
-  *ngIf="user">
-<div class="dashboard-back-wrapper">
+<div class="profile-page" *ngIf="user">
+  <div class="dashboard-back-wrapper">
+    <button type="button" class="dashboard-back-button" (click)="goBack()">
+      <span class="back-arrow" aria-hidden="true">←</span>
+      <span>Back to dashboard</span>
+    </button>
+  </div>
 
-  <button
-    type="button"
-    class="dashboard-back-button"
-    (click)="goBack()"
-  >
-
-    <span class="back-arrow">
-      ←
-    </span>
-
-    <span>
-      Back
-    </span>
-
-  </button>
-
-</div>
   <div class="profile-container">
-
-    <div class="profile-header">
-
-      <div class="profile-avatar">
-
-        {{ userInitial }}
-
-      </div>
-
-
-      <!-- USER INFO -->
-
+    <header class="profile-header">
+      <div class="profile-avatar" aria-hidden="true">{{ userInitial }}</div>
       <div class="profile-header-info">
-
-        <span class="profile-eyebrow">
-
-          {{
-            revampFallback()
-              ['profile']
-              ['eyebrow']
-          }}
-
-        </span>
-
-
-        <h1>
-
-          {{
-            revampFallback()
-              ['profile']
-              ['title']
-          }}
-
-        </h1>
-
-        <p>
-
-          {{
-            revampFallback()
-              ['profile']
-              ['subtitle']
-          }}
-
-        </p>
-
-
-        <div class="current-user-info">
-
-          <strong>
-
-            {{ user.fullName }}
-
-          </strong>
-
-
-          <span>
-
-            {{ user.email }}
-
-          </span>
-
-        </div>
-
+        <span class="profile-eyebrow">{{ revampFallback()['profile']['eyebrow'] }}</span>
+        <h1>{{ revampFallback()['profile']['title'] }}</h1>
+        <p>{{ revampFallback()['profile']['subtitle'] }}</p>
       </div>
+      <div class="profile-status"><span class="status-dot"></span><span>Account active</span></div>
+    </header>
 
+    <div class="profile-layout">
+      <aside class="profile-summary">
+        <div class="summary-heading">
+          <span class="summary-kicker">Signed in as</span>
+          <strong>{{ user.fullName }}</strong>
+          <span>{{ user.email }}</span>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-detail">
+          <span class="summary-icon" aria-hidden="true">@</span>
+          <div><span>Contact email</span><strong>{{ user.email }}</strong></div>
+        </div>
+        <div class="summary-detail">
+          <span class="summary-icon" aria-hidden="true">#</span>
+          <div><span>Account role</span><strong>{{ user.role }}</strong></div>
+        </div>
+        <p class="summary-note">Keep your details current so your orders and account updates reach you without delay.</p>
+      </aside>
+
+      <main class="profile-main">
+        <div class="section-heading">
+          <div><span class="section-kicker">Profile details</span><h2>Personal information</h2></div>
+          <span class="secure-label"><span aria-hidden="true">✓</span> Private</span>
+        </div>
+
+        <div class="success-message" *ngIf="successMessage"><span class="message-icon">✓</span><span>{{ successMessage }}</span></div>
+        <div class="form-error-message" *ngIf="errorMessage"><span class="message-icon">!</span><span>{{ errorMessage }}</span></div>
+
+        <div class="profile-card">
+          <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+            <div class="form-grid">
+              <div class="form-group form-group-wide">
+                <label for="fullName">{{ revampFallback()['profile']['full-name-label'] }} <span class="required">*</span></label>
+                <div class="input-wrapper"><span class="input-icon" aria-hidden="true">◉</span><input id="fullName" type="text" formControlName="fullName" [placeholder]="revampFallback()['profile']['full-name-placeholder']" [class.invalid-field]="isInvalid('fullName')" [class.valid-field]="isValid('fullName')" autocomplete="name" /></div>
+                <small class="error-message" *ngIf="getFullNameError()">{{ getFullNameError() }}</small>
+              </div>
+              <div class="form-group form-group-wide">
+                <label for="email">{{ revampFallback()['profile']['email-label'] }} <span class="required">*</span></label>
+                <div class="input-wrapper"><span class="input-icon" aria-hidden="true">@</span><input id="email" type="email" formControlName="email" [placeholder]="revampFallback()['profile']['email-placeholder']" [class.invalid-field]="isInvalid('email')" [class.valid-field]="isValid('email')" autocomplete="email" /></div>
+                <small class="error-message" *ngIf="getEmailError()">{{ getEmailError() }}</small>
+                <small class="email-warning" *ngIf="isEditMode && user?.email !== profileForm.get('email')?.value">Changing your email will log you out. You will need to login again using the new email.</small>
+              </div>
+              <div class="form-group">
+                <label for="phone">{{ revampFallback()['profile']['phone-label'] }}</label>
+                <div class="input-wrapper"><span class="input-icon" aria-hidden="true">◌</span><input id="phone" type="tel" maxlength="10" formControlName="phone" [placeholder]="revampFallback()['profile']['phone-placeholder']" [class.invalid-field]="isInvalid('phone')" [class.valid-field]="isValid('phone')" autocomplete="tel" /></div>
+                <small class="error-message" *ngIf="getPhoneError()">{{ getPhoneError() }}</small>
+              </div>
+              <div class="form-group">
+                <label for="role">Role</label>
+                <div class="readonly-field"><span class="input-icon" aria-hidden="true">◆</span><select id="role" class="role-select" formControlName="role"><option *ngFor="let role of roleOptions" [value]="role">{{ role }}</option></select></div>
+              </div>
+            </div>
+
+            <div class="profile-actions" *ngIf="!isEditMode">
+              <button type="button" class="logout-button" (click)="logout()"><span aria-hidden="true">↪</span> {{ revampFallback()['profile']['logout'] }}</button>
+              <button type="button" class="edit-button" (click)="editProfile()"><span aria-hidden="true">✎</span> {{ revampFallback()['profile']['edit-profile'] }}</button>
+            </div>
+            <div class="profile-actions" *ngIf="isEditMode">
+              <button type="button" class="cancel-button" (click)="cancelEdit()" [disabled]="isSaving"><span aria-hidden="true">✕</span> {{ revampFallback()?.['profile']?.['cancel'] || 'Cancel' }}</button>
+              <button type="submit" class="save-button" [disabled]="isSaving"><span class="button-spinner" *ngIf="isSaving"></span><span *ngIf="!isSaving">{{ revampFallback()?.['profile']?.['save-changes'] || 'Save Changes' }}</span><span *ngIf="isSaving">Saving...</span></button>
+            </div>
+          </form>
+        </div>
+      </main>
     </div>
-
-
-
-    <!-- =========================================
-         SUCCESS MESSAGE
-    ========================================== -->
-
-    <div
-      class="success-message"
-      *ngIf="successMessage"
-    >
-
-      <span class="message-icon">
-
-        ✓
-
-      </span>
-
-
-      <span>
-
-        {{ successMessage }}
-
-      </span>
-
-    </div>
-
-
-
-    <!-- =========================================
-         ERROR MESSAGE
-    ========================================== -->
-
-    <div
-      class="form-error-message"
-      *ngIf="errorMessage"
-    >
-
-      <span class="message-icon">
-
-        !
-
-      </span>
-
-
-      <span>
-
-        {{ errorMessage }}
-
-      </span>
-
-    </div>
-
-
-
-    <!-- =========================================
-         PROFILE FORM CARD
-    ========================================== -->
-
-    <div class="profile-card">
-
-      <form
-        [formGroup]="profileForm"
-        (ngSubmit)="saveProfile()"
-      >
-
-
-        <!-- =====================================
-             FULL NAME
-        ====================================== -->
-
-        <div class="form-group">
-
-          <label
-            for="fullName"
-          >
-
-            {{
-              revampFallback()
-                ['profile']
-                ['full-name-label']
-            }}
-
-
-            <span class="required">
-
-              *
-
-            </span>
-
-          </label>
-
-
-          <div class="input-wrapper">
-
-            <span class="input-icon">
-
-              👤
-
-            </span>
-
-
-            <input
-              id="fullName"
-              type="text"
-              formControlName="fullName"
-
-              [placeholder]="
-                revampFallback()
-                  ['profile']
-                  ['full-name-placeholder']
-              "
-
-              [class.invalid-field]="
-                isInvalid('fullName')
-              "
-
-              [class.valid-field]="
-                isValid('fullName')
-              "
-
-              autocomplete="name"
-            />
-
-          </div>
-
-
-          <!-- FULL NAME ERROR -->
-
-          <small
-            class="error-message"
-            *ngIf="
-              getFullNameError()
-            "
-          >
-
-            {{ getFullNameError() }}
-
-          </small>
-
-        </div>
-
-
-
-        <!-- =====================================
-             EMAIL
-        ====================================== -->
-
-        <div class="form-group">
-
-          <label
-            for="email"
-          >
-
-            {{
-              revampFallback()
-                ['profile']
-                ['email-label']
-            }}
-
-
-            <span class="required">
-
-              *
-
-            </span>
-
-          </label>
-
-
-          <div class="input-wrapper">
-
-            <span class="input-icon">
-
-              ✉
-
-            </span>
-
-
-            <input
-              id="email"
-              type="email"
-              formControlName="email"
-
-              [placeholder]="
-                revampFallback()
-                  ['profile']
-                  ['email-placeholder']
-              "
-
-              [class.invalid-field]="
-                isInvalid('email')
-              "
-
-              [class.valid-field]="
-                isValid('email')
-              "
-
-              autocomplete="email"
-            />
-
-          </div>
-
-
-          <!-- EMAIL ERROR -->
-
-          <small
-            class="error-message"
-            *ngIf="
-              getEmailError()
-            "
-          >
-
-            {{ getEmailError() }}
-
-          </small>
-
-
-          <!-- EMAIL CHANGE WARNING -->
-
-          <small
-            class="email-warning"
-            *ngIf="
-              isEditMode &&
-              user?.email !==
-              profileForm.get('email')?.value
-            "
-          >
-
-            Changing your email will log you out.
-            You will need to login again using the new email.
-
-          </small>
-
-        </div>
-
-
-
-        <!-- =====================================
-             PHONE
-        ====================================== -->
-
-        <div class="form-group">
-
-          <label
-            for="phone"
-          >
-
-            {{
-              revampFallback()
-                ['profile']
-                ['phone-label']
-            }}
-
-          </label>
-
-
-          <div class="input-wrapper">
-
-            <span class="input-icon">
-
-              📱
-
-            </span>
-
-
-            <input
-              id="phone"
-              type="tel"
-              maxlength="10"
-              formControlName="phone"
-
-              [placeholder]="
-                revampFallback()
-                  ['profile']
-                  ['phone-placeholder']
-              "
-
-              [class.invalid-field]="
-                isInvalid('phone')
-              "
-
-              [class.valid-field]="
-                isValid('phone')
-              "
-
-              autocomplete="tel"
-            />
-
-          </div>
-
-
-          <!-- PHONE ERROR -->
-
-          <small
-            class="error-message"
-            *ngIf="
-              getPhoneError()
-            "
-          >
-
-            {{ getPhoneError() }}
-
-          </small>
-
-        </div>
-
-
-
-        <!-- =====================================
-             ROLE
-        ====================================== -->
-
-        <div class="form-group">
-
-          <label>
-
-            Role
-
-          </label>
-
-
-          <div class="readonly-field">
-
-            <span class="input-icon">
-
-              🛡
-
-            </span>
-
-
-            <span>
-
-              {{ user.role }}
-
-            </span>
-
-          </div>
-
-        </div>
-
-
-
-        <!-- =====================================
-             VIEW MODE
-        ====================================== -->
-
-        <div
-          class="profile-actions"
-          *ngIf="!isEditMode"
-        >
-
-
-          <!-- EDIT -->
-
-          <button
-            type="button"
-            class="edit-button"
-            (click)="editProfile()"
-          >
-
-            <span>
-
-              ✎
-
-            </span>
-
-
-            {{
-              revampFallback()
-                ['profile']
-                ['edit-profile']
-            }}
-
-          </button>
-
-
-
-          <!-- LOGOUT -->
-
-          <button
-            type="button"
-            class="logout-button"
-            (click)="logout()"
-          >
-
-            <span>
-
-              ↪
-
-            </span>
-
-
-            {{
-              revampFallback()
-                ['profile']
-                ['logout']
-            }}
-
-          </button>
-
-        </div>
-    
-<!-- =====================================
-     EDIT MODE
-====================================== -->
-
-<div
-  class="profile-actions"
-  *ngIf="isEditMode"
->
-
-  <!-- CANCEL -->
-
-  <button
-    type="button"
-    class="cancel-button"
-    (click)="cancelEdit()"
-    [disabled]="isSaving"
-  >
-    <span>
-      ✕
-    </span>
-
-    {{
-      revampFallback()
-        ?.['profile']
-        ?.['cancel']
-        || 'Cancel'
-    }}
-  </button>
-
-
-  <!-- SAVE -->
-
-  <button
-    type="submit"
-    class="save-button"
-    [disabled]="isSaving"
-  >
-
-    <span
-      class="button-spinner"
-      *ngIf="isSaving"
-    >
-    </span>
-
-
-    <span *ngIf="!isSaving">
-
-      {{
-        revampFallback()
-          ?.['profile']
-          ?.['save-changes']
-          || 'Save Changes'
-      }}
-
-    </span>
-
-
-    <span *ngIf="isSaving">
-      Saving...
-    </span>
-
-  </button>
-
-</div>
-
-
-      </form>
-
-    </div>
-
-
-
-    <!-- =========================================
-         ACCOUNT INFORMATION
-    ========================================== -->
-
-    <div class="account-info-card">
-
-      <div class="account-info-header">
-
-        <h2>
-
-          Account Information
-
-        </h2>
-
-
-        <p>
-
-          Your current account details
-
-        </p>
-
-      </div>
-
-
-      <div class="account-info-grid">
-
-
-        <!-- NAME -->
-
-        <div class="info-item">
-
-          <span class="info-label">
-
-            Full Name
-
-          </span>
-
-
-          <strong>
-
-            {{ user.fullName }}
-
-          </strong>
-
-        </div>
-
-
-
-        <!-- EMAIL -->
-
-        <div class="info-item">
-
-          <span class="info-label">
-
-            Email
-
-          </span>
-
-
-          <strong>
-
-            {{ user.email }}
-
-          </strong>
-
-        </div>
-
-
-
-        <!-- PHONE -->
-
-        <div class="info-item">
-
-          <span class="info-label">
-
-            Phone
-
-          </span>
-
-
-          <strong>
-
-            {{
-              user.phone
-                || 'Not added'
-            }}
-
-          </strong>
-
-        </div>
-
-
-
-        <!-- ROLE -->
-
-        <div class="info-item">
-
-          <span class="info-label">
-
-            Role
-
-          </span>
-
-
-          <strong>
-
-            {{ user.role }}
-
-          </strong>
-
-        </div>
-
-
-      </div>
-
-    </div>
-
-
   </div>
-
-</div>
-
-
-
-<!-- =========================================
-     USER NOT AVAILABLE
-========================================== -->
-
-<div
-  class="profile-loading"
-  *ngIf="!user"
->
-
-  <div class="loading-spinner">
-  </div>
-
-
-  <p>
-
-    Loading profile...
-
-  </p>
-
 </div>

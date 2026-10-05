@@ -1,7 +1,7 @@
 export const PRODUCT_FALLBACK = {
   "product-list": {
     "key": "product-list",
-    "eyebrow": "PRODUCT COLLECTIONsssssssssssssssssssssssss",
+    "eyebrow": "PRODUCT COLLECTION",
     "title": "Explore Our Products",
     "subtitle": "Discover quality products across our collection.",
     "search-placeholder": "Search products...",
@@ -107,7 +107,7 @@ export const PRODUCT_FALLBACK = {
     "product-detail",
 
   "back-label":
-    "← Back to Products",
+    "← Back to Product",
 
   "sale-label":
     "SALE",
